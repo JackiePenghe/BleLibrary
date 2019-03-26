@@ -1,1 +1,1 @@
-include ':supportsample', ':support'
+include ':supportsample', ':support',':xsample', ':x', ':baserecyclerviewadapterhelperxlibrary'
