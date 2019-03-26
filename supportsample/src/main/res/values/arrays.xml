@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="device_options">
+        <item>@string/read</item>
+        <item>@string/write</item>
+        <item>@string/open_notification</item>
+        <item>@string/write_big_data</item>
+        <item>@string/write_big_data_with_notification</item>
+        <item>@string/write_big_data_without_format</item>
+        <item>@string/write_big_data_with_notification_without_format</item>
+    </string-array>
+    <string-array name="device_list_options">
+        <item>@string/test_broadcast_interval</item>
+        <item>@string/view_broadcast_package</item>
+    </string-array>
+</resources>
