@@ -8,7 +8,7 @@ RecyclerView Adapter use BRVAH
 
 配置：(Configure)
 
-1.直接将library依赖到项目中（Download and copy library "blelibrary" to your project）
+1.直接将library依赖到项目
 
 2.gradle配置依赖(gradle dependency)
 support版本
