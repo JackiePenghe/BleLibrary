@@ -1,7 +1,7 @@
 # BleSample
 BleSample
 
-[API文档](http://penghe.xyz/blelibrary/index.html)
+[API文档](http://penghe.xyz/api/blelibrary/index.html)
 
 RecyclerView Adapter use BRVAH 
 
