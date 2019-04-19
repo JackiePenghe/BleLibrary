@@ -362,10 +362,10 @@ public final class BluetoothLeService extends Service {
         }
         BluetoothGattDescriptor bluetoothGattDescriptor = bluetoothGattCharacteristic.getDescriptor(UUID.fromString(BleConstants.CLIENT_CHARACTERISTIC_CONFIG));
         if (bluetoothGattDescriptor == null) {
-            return false;
-        } else {
-            bluetoothGattDescriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+            DebugUtil.warnOut(TAG, "bluetoothGattDescriptor == null");
+            return true;
         }
+        bluetoothGattDescriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
         return bluetoothGatt.writeDescriptor(bluetoothGattDescriptor);
     }
 

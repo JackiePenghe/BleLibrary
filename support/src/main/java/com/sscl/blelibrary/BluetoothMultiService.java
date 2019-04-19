@@ -20,11 +20,7 @@ import android.support.annotation.RequiresApi;
 
 import com.sscl.blelibrary.enums.PhyMask;
 import com.sscl.blelibrary.enums.Transport;
-import com.sscl.blelibrary.interfaces.OnBleCharacteristicWriteListener;
-import com.sscl.blelibrary.interfaces.OnBleDescriptorWriteListener;
-import com.sscl.blelibrary.interfaces.OnBleReceiveNotificationListener;
 import com.sscl.blelibrary.interfaces.OnLargeDataSendStateChangedListener;
-import com.sscl.blelibrary.interfaces.OnLargeDataWriteWithNotificationSendStateChangedListener;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -522,10 +518,10 @@ public final class BluetoothMultiService extends Service {
         }
         BluetoothGattDescriptor bluetoothGattDescriptor = bluetoothGattCharacteristic.getDescriptor(UUID.fromString(BleConstants.CLIENT_CHARACTERISTIC_CONFIG));
         if (bluetoothGattDescriptor == null) {
-            return false;
-        } else {
-            bluetoothGattDescriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+            DebugUtil.warnOut(TAG, "bluetoothGattDescriptor == null");
+            return true;
         }
+        bluetoothGattDescriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
         return bluetoothGatt.writeDescriptor(bluetoothGattDescriptor);
     }
 

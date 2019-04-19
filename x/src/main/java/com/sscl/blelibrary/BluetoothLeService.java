@@ -14,6 +14,10 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+
 import com.sscl.blelibrary.enums.PhyMask;
 import com.sscl.blelibrary.enums.Transport;
 import com.sscl.blelibrary.interfaces.OnBleCharacteristicWriteListener;
@@ -25,10 +29,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.UUID;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 
 /**
  * BLE Connection service
@@ -363,10 +363,10 @@ public final class BluetoothLeService extends Service {
         }
         BluetoothGattDescriptor bluetoothGattDescriptor = bluetoothGattCharacteristic.getDescriptor(UUID.fromString(BleConstants.CLIENT_CHARACTERISTIC_CONFIG));
         if (bluetoothGattDescriptor == null) {
-            return false;
-        } else {
-            bluetoothGattDescriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+            DebugUtil.warnOut(TAG, "bluetoothGattDescriptor == null");
+            return true;
         }
+        bluetoothGattDescriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
         return bluetoothGatt.writeDescriptor(bluetoothGattDescriptor);
     }
 
