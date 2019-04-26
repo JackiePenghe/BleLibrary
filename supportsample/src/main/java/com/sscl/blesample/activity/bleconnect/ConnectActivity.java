@@ -680,7 +680,7 @@ public class ConnectActivity extends BaseAppCompatActivity {
      * 发起连接
      */
     private void startConnect() {
-        if (bleConnector.connect(bluetoothDevice)) {
+        if (bleConnector.connect(bluetoothDevice, true)) {
             DebugUtil.warnOut("开始连接");
             BleManager.getHANDLER().post(new Runnable() {
                 @Override

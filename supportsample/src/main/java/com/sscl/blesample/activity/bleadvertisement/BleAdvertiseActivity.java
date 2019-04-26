@@ -110,7 +110,7 @@ public class BleAdvertiseActivity extends BaseAppCompatActivity {
             bleAdvertiser.setBleAdvertiseMode(BleAdvertiseMode.LOW_LATENCY);
             bleAdvertiser.setConnectable(false);
             bleAdvertiser.setOnBleAdvertiseStateChangedListener(defaultOnBleAdvertiseStateChangedListener);
-            bleAdvertiser.setTimeOut(20000);
+            bleAdvertiser.setTimeOut(0);
             //初始化
             if (!bleAdvertiser.init()) {
                 DebugUtil.warnOut(TAG, "初始化失败");
