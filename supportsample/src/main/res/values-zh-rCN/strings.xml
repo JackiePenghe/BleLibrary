@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BleSample</string>
+    <string name="app_name">BleSample support</string>
     <string name="simple_use">简单使用</string>
     <string name="no_permission_for_local">您没有授权定位权限，将无法启用扫描</string>
     <string name="stop_scan">停止扫描</string>
