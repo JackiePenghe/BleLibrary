@@ -16,17 +16,19 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+
+import com.sscl.blelibrary.enums.BleCallbackType;
 import com.sscl.blelibrary.enums.BleMatchMode;
+import com.sscl.blelibrary.enums.BleNumOfMatches;
 import com.sscl.blelibrary.enums.BleScanMode;
 import com.sscl.blelibrary.interfaces.OnBleScanStateChangedListener;
 import com.sscl.blelibrary.systems.BleScanRecord;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 
 /**
  * BLE Scanner
@@ -65,6 +67,17 @@ public final class BleScanner {
      */
     @RequiresApi(Build.VERSION_CODES.M)
     private BleMatchMode bleMatchMode = BleMatchMode.AGGRESSIVE;
+
+    /**
+     * BLE callback type
+     */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private BleCallbackType bleCallbackType = BleCallbackType.CALLBACK_TYPE_ALL_MATCHES;
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private BleNumOfMatches bleNumOfMatches = BleNumOfMatches.MATCH_NUM_MAX_ADVERTISEMENT;
+
+    private int reportDelay = 0;
 
     /**
      * Used to store the device name to be filtered.
@@ -239,6 +252,30 @@ public final class BleScanner {
     @RequiresApi(Build.VERSION_CODES.M)
     public void setBleMatchMode(@NonNull BleMatchMode bleMatchMode) {
         this.bleMatchMode = bleMatchMode;
+    }
+
+    /**
+     * set ble callback type
+     *
+     * @param bleCallbackType ble callback type
+     */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public void setBleCallbackType(BleCallbackType bleCallbackType) {
+        this.bleCallbackType = bleCallbackType;
+    }
+
+    /**
+     * set ble num of mactches
+     *
+     * @param bleNumOfMatches ble num of mactches
+     */
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void setBleNumOfMatches(BleNumOfMatches bleNumOfMatches) {
+        this.bleNumOfMatches = bleNumOfMatches;
+    }
+
+    public void setReportDelay(int reportDelay) {
+        this.reportDelay = reportDelay;
     }
 
     /**
@@ -839,11 +876,11 @@ public final class BleScanner {
     private ScanSettings refreshScanSettings() {
         ScanSettings.Builder builder = new ScanSettings.Builder();
         builder.setScanMode(bleScanMode.getScanMode())
-                .setReportDelay(0);
+                .setReportDelay(reportDelay);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             builder.setMatchMode(bleMatchMode.getMatchMode())
-                    .setCallbackType(ScanSettings.CALLBACK_TYPE_ALL_MATCHES)
-                    .setNumOfMatches(ScanSettings.MATCH_NUM_MAX_ADVERTISEMENT);
+                    .setCallbackType(bleCallbackType.getValue())
+                    .setNumOfMatches(bleNumOfMatches.getValue());
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder.setLegacy(true)

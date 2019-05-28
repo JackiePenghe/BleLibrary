@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.sscl.blelibrary" >
+    package="com.sscl.blelibrary">
 
     <!--蓝牙权限-->
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -8,6 +8,9 @@
     <!--BLE权限声明-->
     <uses-feature
         android:name="android.hardware.bluetooth_le"
+        android:required="true" />
+    <uses-feature
+        android:name="android.bluetooth.le"
         android:required="true" />
     <!-- 5.0以上的手机可能会需要这个权限 -->
     <uses-feature android:name="android.hardware.location.gps" />
