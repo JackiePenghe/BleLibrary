@@ -511,7 +511,10 @@ public final class BleScanner {
 
         } else {
             try {
-                bluetoothAdapter.startLeScan(this.scanCallback18);
+                boolean b = bluetoothAdapter.startLeScan(this.scanCallback18);
+                if (!b) {
+                    return false;
+                }
                 scanTimer.startTimer(scanPeriod);
                 scanning = true;
                 return true;
@@ -735,6 +738,7 @@ public final class BleScanner {
              */
             @Override
             public void onScanResult(int callbackType, ScanResult result) {
+                DebugUtil.warnOut(TAG, "onScanResult callbackType = " + callbackType);
                 onApi21ScanResultProcessor(result);
             }
 
@@ -785,15 +789,28 @@ public final class BleScanner {
             return;
         }
         ScanRecord scanRecord = result.getScanRecord();
-
+        BluetoothDevice device = result.getDevice();
         if (scanRecord == null) {
+            DebugUtil.warnOut(TAG, "scanRecord = null,device name = " + device.getName() + ",device address = " + device.getAddress());
+            BleDevice bleDevice = new BleDevice(device, result.getRssi(), null);
+            callOnScanFindOneDeviceListener(bleDevice);
+            if (scanResults == null) {
+                return;
+            }
+            if (!scanResults.contains(bleDevice)) {
+                scanResults.add(bleDevice);
+                callOnScanFindOneNewDeviceListener(scanResults.size() - 1, bleDevice, scanResults);
+            } else {
+                int index = scanResults.indexOf(bleDevice);
+                BleDevice bleDevice1 = scanResults.get(index);
+                if (bleDevice1.getDeviceName() == null && bleDevice.getDeviceName() != null) {
+                    scanResults.set(index, bleDevice);
+                    callOnScanFindOneNewDeviceListener(index, bleDevice, scanResults);
+                }
+            }
             return;
         }
-
-        BluetoothDevice device = result.getDevice();
-
-        String deviceName;
-        deviceName = result.getDevice().getName();
+        String deviceName = device.getName();
         if (null == deviceName || "".equals(deviceName)) {
             deviceName = scanRecord.getDeviceName();
         }
@@ -835,7 +852,7 @@ public final class BleScanner {
             BleDevice bleDevice1 = scanResults.get(index);
             if (bleDevice1.getDeviceName() == null && bleDevice.getDeviceName() != null) {
                 scanResults.set(index, bleDevice);
-                callOnScanFindOneNewDeviceListener(index, null, scanResults);
+                callOnScanFindOneNewDeviceListener(index, bleDevice, scanResults);
             }
         }
     }
@@ -942,7 +959,7 @@ public final class BleScanner {
         }
     }
 
-    private void callOnScanFindOneNewDeviceListener(final int inedx, final BleDevice bleDevice, final ArrayList<BleDevice> mScanResults) {
+    private void callOnScanFindOneNewDeviceListener(final int inedx, @NonNull final BleDevice bleDevice, final ArrayList<BleDevice> mScanResults) {
         BleManager.getHANDLER().post(new Runnable() {
             @Override
             public void run() {

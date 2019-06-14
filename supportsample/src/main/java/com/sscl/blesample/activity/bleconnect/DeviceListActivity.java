@@ -466,6 +466,10 @@ public class DeviceListActivity extends BaseAppCompatActivity {
      * @param bleDevice 广播包
      */
     private void toAdRecordParseActivity(BleDevice bleDevice) {
+        if (bleScanner.isScanning()) {
+            bleScanner.stopScan();
+            button.setText(R.string.start_scan);
+        }
         Intent intent = new Intent(DeviceListActivity.this, AdRecordParseActivity.class);
         intent.putExtra(Constants.DEVICE, (Serializable) bleDevice);
         startActivity(intent);
@@ -521,6 +525,10 @@ public class DeviceListActivity extends BaseAppCompatActivity {
     }
 
     private void toBroadcastIntervalTestActivity(String deviceAddress) {
+        if (bleScanner.isScanning()) {
+            bleScanner.stopScan();
+            button.setText(R.string.start_scan);
+        }
         Intent intent = new Intent(DeviceListActivity.this, BroadcastIntervalTestActivity.class);
         intent.putExtra(Constants.DEVICE_ADDRESS, deviceAddress);
         startActivity(intent);

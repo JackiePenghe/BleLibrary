@@ -3,7 +3,6 @@ package com.sscl.blelibrary.interfaces;
 import android.bluetooth.le.ScanResult;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 
 import com.sscl.blelibrary.BleDevice;
@@ -31,7 +30,7 @@ public interface OnBleScanStateChangedListener {
      * @param bleDevice  BLE device.If null,that means a device info updated at index value in parameter bleDevices.
      * @param bleDevices the list of scanned devices
      */
-    void onScanFindOneNewDevice(int index, @Nullable BleDevice bleDevice, @NonNull ArrayList<BleDevice> bleDevices);
+    void onScanFindOneNewDevice(int index, @NonNull BleDevice bleDevice, @NonNull ArrayList<BleDevice> bleDevices);
 
     /**
      * callback triggered when the scan is finished

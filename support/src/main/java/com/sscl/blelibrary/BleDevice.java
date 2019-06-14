@@ -1,12 +1,10 @@
 package com.sscl.blelibrary;
 
 import android.bluetooth.BluetoothDevice;
-import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-
 
 import com.sscl.blelibrary.systems.BleHashMap;
 import com.sscl.blelibrary.systems.BleScanRecord;
@@ -16,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -46,6 +43,7 @@ public final class BleDevice implements Serializable, Parcelable {
     /**
      * BleScanRecord
      */
+    @Nullable
     private BleScanRecord bleScanRecord;
 
     /*-----------------------------------Constructor-----------------------------------*/
@@ -57,7 +55,7 @@ public final class BleDevice implements Serializable, Parcelable {
      * @param rssi            rssi
      * @param bleScanRecord   BleScanRecord
      */
-    BleDevice(@NonNull BluetoothDevice bluetoothDevice, int rssi, @NonNull BleScanRecord bleScanRecord) {
+    BleDevice(@NonNull BluetoothDevice bluetoothDevice, int rssi, @Nullable BleScanRecord bleScanRecord) {
         this.bluetoothDevice = bluetoothDevice;
         this.rssi = rssi;
         this.bleScanRecord = bleScanRecord;
@@ -97,7 +95,11 @@ public final class BleDevice implements Serializable, Parcelable {
         if (deviceName != null) {
             return deviceName;
         }
-        return bleScanRecord.getDeviceName();
+        if (bleScanRecord != null) {
+            return bleScanRecord.getDeviceName();
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -122,7 +124,7 @@ public final class BleDevice implements Serializable, Parcelable {
         if (manufacturerSpecificDatas == null) {
             return null;
         }
-        DebugUtil.warnOut(TAG,"manufacturerSpecificDatas size = " + manufacturerSpecificDatas.size());
+        DebugUtil.warnOut(TAG, "manufacturerSpecificDatas size = " + manufacturerSpecificDatas.size());
 
         Set<Map.Entry<Byte, byte[]>> entries = manufacturerSpecificDatas.entrySet();
         for (Map.Entry<Byte, byte[]> next : entries) {
@@ -143,7 +145,11 @@ public final class BleDevice implements Serializable, Parcelable {
      */
     @Nullable
     public byte[] getManufacturerSpecificData(byte type) {
-        return bleScanRecord.getManufacturerSpecificData(type);
+        if (bleScanRecord != null) {
+            return bleScanRecord.getManufacturerSpecificData(type);
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -151,8 +157,13 @@ public final class BleDevice implements Serializable, Parcelable {
      * data.
      */
     @SuppressWarnings("WeakerAccess")
+    @Nullable
     public BleHashMap<Byte, byte[]> getManufacturerSpecificData() {
-        return bleScanRecord.getManufacturerSpecificData();
+        if (bleScanRecord != null) {
+            return bleScanRecord.getManufacturerSpecificData();
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -160,12 +171,21 @@ public final class BleDevice implements Serializable, Parcelable {
      *
      * @return scan record byte array
      */
-    @NonNull
+    @Nullable
     public byte[] getScanRecordBytes() {
-        return bleScanRecord.getBytes();
+        if (bleScanRecord != null) {
+            return bleScanRecord.getBytes();
+        } else {
+            return null;
+        }
     }
 
-    @NonNull
+    /**
+     * get ble scan record
+     *
+     * @return bleScanRecord
+     */
+    @Nullable
     public BleScanRecord getBleScanRecord() {
         return bleScanRecord;
     }
