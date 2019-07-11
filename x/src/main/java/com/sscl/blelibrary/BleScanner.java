@@ -512,7 +512,7 @@ public final class BleScanner {
 
         } else {
             try {
-                bluetoothAdapter.startLeScan(this.scanCallback18);
+                bluetoothAdapter.startLeScan(scanCallback18);
                 scanTimer.startTimer(scanPeriod);
                 scanning = true;
                 return true;
@@ -795,14 +795,22 @@ public final class BleScanner {
 
         String deviceName;
         deviceName = result.getDevice().getName();
+        DebugUtil.warnOut(TAG, "deviceName = " + deviceName);
         if (null == deviceName || "".equals(deviceName)) {
             deviceName = scanRecord.getDeviceName();
+            DebugUtil.warnOut(TAG, "deviceName = " + deviceName);
+        }
+        if (null == deviceName || "".equals(deviceName)) {
+            deviceName = scanRecord.getDeviceName();
+            DebugUtil.warnOut(TAG, "deviceName = " + deviceName);
         }
         String address = device.getAddress();
+        DebugUtil.warnOut(TAG, "address = " + address);
         BleScanRecord bleScanRecord = BleScanRecord.parseFromBytes(scanRecord.getBytes());
 
         if (null == deviceName || "".equals(deviceName)) {
             deviceName = bleScanRecord.getDeviceName();
+            DebugUtil.warnOut(TAG, "deviceName = " + deviceName);
         }
 
         if (!filterNames(deviceName)) {
@@ -930,7 +938,7 @@ public final class BleScanner {
             }
         } else {
             try {
-                this.bluetoothAdapter.stopLeScan(this.scanCallback18);
+                this.bluetoothAdapter.stopLeScan(scanCallback18);
                 scanTimer.stopTimer();
                 scanning = false;
                 return true;
