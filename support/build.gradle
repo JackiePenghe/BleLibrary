@@ -9,9 +9,10 @@ android {
 
     defaultConfig {
         minSdkVersion 18
+        //noinspection OldTargetApi
         targetSdkVersion 28
-        versionCode 2
-        versionName "1.1"
+        versionCode 4
+        versionName "0.0.4"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -36,7 +37,7 @@ dependencies {
 }
 
 
-version = "0.0.3"
+version = "0.0.4"
 
 def siteUrl = 'https://github.com/JackiePenghe/BleSample'
 def gitUrl = 'https://github.com/JackiePenghe/BleSample.git'
