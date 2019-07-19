@@ -15,7 +15,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -23,8 +22,8 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
 import com.sscl.baselibrary.utils.ConversionUtil;
 import com.sscl.baselibrary.utils.DebugUtil;
+import com.sscl.baselibrary.utils.DefaultItemDecoration;
 import com.sscl.baselibrary.utils.ToastUtil;
-import com.sscl.baselibrary.view.utils.DefaultItemDecoration;
 import com.sscl.blelibrary.BleConnector;
 import com.sscl.blelibrary.BleDevice;
 import com.sscl.blelibrary.BleManager;
@@ -86,7 +85,7 @@ public class ConnectActivity extends BaseAppCompatActivity {
     /**
      * RecyclerView默认的装饰
      */
-    private DefaultItemDecoration defaultItemDecoration = new DefaultItemDecoration(Color.GRAY, ViewGroup.LayoutParams.MATCH_PARENT, 2, -1);
+    private DefaultItemDecoration defaultItemDecoration = DefaultItemDecoration.newLine(Color.GRAY);
 
     /**
      * adapter的数据

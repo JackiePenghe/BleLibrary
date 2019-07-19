@@ -1,6 +1,8 @@
 package com.sscl.blesample;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import com.sscl.baselibrary.files.FileUtil;
 import com.sscl.baselibrary.utils.DebugUtil;
@@ -36,5 +38,18 @@ public class MyApplication extends Application {
         //初始化文件工具类
         FileUtil.init(this.getApplicationContext());
         BleManager.init(MyApplication.this);
+    }
+
+    /**
+     * Set the base context for this ContextWrapper.  All calls will then be
+     * delegated to the base context.  Throws
+     * IllegalStateException if a base context has already been set.
+     *
+     * @param base The new base context for this wrapper.
+     */
+    @Override
+    protected void attachBaseContext(Context base) {
+        MultiDex.install(this);
+        super.attachBaseContext(base);
     }
 }

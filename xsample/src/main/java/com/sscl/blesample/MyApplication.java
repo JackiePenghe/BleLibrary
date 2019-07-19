@@ -1,6 +1,9 @@
 package com.sscl.blesample;
 
 import android.app.Application;
+import android.content.Context;
+
+import androidx.multidex.MultiDex;
 
 import com.sscl.baselibrary.files.FileUtil;
 import com.sscl.baselibrary.utils.DebugUtil;
@@ -36,5 +39,11 @@ public class MyApplication extends Application {
         FileUtil.init(this.getApplicationContext());
         BleManager.init(MyApplication.this);
         com.sscl.blelibrary.DebugUtil.setDebugFlag(true);
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        MultiDex.install(this);
+        super.attachBaseContext(base);
     }
 }

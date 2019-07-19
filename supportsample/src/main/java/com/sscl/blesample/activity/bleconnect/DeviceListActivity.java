@@ -17,16 +17,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
 import com.sscl.baselibrary.utils.DebugUtil;
+import com.sscl.baselibrary.utils.DefaultItemDecoration;
 import com.sscl.baselibrary.utils.ToastUtil;
 import com.sscl.baselibrary.utils.Tool;
-import com.sscl.baselibrary.view.utils.DefaultItemDecoration;
 import com.sscl.blelibrary.BleDevice;
 import com.sscl.blelibrary.BleManager;
 import com.sscl.blelibrary.BleScanner;
@@ -63,7 +62,7 @@ public class DeviceListActivity extends BaseAppCompatActivity {
      */
     private static final int REQUEST_CODE_ASK_ACCESS_COARSE_LOCATION = 1;
 
-    private DefaultItemDecoration defaultItemDecoration = new DefaultItemDecoration(Color.GRAY, ViewGroup.LayoutParams.MATCH_PARENT, 2, -1);
+    private DefaultItemDecoration defaultItemDecoration = DefaultItemDecoration.newLine(Color.GRAY);
     /**
      * 要过滤的设备名
      */

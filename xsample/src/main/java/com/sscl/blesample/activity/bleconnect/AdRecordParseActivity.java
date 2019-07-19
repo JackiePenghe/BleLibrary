@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.EditText;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
 import com.sscl.baselibrary.utils.ConversionUtil;
-import com.sscl.baselibrary.view.utils.DefaultItemDecoration;
+import com.sscl.baselibrary.utils.DefaultItemDecoration;
 import com.sscl.blelibrary.AdvertiseRecord;
 import com.sscl.blelibrary.BleDevice;
 import com.sscl.blesample.R;
@@ -50,7 +49,7 @@ public class AdRecordParseActivity extends BaseAppCompatActivity {
     /**
      * 默认的分割线
      */
-    private DefaultItemDecoration defaultItemDecoration = new DefaultItemDecoration(Color.GRAY, ViewGroup.LayoutParams.MATCH_PARENT, 2, -1);
+    private DefaultItemDecoration defaultItemDecoration = DefaultItemDecoration.newLine(Color.GRAY);
 
     /**
      * 标题栏的返回按钮被按下的时候回调此函数

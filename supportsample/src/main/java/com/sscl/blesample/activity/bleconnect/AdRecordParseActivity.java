@@ -6,12 +6,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
 import com.sscl.baselibrary.utils.ConversionUtil;
-import com.sscl.baselibrary.view.utils.DefaultItemDecoration;
+import com.sscl.baselibrary.utils.DefaultItemDecoration;
 import com.sscl.blelibrary.AdvertiseRecord;
 import com.sscl.blelibrary.BleDevice;
 import com.sscl.blesample.R;
@@ -49,7 +48,7 @@ public class AdRecordParseActivity extends BaseAppCompatActivity {
     /**
      * 默认的分割线
      */
-    private DefaultItemDecoration defaultItemDecoration = new DefaultItemDecoration(Color.GRAY, ViewGroup.LayoutParams.MATCH_PARENT, 2, -1);
+    private DefaultItemDecoration defaultItemDecoration = DefaultItemDecoration.newLine(Color.GRAY);
 
     /**
      * 标题栏的返回按钮被按下的时候回调此函数
@@ -169,7 +168,11 @@ public class AdRecordParseActivity extends BaseAppCompatActivity {
             return;
         }
         byte[] scanRecordBytes = bleDevice.getScanRecordBytes();
-        scanRecordEditText.setText(ConversionUtil.bytesToHexStr(scanRecordBytes));
+        if (scanRecordBytes != null) {
+            scanRecordEditText.setText(ConversionUtil.bytesToHexStr(scanRecordBytes));
+        } else {
+            scanRecordEditText.setText("");
+        }
     }
 
     private void initRecyclerView() {

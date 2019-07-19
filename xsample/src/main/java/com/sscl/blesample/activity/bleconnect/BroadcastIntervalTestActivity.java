@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
 import com.sscl.baselibrary.utils.DebugUtil;
-import com.sscl.baselibrary.view.utils.DefaultItemDecoration;
+import com.sscl.baselibrary.utils.DefaultItemDecoration;
 import com.sscl.blelibrary.BleDevice;
 import com.sscl.blelibrary.BleManager;
 import com.sscl.blelibrary.BleScanner;
@@ -85,7 +85,7 @@ public class BroadcastIntervalTestActivity extends BaseAppCompatActivity {
 
     private BroadcastIntervalAdapter broadcastIntervalAdapter = new BroadcastIntervalAdapter(longArrayList);
 
-    private DefaultItemDecoration defaultItemDecoration = DefaultItemDecoration.getDefaultItemDecoration(Color.GRAY, DefaultItemDecoration.ORIENTATION_VERTICAL);
+    private DefaultItemDecoration defaultItemDecoration = DefaultItemDecoration.newLine(Color.GRAY);
 
     /**
      * 广播间隔时间
@@ -183,18 +183,12 @@ public class BroadcastIntervalTestActivity extends BaseAppCompatActivity {
     @Override
     protected void doAfterAll() {
         bleScanner.startScan();
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                startTime++;
-                BleManager.getHANDLER().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        timeTv.setText(String.format(Locale.getDefault(), "%d s", startTime));
-                        setRssi();
-                    }
-                });
-            }
+        Runnable runnable = () -> {
+            startTime++;
+            BleManager.getHANDLER().post(() -> {
+                timeTv.setText(String.format(Locale.getDefault(), "%d s", startTime));
+                setRssi();
+            });
         };
         scheduledExecutorService.scheduleAtFixedRate(runnable, 0, 1, TimeUnit.SECONDS);
     }

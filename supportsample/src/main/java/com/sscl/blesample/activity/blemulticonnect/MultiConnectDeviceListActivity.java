@@ -11,14 +11,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
+import com.sscl.baselibrary.utils.DefaultItemDecoration;
 import com.sscl.baselibrary.utils.ToastUtil;
 import com.sscl.baselibrary.utils.Tool;
-import com.sscl.baselibrary.view.utils.DefaultItemDecoration;
 import com.sscl.blelibrary.BleDevice;
 import com.sscl.blelibrary.BleManager;
 import com.sscl.blelibrary.BleScanner;
@@ -273,7 +272,7 @@ public class MultiConnectDeviceListActivity extends BaseAppCompatActivity {
     private void initRecyclerViewData() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MultiConnectDeviceListActivity.this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        DefaultItemDecoration defaultItemDecoration = new DefaultItemDecoration(Color.GRAY, ViewGroup.LayoutParams.MATCH_PARENT, 1, -1);
+        DefaultItemDecoration defaultItemDecoration = DefaultItemDecoration.newLine(Color.GRAY);
         recyclerView.addItemDecoration(defaultItemDecoration);
         adapter.setOnItemClickListener(onItemClickListener);
         recyclerView.setAdapter(adapter);

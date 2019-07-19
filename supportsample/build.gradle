@@ -31,4 +31,6 @@ dependencies {
     implementation 'com.yanzhenjie.permission:support:2.0.1'
     implementation project(':support')
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
+    //分包的插件
+    implementation 'com.android.support:multidex:1.0.3'
 }

@@ -4,13 +4,11 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -24,8 +22,8 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
 import com.sscl.baselibrary.utils.ConversionUtil;
 import com.sscl.baselibrary.utils.DebugUtil;
+import com.sscl.baselibrary.utils.DefaultItemDecoration;
 import com.sscl.baselibrary.utils.ToastUtil;
-import com.sscl.baselibrary.view.utils.DefaultItemDecoration;
 import com.sscl.blelibrary.BleConnector;
 import com.sscl.blelibrary.BleDevice;
 import com.sscl.blelibrary.BleManager;
@@ -87,7 +85,7 @@ public class ConnectActivity extends BaseAppCompatActivity {
     /**
      * RecyclerView默认的装饰
      */
-    private DefaultItemDecoration defaultItemDecoration = new DefaultItemDecoration(Color.GRAY, ViewGroup.LayoutParams.MATCH_PARENT, 2, -1);
+    private DefaultItemDecoration defaultItemDecoration = DefaultItemDecoration.newLine(Color.GRAY);
 
     /**
      * adapter的数据
@@ -99,12 +97,9 @@ public class ConnectActivity extends BaseAppCompatActivity {
      */
     private ServicesCharacteristicsListAdapter servicesCharacteristicsListAdapter;
 
-    private ServicesCharacteristicsListAdapter.OnCharacteristicClickListener onCharacteristicClickListener = new ServicesCharacteristicsListAdapter.OnCharacteristicClickListener() {
-        @Override
-        public void onCharacteristicClick(String serviceUUID, String characteristicUUID) {
-            DebugUtil.warnOut(TAG, "serviceUUID = " + serviceUUID + ",characteristicUUID = " + characteristicUUID);
-            showOptionsDialog(serviceUUID, characteristicUUID);
-        }
+    private ServicesCharacteristicsListAdapter.OnCharacteristicClickListener onCharacteristicClickListener = (serviceUUID, characteristicUUID) -> {
+        DebugUtil.warnOut(TAG, "serviceUUID = " + serviceUUID + ",characteristicUUID = " + characteristicUUID);
+        showOptionsDialog(serviceUUID, characteristicUUID);
     };
     private ServicesCharacteristicsListAdapter.OnServiceClickListener onServiceClickListener = new ServicesCharacteristicsListAdapter.OnServiceClickListener() {
         @Override
@@ -683,12 +678,9 @@ public class ConnectActivity extends BaseAppCompatActivity {
     private void startConnect() {
         if (bleConnector.connect(bluetoothDevice, true)) {
             DebugUtil.warnOut("开始连接");
-            BleManager.getHANDLER().post(new Runnable() {
-                @Override
-                public void run() {
-                    ToastUtil.toastL(ConnectActivity.this, "发起连接");
-                    customTextCircleView.setColor(Color.YELLOW);
-                }
+            BleManager.getHANDLER().post(() -> {
+                ToastUtil.toastL(ConnectActivity.this, "发起连接");
+                customTextCircleView.setColor(Color.YELLOW);
             });
         } else {
             DebugUtil.warnOut("发起连接失败");
@@ -715,41 +707,38 @@ public class ConnectActivity extends BaseAppCompatActivity {
     private void showOptionsDialog(final String serviceUUID, final String characteristicUUID) {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.select_options)
-                .setItems(R.array.device_options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            //读
-                            case 0:
-                                readData(serviceUUID, characteristicUUID);
-                                break;
-                            //写
-                            case 1:
-                                writeData(serviceUUID, characteristicUUID);
-                                break;
-                            //打开通知
-                            case 2:
-                                enableNotification(serviceUUID, characteristicUUID);
-                                break;
-                            //写入超长数据,自动格式化（分包传输）
-                            case 3:
-                                writeLargeData(serviceUUID, characteristicUUID, true);
-                                break;
-                            //写入超长数据，自动格式化（分包传输且需要通知处理）
-                            case 4:
-                                writeLargeDataWithNotification(serviceUUID, characteristicUUID, true);
-                                break;
-                            //写入超长数据,不自动格式化（分包传输）
-                            case 5:
-                                writeLargeData(serviceUUID, characteristicUUID, false);
-                                break;
-                            //写入超长数据，不自动格式化（分包传输且需要通知处理）
-                            case 6:
-                                writeLargeDataWithNotification(serviceUUID, characteristicUUID, false);
-                                break;
-                            default:
-                                break;
-                        }
+                .setItems(R.array.device_options, (dialog, which) -> {
+                    switch (which) {
+                        //读
+                        case 0:
+                            readData(serviceUUID, characteristicUUID);
+                            break;
+                        //写
+                        case 1:
+                            writeData(serviceUUID, characteristicUUID);
+                            break;
+                        //打开通知
+                        case 2:
+                            enableNotification(serviceUUID, characteristicUUID);
+                            break;
+                        //写入超长数据,自动格式化（分包传输）
+                        case 3:
+                            writeLargeData(serviceUUID, characteristicUUID, true);
+                            break;
+                        //写入超长数据，自动格式化（分包传输且需要通知处理）
+                        case 4:
+                            writeLargeDataWithNotification(serviceUUID, characteristicUUID, true);
+                            break;
+                        //写入超长数据,不自动格式化（分包传输）
+                        case 5:
+                            writeLargeData(serviceUUID, characteristicUUID, false);
+                            break;
+                        //写入超长数据，不自动格式化（分包传输且需要通知处理）
+                        case 6:
+                            writeLargeDataWithNotification(serviceUUID, characteristicUUID, false);
+                            break;
+                        default:
+                            break;
                     }
                 })
                 .setCancelable(false)
@@ -769,20 +758,17 @@ public class ConnectActivity extends BaseAppCompatActivity {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.input_data)
                 .setView(editText)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String text = editText.getText().toString();
-                        if ("".equals(text)) {
-                            ToastUtil.toastL(ConnectActivity.this, R.string.set_nothing);
-                            showWriteDataDialog(serviceUUID, characteristicUUID);
-                            return;
-                        }
-                        text = text.replace(" ", "");
-                        byte[] bytes = ConversionUtil.hexStrToBytes(text);
-                        bleConnector.writeLargeDataWithNotification(serviceUUID, characteristicUUID, bytes, defaultLargeDataWriteWithNotificationSendStateChangedListener, autoFormat);
-
+                .setPositiveButton(R.string.ok, (dialog, which) -> {
+                    String text = editText.getText().toString();
+                    if ("".equals(text)) {
+                        ToastUtil.toastL(ConnectActivity.this, R.string.set_nothing);
+                        showWriteDataDialog(serviceUUID, characteristicUUID);
+                        return;
                     }
+                    text = text.replace(" ", "");
+                    byte[] bytes1 = ConversionUtil.hexStrToBytes(text);
+                    bleConnector.writeLargeDataWithNotification(serviceUUID, characteristicUUID, bytes1, defaultLargeDataWriteWithNotificationSendStateChangedListener, autoFormat);
+
                 })
                 .setNegativeButton(R.string.cancel, null)
                 .setCancelable(false)
@@ -801,19 +787,16 @@ public class ConnectActivity extends BaseAppCompatActivity {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.input_data)
                 .setView(editText)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String text = editText.getText().toString();
-                        if ("".equals(text)) {
-                            ToastUtil.toastL(ConnectActivity.this, R.string.set_nothing);
-                            showWriteDataDialog(serviceUUID, characteristicUUID);
-                            return;
-                        }
-                        text = text.replace(" ", "");
-                        byte[] bytes = ConversionUtil.hexStrToBytes(text);
-                        bleConnector.writeLargeData(serviceUUID, characteristicUUID, bytes, defaultOnLargeDataSendStateChangedListener, autoFormat);
+                .setPositiveButton(R.string.ok, (dialog, which) -> {
+                    String text = editText.getText().toString();
+                    if ("".equals(text)) {
+                        ToastUtil.toastL(ConnectActivity.this, R.string.set_nothing);
+                        showWriteDataDialog(serviceUUID, characteristicUUID);
+                        return;
                     }
+                    text = text.replace(" ", "");
+                    byte[] bytes1 = ConversionUtil.hexStrToBytes(text);
+                    bleConnector.writeLargeData(serviceUUID, characteristicUUID, bytes1, defaultOnLargeDataSendStateChangedListener, autoFormat);
                 })
                 .setNegativeButton(R.string.cancel, null)
                 .setCancelable(false)
@@ -827,23 +810,20 @@ public class ConnectActivity extends BaseAppCompatActivity {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.input_data)
                 .setView(editText)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String text = editText.getText().toString();
-                        if ("".equals(text)) {
-                            ToastUtil.toastL(ConnectActivity.this, R.string.set_nothing);
-                            showWriteDataDialog(serviceUUID, characteristicUUID);
-                            return;
-                        }
-                        text = text.replace(" ", "");
-                        byte[] bytes = ConversionUtil.hexStrToBytes(text);
-                        boolean b = bleConnector.writeData(serviceUUID, characteristicUUID, bytes);
-                        if (!b) {
-                            ToastUtil.toastL(ConnectActivity.this, R.string.write_failed);
-                        }
-                        ToastUtil.toastL(ConnectActivity.this, R.string.writting_data);
+                .setPositiveButton(R.string.ok, (dialog, which) -> {
+                    String text = editText.getText().toString();
+                    if ("".equals(text)) {
+                        ToastUtil.toastL(ConnectActivity.this, R.string.set_nothing);
+                        showWriteDataDialog(serviceUUID, characteristicUUID);
+                        return;
                     }
+                    text = text.replace(" ", "");
+                    byte[] bytes = ConversionUtil.hexStrToBytes(text);
+                    boolean b = bleConnector.writeData(serviceUUID, characteristicUUID, bytes);
+                    if (!b) {
+                        ToastUtil.toastL(ConnectActivity.this, R.string.write_failed);
+                    }
+                    ToastUtil.toastL(ConnectActivity.this, R.string.writting_data);
                 })
                 .setNegativeButton(R.string.cancel, null)
                 .setCancelable(false)

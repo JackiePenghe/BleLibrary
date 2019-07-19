@@ -2,7 +2,6 @@ package com.sscl.blesample.activity.bleconnect;
 
 import android.Manifest;
 import android.bluetooth.le.ScanResult;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -10,7 +9,6 @@ import android.os.Build;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -25,9 +23,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
 import com.sscl.baselibrary.utils.DebugUtil;
+import com.sscl.baselibrary.utils.DefaultItemDecoration;
 import com.sscl.baselibrary.utils.ToastUtil;
 import com.sscl.baselibrary.utils.Tool;
-import com.sscl.baselibrary.view.utils.DefaultItemDecoration;
 import com.sscl.blelibrary.BleDevice;
 import com.sscl.blelibrary.BleManager;
 import com.sscl.blelibrary.BleScanner;
@@ -64,7 +62,7 @@ public class DeviceListActivity extends BaseAppCompatActivity {
      */
     private static final int REQUEST_CODE_ASK_ACCESS_COARSE_LOCATION = 1;
 
-    private DefaultItemDecoration defaultItemDecoration = new DefaultItemDecoration(Color.GRAY, ViewGroup.LayoutParams.MATCH_PARENT, 2, -1);
+    private DefaultItemDecoration defaultItemDecoration = DefaultItemDecoration.newLine(Color.GRAY);
     /**
      * 要过滤的设备名
      */
@@ -86,59 +84,45 @@ public class DeviceListActivity extends BaseAppCompatActivity {
      */
     private BleScanner bleScanner;
     private static final int TWO = 2;
-    private BaseQuickAdapter.OnItemClickListener onItemClickListener = new BaseQuickAdapter.OnItemClickListener() {
-        @Override
-        public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-            doListViewItemClick(position);
-        }
-    };
+    private BaseQuickAdapter.OnItemClickListener onItemClickListener = (adapter, view, position) -> doListViewItemClick(position);
 
 
     /**
      * 点击事件的监听
      */
-    private View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            //noinspection SwitchStatementWithTooFewBranches
-            switch (view.getId()) {
-                case R.id.button:
-                    checkAPIVersion();
-                    break;
-                default:
-                    break;
-            }
+    private View.OnClickListener onClickListener = view -> {
+        //noinspection SwitchStatementWithTooFewBranches
+        switch (view.getId()) {
+            case R.id.button:
+                checkAPIVersion();
+                break;
+            default:
+                break;
         }
     };
     /**
      * 列表子选项被长按时进行的回调
      */
-    private BaseQuickAdapter.OnItemLongClickListener onItemLongClickListener = new BaseQuickAdapter.OnItemLongClickListener() {
-        @Override
-        public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
-            BleDevice bleDevice = adapterList.get(position);
-            showOptionsDialog(bleDevice);
-            return true;
-        }
+    private BaseQuickAdapter.OnItemLongClickListener onItemLongClickListener = (adapter, view, position) -> {
+        BleDevice bleDevice = adapterList.get(position);
+        showOptionsDialog(bleDevice);
+        return true;
     };
 
     private void showOptionsDialog(final BleDevice bleDevice) {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.options)
-                .setItems(R.array.device_list_options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        bleScanner.stopScan();
-                        switch (which) {
-                            case 0:
-                                toBroadcastIntervalTestActivity(bleDevice.getDeviceAddress());
-                                break;
-                            case 1:
-                                toAdRecordParseActivity(bleDevice);
-                                break;
-                            default:
-                                break;
-                        }
+                .setItems(R.array.device_list_options, (dialog, which) -> {
+                    bleScanner.stopScan();
+                    switch (which) {
+                        case 0:
+                            toBroadcastIntervalTestActivity(bleDevice.getDeviceAddress());
+                            break;
+                        case 1:
+                            toAdRecordParseActivity(bleDevice);
+                            break;
+                        default:
+                            break;
                     }
                 })
                 .setNegativeButton(R.string.cancel, null)
@@ -481,15 +465,12 @@ public class DeviceListActivity extends BaseAppCompatActivity {
         new AlertDialog.Builder(DeviceListActivity.this)
                 .setTitle(R.string.filter_name)
                 .setView(editText)
-                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String text = editText.getText().toString();
-                        if (text.isEmpty()) {
-                            filterName = null;
-                        } else {
-                            filterName = text;
-                        }
+                .setPositiveButton(R.string.confirm, (dialog, which) -> {
+                    String text = editText.getText().toString();
+                    if (text.isEmpty()) {
+                        filterName = null;
+                    } else {
+                        filterName = text;
                     }
                 })
                 .setNegativeButton(R.string.cancel, null)
@@ -505,15 +486,12 @@ public class DeviceListActivity extends BaseAppCompatActivity {
         new AlertDialog.Builder(DeviceListActivity.this)
                 .setTitle(R.string.filter_address)
                 .setView(editText)
-                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String text = editText.getText().toString();
-                        if (text.isEmpty()) {
-                            filterAddress = null;
-                        } else {
-                            filterAddress = text;
-                        }
+                .setPositiveButton(R.string.confirm, (dialog, which) -> {
+                    String text = editText.getText().toString();
+                    if (text.isEmpty()) {
+                        filterAddress = null;
+                    } else {
+                        filterAddress = text;
                     }
                 })
                 .setNegativeButton(R.string.cancel, null)

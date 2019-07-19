@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
 import com.sscl.baselibrary.utils.DebugUtil;
-import com.sscl.baselibrary.view.utils.DefaultItemDecoration;
+import com.sscl.baselibrary.utils.DefaultItemDecoration;
 import com.sscl.blelibrary.BleDevice;
 import com.sscl.blelibrary.BleManager;
 import com.sscl.blelibrary.BleScanner;
@@ -84,7 +84,7 @@ public class BroadcastIntervalTestActivity extends BaseAppCompatActivity {
 
     private BroadcastIntervalAdapter broadcastIntervalAdapter = new BroadcastIntervalAdapter(longArrayList);
 
-    private DefaultItemDecoration defaultItemDecoration = DefaultItemDecoration.getDefaultItemDecoration(Color.GRAY, DefaultItemDecoration.ORIENTATION_VERTICAL);
+    private DefaultItemDecoration defaultItemDecoration = DefaultItemDecoration.newLine(Color.GRAY);
 
     /**
      * 广播间隔时间
