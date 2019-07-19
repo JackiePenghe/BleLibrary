@@ -224,12 +224,12 @@ public final class BluetoothLeService extends Service {
             bluetoothGatt = bluetoothDevice.connectGatt(this, autoReconnect, bleBluetoothGattCallback);
         } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             if (transport == null) {
-                transport = Transport.TRANSPORT_AUTO;
+                transport = Transport.TRANSPORT_LE;
             }
             bluetoothGatt = bluetoothDevice.connectGatt(this, autoReconnect, bleBluetoothGattCallback, transport.getValue());
         } else {
             if (transport == null) {
-                transport = Transport.TRANSPORT_AUTO;
+                transport = Transport.TRANSPORT_LE;
             }
             if (phyMask == null) {
                 phyMask = PhyMask.PHY_LE_1M_MASK;
