@@ -19,7 +19,13 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application>
-        <service android:name=".BluetoothLeService" />
-        <service android:name=".BluetoothMultiService" />
+        <service
+            android:name=".BluetoothLeService"
+            android:enabled="true"
+            android:exported="false" />
+        <service
+            android:name=".BluetoothMultiService"
+            android:enabled="true"
+            android:exported="false" />
     </application>
 </manifest>

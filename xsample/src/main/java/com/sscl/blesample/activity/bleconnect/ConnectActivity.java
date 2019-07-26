@@ -28,6 +28,7 @@ import com.sscl.blelibrary.BleConnector;
 import com.sscl.blelibrary.BleDevice;
 import com.sscl.blelibrary.BleManager;
 import com.sscl.blelibrary.BleUtils;
+import com.sscl.blelibrary.enums.Transport;
 import com.sscl.blelibrary.interfaces.OnBleConnectStateChangedListener;
 import com.sscl.blelibrary.interfaces.OnBleDescriptorWriteListener;
 import com.sscl.blelibrary.interfaces.implementations.DefaultLargeDataWriteWithNotificationSendStateChangedListener;
@@ -324,7 +325,7 @@ public class ConnectActivity extends BaseAppCompatActivity {
         public void connected() {
             //连接成功，将指示标志设置为蓝色
             customTextCircleView.setColor(Color.BLUE);
-
+            DebugUtil.warnOut(TAG,"connected! use time " + (System.currentTimeMillis() - startTime));
             ToastUtil.toastL(ConnectActivity.this, R.string.connected);
         }
 
@@ -460,6 +461,7 @@ public class ConnectActivity extends BaseAppCompatActivity {
     };
 
     private LinearLayoutManager linearLayoutManager;
+    private long startTime;
 
     /**
      * 标题栏的返回按钮被按下的时候回调此函数
@@ -676,14 +678,18 @@ public class ConnectActivity extends BaseAppCompatActivity {
      * 发起连接
      */
     private void startConnect() {
-        if (bleConnector.connect(bluetoothDevice, true)) {
+        if (bleConnector.connect(bluetoothDevice)) {
             DebugUtil.warnOut("开始连接");
             BleManager.getHANDLER().post(() -> {
+                startTime = System.currentTimeMillis();
                 ToastUtil.toastL(ConnectActivity.this, "发起连接");
                 customTextCircleView.setColor(Color.YELLOW);
             });
         } else {
             DebugUtil.warnOut("发起连接失败");
+            bleConnector.close();
+            onBackPressed();
+            ToastUtil.toastL(this,R.string.connect_failed);
         }
 
     }
