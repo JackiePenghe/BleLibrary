@@ -39,6 +39,7 @@ public class MyApplication extends Application {
         FileUtil.init(this.getApplicationContext());
         BleManager.init(MyApplication.this);
         com.sscl.blelibrary.DebugUtil.setDebugFlag(true);
+        DebugUtil.setDebugFlag(true);
     }
 
     @Override

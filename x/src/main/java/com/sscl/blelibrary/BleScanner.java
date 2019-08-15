@@ -24,6 +24,7 @@ import com.sscl.blelibrary.enums.BleCallbackType;
 import com.sscl.blelibrary.enums.BleMatchMode;
 import com.sscl.blelibrary.enums.BleNumOfMatches;
 import com.sscl.blelibrary.enums.BleScanMode;
+import com.sscl.blelibrary.enums.ScanPhy;
 import com.sscl.blelibrary.interfaces.OnBleScanStateChangedListener;
 import com.sscl.blelibrary.systems.BleScanRecord;
 
@@ -63,6 +64,18 @@ public final class BleScanner {
     private BleScanMode bleScanMode = BleScanMode.LOW_LATENCY;
 
     /**
+     * whether only legacy advertisments should be returned in scan results.
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private boolean legacy = true;
+
+    /**
+     * scan phy
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private ScanPhy scanPhy = ScanPhy.PHY_LE_ALL_SUPPORTED;
+
+    /**
      * BLE match mode
      */
     @RequiresApi(Build.VERSION_CODES.M)
@@ -71,7 +84,7 @@ public final class BleScanner {
     /**
      * BLE callback type
      */
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private BleCallbackType bleCallbackType = BleCallbackType.CALLBACK_TYPE_ALL_MATCHES;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -259,7 +272,7 @@ public final class BleScanner {
      *
      * @param bleCallbackType ble callback type
      */
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void setBleCallbackType(BleCallbackType bleCallbackType) {
         this.bleCallbackType = bleCallbackType;
     }
@@ -314,6 +327,16 @@ public final class BleScanner {
      */
     public Context getContext() {
         return context;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void setLegacy(boolean legacy) {
+        this.legacy = legacy;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void setScanPhy(ScanPhy scanPhy) {
+        this.scanPhy = scanPhy;
     }
 
     /**
@@ -612,8 +635,23 @@ public final class BleScanner {
                 if (!filterFullAddress(device.getAddress())) {
                     return;
                 }
+                int primaryPhy = 1;
+                int secondaryPhy = 1;
+                int advertisingSid = 255;
+                int periodicAdvertisingInterval = 0;
+                int dataStatus = 0;
+                int txPower = 127;
+                long timestampNanos = System.currentTimeMillis();
 
                 final BleDevice bleDevice = new BleDevice(device, rssi, bleScanRecord);
+                bleDevice.setPrimaryPhy(primaryPhy);
+                bleDevice.setSecondaryPhy(secondaryPhy);
+                bleDevice.setAdvertisingSid(advertisingSid);
+                bleDevice.setPeriodicAdvertisingInterval(periodicAdvertisingInterval);
+                bleDevice.setDataStatus(dataStatus);
+                bleDevice.setTxPower(txPower);
+                bleDevice.setTimestampNanos(timestampNanos);
+
                 callOnScanFindOneDeviceListener(bleDevice);
                 if (!scanResults.contains(bleDevice)) {
                     scanResults.add(bleDevice);
@@ -785,8 +823,8 @@ public final class BleScanner {
         if (context == null) {
             return;
         }
-        ScanRecord scanRecord = result.getScanRecord();
 
+        ScanRecord scanRecord = result.getScanRecord();
         if (scanRecord == null) {
             return;
         }
@@ -829,7 +867,42 @@ public final class BleScanner {
 
         int rssi = result.getRssi();
 
+        long timestampNanos = result.getTimestampNanos();
+        int primaryPhy;
+        int secondaryPhy;
+        int advertisingSid;
+        int periodicAdvertisingInterval;
+        int dataStatus;
+        int txPower;
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            primaryPhy = result.getPrimaryPhy();
+            secondaryPhy = result.getSecondaryPhy();
+            advertisingSid = result.getAdvertisingSid();
+            periodicAdvertisingInterval = result.getPeriodicAdvertisingInterval();
+            dataStatus = result.getDataStatus();
+            txPower = result.getTxPower();
+        } else {
+            primaryPhy = 1;
+            secondaryPhy = 1;
+            advertisingSid = 255;
+            periodicAdvertisingInterval = 0;
+            dataStatus = 0;
+            txPower = 127;
+        }
+
+        DebugUtil.warnOut(TAG,"primaryPhy = " + primaryPhy);
+        DebugUtil.warnOut(TAG,"secondaryPhy = " + secondaryPhy);
+
         final BleDevice bleDevice = new BleDevice(device, rssi, bleScanRecord);
+
+        bleDevice.setPrimaryPhy(primaryPhy);
+        bleDevice.setSecondaryPhy(secondaryPhy);
+        bleDevice.setAdvertisingSid(advertisingSid);
+        bleDevice.setPeriodicAdvertisingInterval(periodicAdvertisingInterval);
+        bleDevice.setDataStatus(dataStatus);
+        bleDevice.setTxPower(txPower);
+        bleDevice.setTimestampNanos(timestampNanos);
 
         callOnScanFindOneDeviceListener(bleDevice);
 
@@ -891,8 +964,15 @@ public final class BleScanner {
                     .setNumOfMatches(bleNumOfMatches.getValue());
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            builder.setLegacy(true)
-                    .setPhy(ScanSettings.PHY_LE_ALL_SUPPORTED);
+            if (bluetoothAdapter.isLeCodedPhySupported()) {
+                DebugUtil.warnOut(TAG, "isLeCodedPhySupported = true");
+                builder.setLegacy(legacy)
+                        .setPhy(scanPhy.getValue());
+            } else {
+                DebugUtil.warnOut(TAG, "isLeCodedPhySupported = false");
+                builder.setLegacy(legacy)
+                        .setPhy(scanPhy.getValue());
+            }
         }
         return builder.build();
     }

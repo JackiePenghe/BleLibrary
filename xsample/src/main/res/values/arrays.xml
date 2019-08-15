@@ -13,4 +13,20 @@
         <item>@string/test_broadcast_interval</item>
         <item>@string/view_broadcast_package</item>
     </string-array>
+    <string-array name="connect_param_auto_reconnect">
+        <item>@string/_true</item>
+        <item>@string/_false</item>
+        <item>@string/skip_all</item>
+    </string-array>
+    <string-array name="connect_param_transpost">
+        <item>@string/auto</item>
+        <item>@string/bredr</item>
+        <item>@string/le</item>
+        <item>@string/skip_all</item>
+    </string-array>
+    <string-array name="connect_param_phy_mask">
+        <item>@string/le_1m</item>
+        <item>@string/le_2m</item>
+        <item>@string/le_coded</item>
+    </string-array>
 </resources>

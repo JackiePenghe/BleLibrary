@@ -84,4 +84,16 @@
     <string name="disconnecting">Disconnectiong</string>
     <string name="unknown_gatt_state">Unknown GATT statu</string>
     <string name="operation_failed">Operation failed</string>
+    <string name="auto_reconnect">Auto reconnect</string>
+    <string name="_true">true</string>
+    <string name="_false">false</string>
+    <string name="skip_all">Skip all</string>
+    <string name="select_transport">Select transport</string>
+    <string name="auto">Auto</string>
+    <string name="bredr" translatable="false">BR_EDR</string>
+    <string name="le" translatable="false">LE</string>
+    <string name="select_phy_mask">Select phy mask</string>
+    <string name="le_1m" translatable="false">LE_1M</string>
+    <string name="le_2m" translatable="false">LE_2M</string>
+    <string name="le_coded" translatable="false">LE_CODED</string>
 </resources>

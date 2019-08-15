@@ -1,7 +1,5 @@
 package com.sscl.blesample.adapter;
 
-import android.view.View;
-
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
@@ -55,28 +53,22 @@ public class ServicesCharacteristicsListAdapter extends BaseMultiItemQuickAdapte
                         .setText(android.R.id.text2, serviceUuidItem.getUuid())
                         .setImageResource(R.id.expanded, serviceUuidItem.isExpanded() ? R.drawable.arrow_b : R.drawable.arrow_r);
 
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        final int adapterPosition = holder.getAdapterPosition();
-                        final int childCount;
-                        if (serviceUuidItem.isExpanded()) {
-                            childCount = collapse(adapterPosition);
-                        } else {
-                            childCount = expand(adapterPosition);
-                            if (childCount <= 0) {
-                                ToastUtil.toastL(mContext, R.string.nothing_to_expand);
-                            }
+                holder.itemView.setOnClickListener(v -> {
+                    final int adapterPosition = holder.getAdapterPosition();
+                    final int childCount;
+                    if (serviceUuidItem.isExpanded()) {
+                        childCount = collapse(adapterPosition);
+                    } else {
+                        childCount = expand(adapterPosition);
+                        if (childCount <= 0) {
+                            ToastUtil.toastL(mContext, R.string.nothing_to_expand);
                         }
-                        BaseManager.getHandler().post(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (onServiceClickListener != null) {
-                                    onServiceClickListener.onServiceClick(serviceUuidItem.getUuid(), holder.getLayoutPosition(), childCount);
-                                }
-                            }
-                        });
                     }
+                    BaseManager.getHandler().post(() -> {
+                        if (onServiceClickListener != null) {
+                            onServiceClickListener.onServiceClick(serviceUuidItem.getUuid(), holder.getLayoutPosition(), childCount);
+                        }
+                    });
                 });
                 break;
             case TYPE_CHARACTERISTIC_UUID:
@@ -84,24 +76,15 @@ public class ServicesCharacteristicsListAdapter extends BaseMultiItemQuickAdapte
                 holder.setText(android.R.id.text1, characteristicUuidItem.getName())
                         .setText(android.R.id.text2, characteristicUuidItem.getUuid())
                         .setText(R.id.properties, getProperties(characteristicUuidItem.isCanRead(), characteristicUuidItem.isCanWrite(), characteristicUuidItem.isCanNotify()));
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        BaseManager.getHandler().post(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (onCharacteristicClickListener != null) {
-                                    int parentPosition = getParentPosition(item);
-                                    ServiceUuidItem serviceUuidItem1 = (ServiceUuidItem) getItem(parentPosition);
-                                    if (serviceUuidItem1 != null) {
-                                        onCharacteristicClickListener.onCharacteristicClick(serviceUuidItem1.getUuid(), characteristicUuidItem.getUuid());
-                                    }
-                                }
-                            }
-                        });
-
+                holder.itemView.setOnClickListener(v -> BaseManager.getHandler().post(() -> {
+                    if (onCharacteristicClickListener != null) {
+                        int parentPosition = getParentPosition(item);
+                        ServiceUuidItem serviceUuidItem1 = (ServiceUuidItem) getItem(parentPosition);
+                        if (serviceUuidItem1 != null) {
+                            onCharacteristicClickListener.onCharacteristicClick(serviceUuidItem1.getUuid(), characteristicUuidItem.getUuid());
+                        }
                     }
-                });
+                }));
                 break;
             default:
                 break;
@@ -160,10 +143,10 @@ public class ServicesCharacteristicsListAdapter extends BaseMultiItemQuickAdapte
         /**
          * 监听特征UUID被点击时的事件
          *
-         * @param serviceUUID        服务UUID
-         * @param characteristicUUID 特征UUID
+         * @param serviceUuid        服务UUID
+         * @param characteristicUuid 特征UUID
          */
-        void onCharacteristicClick(String serviceUUID, String characteristicUUID);
+        void onCharacteristicClick(String serviceUuid, String characteristicUuid);
     }
 
     /**
@@ -173,10 +156,10 @@ public class ServicesCharacteristicsListAdapter extends BaseMultiItemQuickAdapte
         /**
          * 监听特征UUID被点击时的事件
          *
-         * @param serviceUUID     服务UUID
+         * @param serviceUuid     服务UUID
          * @param position        当前布局的位置
          * @param adapterPosition 整个列表中所有选项的位置
          */
-        void onServiceClick(String serviceUUID, int position, int adapterPosition);
+        void onServiceClick(String serviceUuid, int position, int adapterPosition);
     }
 }

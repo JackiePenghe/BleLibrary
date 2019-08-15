@@ -27,8 +27,17 @@
 
     </RelativeLayout>
 
+    <TextView
+        android:text="@string/NA"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/advertising_interval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:gravity="center_vertical" />
 
     <TextView
+        android:textColor="@android:color/black"
         android:layout_gravity="center_vertical"
         android:id="@+id/rssi"
         android:layout_width="wrap_content"

@@ -8,7 +8,7 @@ android {
         //noinspection OldTargetApi
         targetSdkVersion 28
         versionCode 1
-        versionName "2019-07-19-16-08"
+        versionName "2019-08-15-18-37"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -16,6 +16,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -27,7 +32,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation 'com.sscl.baselibrary:support:0.0.4'
+    implementation 'com.sscl.baselibrary:support:0.0.9'
     implementation 'com.yanzhenjie.permission:support:2.0.1'
     implementation project(':support')
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'

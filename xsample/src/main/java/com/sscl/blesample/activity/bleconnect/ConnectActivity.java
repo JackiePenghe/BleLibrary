@@ -1,9 +1,9 @@
 package com.sscl.blesample.activity.bleconnect;
 
-import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.Menu;
@@ -28,6 +28,7 @@ import com.sscl.blelibrary.BleConnector;
 import com.sscl.blelibrary.BleDevice;
 import com.sscl.blelibrary.BleManager;
 import com.sscl.blelibrary.BleUtils;
+import com.sscl.blelibrary.enums.PhyMask;
 import com.sscl.blelibrary.enums.Transport;
 import com.sscl.blelibrary.interfaces.OnBleConnectStateChangedListener;
 import com.sscl.blelibrary.interfaces.OnBleDescriptorWriteListener;
@@ -76,7 +77,7 @@ public class ConnectActivity extends BaseAppCompatActivity {
     /**
      * 蓝牙设备对象
      */
-    private BluetoothDevice bluetoothDevice;
+    private BleDevice bleDevice;
 
     /**
      * 显示设备的服务与特征的列表
@@ -104,7 +105,7 @@ public class ConnectActivity extends BaseAppCompatActivity {
     };
     private ServicesCharacteristicsListAdapter.OnServiceClickListener onServiceClickListener = new ServicesCharacteristicsListAdapter.OnServiceClickListener() {
         @Override
-        public void onServiceClick(String serviceUUID, int position, int childCount) {
+        public void onServiceClick(String serviceUuid, int position, int childCount) {
             if (childCount == 0) {
                 return;
             }
@@ -325,7 +326,7 @@ public class ConnectActivity extends BaseAppCompatActivity {
         public void connected() {
             //连接成功，将指示标志设置为蓝色
             customTextCircleView.setColor(Color.BLUE);
-            DebugUtil.warnOut(TAG,"connected! use time " + (System.currentTimeMillis() - startTime));
+            DebugUtil.warnOut(TAG, "connected! use time " + (System.currentTimeMillis() - startTime));
             ToastUtil.toastL(ConnectActivity.this, R.string.connected);
         }
 
@@ -340,7 +341,6 @@ public class ConnectActivity extends BaseAppCompatActivity {
         public void gattStatusError(int errorStatus) {
             DebugUtil.warnOut(TAG, "连接出错，状态码：" + errorStatus);
             ToastUtil.toastL(ConnectActivity.this, "连接出错，状态码：" + errorStatus);
-            bleConnector.close();
             onBackPressed();
         }
 
@@ -375,14 +375,14 @@ public class ConnectActivity extends BaseAppCompatActivity {
 
         @Override
         public void servicesDiscovered() {
-
+            hideConnectingDialog();
             //服务发现完成，将指示标志设置为绿色（对BLE远端设备的所有操作都在服务扫描完成之后）
             customTextCircleView.setColor(Color.GREEN);
             ToastUtil.toastL(ConnectActivity.this, R.string.get_service_success);
             refreshAdapterData();
             //提取设备名与设备地址
-            nameTv.setText(bluetoothDevice.getName());
-            addressTv.setText(bluetoothDevice.getAddress());
+            nameTv.setText(bleDevice.getDeviceName());
+            addressTv.setText(bleDevice.getDeviceAddress());
         }
 
         @Override
@@ -460,8 +460,22 @@ public class ConnectActivity extends BaseAppCompatActivity {
         }
     };
 
+    private DialogInterface.OnDismissListener onDismissListener = new DialogInterface.OnDismissListener() {
+        @Override
+        public void onDismiss(DialogInterface dialogInterface) {
+            if (bleConnector.isConnected()) {
+                return;
+            }
+            onBackPressed();
+        }
+    };
+
     private LinearLayoutManager linearLayoutManager;
     private long startTime;
+    private boolean autoReconnect = false;
+    private Transport transport = Transport.TRANSPORT_AUTO;
+    private PhyMask phyMask = PhyMask.PHY_LE_1M_MASK;
+    private AlertDialog connectingDialog;
 
     /**
      * 标题栏的返回按钮被按下的时候回调此函数
@@ -486,7 +500,7 @@ public class ConnectActivity extends BaseAppCompatActivity {
             return;
         }
         //获取蓝牙实例
-        bluetoothDevice = bleDevice.getBluetoothDevice();
+        this.bleDevice = bleDevice;
         //初始化BLE连接工具
         initBleConnector();
     }
@@ -551,8 +565,8 @@ public class ConnectActivity extends BaseAppCompatActivity {
      */
     @Override
     protected void doAfterAll() {
-        //发起连接
-        startConnect();
+        showAutoReconnectParamDialog();
+
     }
 
     /**
@@ -592,11 +606,12 @@ public class ConnectActivity extends BaseAppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        hideConnectingDialog();
         customTextCircleView = null;
         bleConnector = null;
         nameTv = null;
         addressTv = null;
-        bluetoothDevice = null;
+        bleDevice = null;
         recyclerView.setAdapter(null);
         recyclerView.setLayoutManager(null);
         recyclerView.removeItemDecoration(defaultItemDecoration);
@@ -622,7 +637,7 @@ public class ConnectActivity extends BaseAppCompatActivity {
             ToastUtil.toastL(ConnectActivity.this, R.string.ble_not_supported);
             return;
         }
-        bleConnector.setConnectTimeOut(60000);
+        bleConnector.setConnectTimeOut(10000);
         setConnectListener();
     }
 
@@ -678,20 +693,30 @@ public class ConnectActivity extends BaseAppCompatActivity {
      * 发起连接
      */
     private void startConnect() {
-        if (bleConnector.connect(bluetoothDevice)) {
+        if (bleConnector.connect(bleDevice.getBluetoothDevice(), autoReconnect, transport,phyMask)) {
             DebugUtil.warnOut("开始连接");
             BleManager.getHANDLER().post(() -> {
                 startTime = System.currentTimeMillis();
                 ToastUtil.toastL(ConnectActivity.this, "发起连接");
                 customTextCircleView.setColor(Color.YELLOW);
+                showConnectingDialog();
             });
         } else {
             DebugUtil.warnOut("发起连接失败");
-            bleConnector.close();
             onBackPressed();
-            ToastUtil.toastL(this,R.string.connect_failed);
+            ToastUtil.toastL(this, R.string.connect_failed);
         }
 
+    }
+
+    private void showConnectingDialog() {
+        if (connectingDialog != null && connectingDialog.isShowing()) {
+            return;
+        }
+        connectingDialog = new AlertDialog.Builder(this)
+                .setMessage(R.string.connecting)
+                .show();
+        connectingDialog.setOnDismissListener(onDismissListener);
     }
 
     /**
@@ -929,5 +954,100 @@ public class ConnectActivity extends BaseAppCompatActivity {
             return;
         }
         showWriteBigDataWithNotifyDialog(serviceUUID, characteristicUUID, autoFormat);
+    }
+
+    private void showAutoReconnectParamDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.auto_reconnect)
+                .setItems(R.array.connect_param_auto_reconnect, (dialog, which) -> {
+                    switch (which) {
+                        //自动重连为true
+                        case 0:
+                            autoReconnect = true;
+                            showTransportParamDialog();
+                            break;
+                        //自动重连为false
+                        case 1:
+                            autoReconnect = false;
+                            showTransportParamDialog();
+                            break;
+                        //跳过所有设置
+                        case 3:
+                        default:
+                            startConnect();
+                            break;
+                    }
+                })
+                .setCancelable(false)
+                .setNegativeButton(R.string.cancel, (dialog, which) -> onBackPressed())
+                .show();
+    }
+
+    private void showTransportParamDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.select_transport)
+                .setItems(R.array.connect_param_transpost, (dialog, which) -> {
+                    switch (which) {
+                        //自动
+                        case 0:
+                            transport = Transport.TRANSPORT_AUTO;
+                            showPhyMaskParamDialog();
+                            break;
+                        //BREDR
+                        case 1:
+                            transport = Transport.TRANSPORT_BREDR;
+                            showPhyMaskParamDialog();
+                            break;
+                        //LE
+                        case 2:
+                            transport = Transport.TRANSPORT_LE;
+                            showPhyMaskParamDialog();
+                            break;
+                        case 3:
+                            startConnect();
+                        default:
+                            break;
+                    }
+                })
+                .setCancelable(false)
+                .setNegativeButton(R.string.cancel, (dialog, which) -> onBackPressed())
+                .show();
+    }
+
+    private void showPhyMaskParamDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.select_phy_mask)
+                .setItems(R.array.connect_param_phy_mask, (dialog, which) -> {
+                    switch (which) {
+                        //LE_1M
+                        case 0:
+                            phyMask = PhyMask.PHY_LE_1M_MASK;
+                            break;
+                        //LE_2M
+                        case 1:
+                            phyMask = PhyMask.PHY_LE_2M_MASK;
+                            break;
+                        //CODED
+                        case 2:
+                            phyMask = PhyMask.PHY_LE_CODED_MASK;
+                            break;
+                        case 3:
+                        default:
+                            break;
+                    }
+
+                    startConnect();
+                })
+                .setCancelable(false)
+                .setNegativeButton(R.string.cancel, (dialog, which) -> onBackPressed())
+                .show();
+    }
+
+    private void hideConnectingDialog() {
+        if (connectingDialog == null || !connectingDialog.isShowing()) {
+            return;
+        }
+        connectingDialog.dismiss();
+        connectingDialog = null;
     }
 }

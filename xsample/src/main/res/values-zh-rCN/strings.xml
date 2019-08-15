@@ -83,4 +83,11 @@
     <string name="disconnecting">正在断开连接</string>
     <string name="unknown_gatt_state">未知的GATT状态</string>
     <string name="operation_failed">操作失败</string>
+    <string name="auto_reconnect">A自动重连</string>
+    <string name="_true">是</string>
+    <string name="_false">否</string>
+    <string name="skip_all">全部跳过</string>
+    <string name="select_transport">选择传输方式</string>
+    <string name="auto">自动</string>
+    <string name="select_phy_mask">选择物理层</string>
 </resources>

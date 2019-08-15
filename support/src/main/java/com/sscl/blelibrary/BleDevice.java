@@ -1,10 +1,12 @@
 package com.sscl.blelibrary;
 
 import android.bluetooth.BluetoothDevice;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 
 import com.sscl.blelibrary.systems.BleHashMap;
 import com.sscl.blelibrary.systems.BleScanRecord;
@@ -43,8 +45,41 @@ public final class BleDevice implements Serializable, Parcelable {
     /**
      * BleScanRecord
      */
-    @Nullable
     private BleScanRecord bleScanRecord;
+
+    /**
+     * the primary Physical Layer on which this advertisment was received
+     */
+    private int primaryPhy;
+
+    /**
+     * the secondary Physical Layer on which this advertisment was received
+     */
+    private int secondaryPhy;
+
+    /**
+     * the advertising set id.
+     */
+    private int advertisingSid;
+
+    /**
+     * the periodic advertising interval in units of 1.25ms.
+     */
+    private int periodicAdvertisingInterval;
+    /**
+     * the data status.
+     */
+    private int dataStatus;
+
+    /**
+     * the transmit power in dBm.
+     */
+    private int txPower;
+
+    /**
+     * timestamp since boot when the scan record was observed.
+     */
+    private long timestampNanos;
 
     /*-----------------------------------Constructor-----------------------------------*/
 
@@ -55,7 +90,7 @@ public final class BleDevice implements Serializable, Parcelable {
      * @param rssi            rssi
      * @param bleScanRecord   BleScanRecord
      */
-    BleDevice(@NonNull BluetoothDevice bluetoothDevice, int rssi, @Nullable BleScanRecord bleScanRecord) {
+    BleDevice(@NonNull BluetoothDevice bluetoothDevice, int rssi, @NonNull BleScanRecord bleScanRecord) {
         this.bluetoothDevice = bluetoothDevice;
         this.rssi = rssi;
         this.bleScanRecord = bleScanRecord;
@@ -95,11 +130,7 @@ public final class BleDevice implements Serializable, Parcelable {
         if (deviceName != null) {
             return deviceName;
         }
-        if (bleScanRecord != null) {
-            return bleScanRecord.getDeviceName();
-        } else {
-            return null;
-        }
+        return bleScanRecord.getDeviceName();
     }
 
     /**
@@ -145,11 +176,7 @@ public final class BleDevice implements Serializable, Parcelable {
      */
     @Nullable
     public byte[] getManufacturerSpecificData(byte type) {
-        if (bleScanRecord != null) {
-            return bleScanRecord.getManufacturerSpecificData(type);
-        } else {
-            return null;
-        }
+        return bleScanRecord.getManufacturerSpecificData(type);
     }
 
     /**
@@ -157,13 +184,8 @@ public final class BleDevice implements Serializable, Parcelable {
      * data.
      */
     @SuppressWarnings("WeakerAccess")
-    @Nullable
     public BleHashMap<Byte, byte[]> getManufacturerSpecificData() {
-        if (bleScanRecord != null) {
-            return bleScanRecord.getManufacturerSpecificData();
-        } else {
-            return null;
-        }
+        return bleScanRecord.getManufacturerSpecificData();
     }
 
     /**
@@ -171,23 +193,116 @@ public final class BleDevice implements Serializable, Parcelable {
      *
      * @return scan record byte array
      */
-    @Nullable
+    @NonNull
     public byte[] getScanRecordBytes() {
-        if (bleScanRecord != null) {
-            return bleScanRecord.getBytes();
-        } else {
-            return null;
-        }
+        return bleScanRecord.getBytes();
+    }
+
+    @NonNull
+    public BleScanRecord getBleScanRecord() {
+        return bleScanRecord;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public int getPrimaryPhy() {
+        return primaryPhy;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public int getSecondaryPhy() {
+        return secondaryPhy;
     }
 
     /**
-     * get ble scan record
-     *
-     * @return bleScanRecord
+     * Set the advertising set id.
+     * @return advertisingSid
      */
-    @Nullable
-    public BleScanRecord getBleScanRecord() {
-        return bleScanRecord;
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public int getAdvertisingSid() {
+        return advertisingSid;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public int getPeriodicAdvertisingInterval() {
+        return periodicAdvertisingInterval;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public int getDataStatus() {
+        return dataStatus;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public int getTxPower() {
+        return txPower;
+    }
+
+    public long getTimestampNanos() {
+        return timestampNanos;
+    }
+
+    /*-----------------------------------package method-----------------------------------*/
+
+    /**
+     * Set the primary Physical Layer on which this advertisment was received
+     *
+     * @param primaryPhy primaryPhy
+     */
+    void setPrimaryPhy(int primaryPhy) {
+        this.primaryPhy = primaryPhy;
+    }
+
+    /**
+     * Set the secondary Physical Layer on which this advertisment was received.
+     *
+     * @param secondaryPhy secondaryPhy
+     */
+    void setSecondaryPhy(int secondaryPhy) {
+        this.secondaryPhy = secondaryPhy;
+    }
+
+    /**
+     * Set the advertising set id.
+     *
+     * @param advertisingSid advertisingSid
+     */
+    void setAdvertisingSid(int advertisingSid) {
+        this.advertisingSid = advertisingSid;
+    }
+
+    /**
+     * Set the periodic advertising interval in units of 1.25ms.
+     *
+     * @param periodicAdvertisingInterval periodicAdvertisingInterval
+     */
+    void setPeriodicAdvertisingInterval(int periodicAdvertisingInterval) {
+        this.periodicAdvertisingInterval = periodicAdvertisingInterval;
+    }
+
+    /**
+     * Set the data status.
+     *
+     * @param dataStatus dataStatus
+     */
+    void setDataStatus(int dataStatus) {
+        this.dataStatus = dataStatus;
+    }
+
+    /**
+     * Set the transmit power in dBm.
+     *
+     * @param txPower txPower
+     */
+    void setTxPower(int txPower) {
+        this.txPower = txPower;
+    }
+
+    /**
+     * Set timestamp since boot when the scan record was observed.
+     * @param timestampNanos timestamp
+     */
+    void setTimestampNanos(long timestampNanos) {
+        this.timestampNanos = timestampNanos;
     }
 
     /*-----------------------------------override method-----------------------------------*/

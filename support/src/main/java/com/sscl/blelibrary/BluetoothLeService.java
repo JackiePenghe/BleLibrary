@@ -1,5 +1,6 @@
 package com.sscl.blelibrary;
 
+import android.Manifest;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -215,14 +216,16 @@ public final class BluetoothLeService extends Service {
             return false;
         }
         if (bluetoothGatt != null) {
-            bluetoothGatt.disconnect();
+            BluetoothDevice device = bluetoothGatt.getDevice();
+            if (device != null && device.equals(bluetoothDevice)) {
+                return bluetoothGatt.connect();
+            }
             bluetoothGatt.close();
-            bluetoothGatt = null;
         }
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
             if (transport == null) {
-                transport = Transport.TRANSPORT_LE;
+                transport = Transport.TRANSPORT_AUTO;
             }
             if (phyMask == null) {
                 phyMask = PhyMask.PHY_LE_1M_MASK;
@@ -230,7 +233,7 @@ public final class BluetoothLeService extends Service {
             bluetoothGatt = bluetoothDevice.connectGatt(this, autoReconnect, bleBluetoothGattCallback, transport.getValue(), phyMask.getValue());
         } else if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
             if (transport == null) {
-                transport = Transport.TRANSPORT_LE;
+                transport = Transport.TRANSPORT_AUTO;
             }
             bluetoothGatt = bluetoothDevice.connectGatt(this, autoReconnect, bleBluetoothGattCallback, transport.getValue());
         } else {
@@ -614,7 +617,7 @@ public final class BluetoothLeService extends Service {
      * cancel the current transaction without commiting any values on the
      * remote device.
      *
-     * <p>Requires {@link android.Manifest.permission#BLUETOOTH} permission.
+     * <p>Requires {@link Manifest.permission#BLUETOOTH} permission.
      *
      * @return true, if the reliable write transaction has been initiated
      */
@@ -631,7 +634,7 @@ public final class BluetoothLeService extends Service {
      * <p>Calling this function will discard all queued characteristic write
      * operations for a given remote device.
      *
-     * <p>Requires {@link android.Manifest.permission#BLUETOOTH} permission.
+     * <p>Requires {@link Manifest.permission#BLUETOOTH} permission.
      */
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     boolean abortReliableWrite() {
@@ -651,7 +654,7 @@ public final class BluetoothLeService extends Service {
      * triggered. If the discovery was successful, the remote services can be
      * retrieved using the {@link #getServices} function.
      *
-     * <p>Requires {@link android.Manifest.permission#BLUETOOTH} permission.
+     * <p>Requires {@link Manifest.permission#BLUETOOTH} permission.
      *
      * @return true, if the remote service discovery has been started
      */
@@ -671,7 +674,7 @@ public final class BluetoothLeService extends Service {
      * <p>A {@link BluetoothGattCallback#onReliableWriteCompleted} callback is
      * invoked to indicate whether the transaction has been executed correctly.
      *
-     * <p>Requires {@link android.Manifest.permission#BLUETOOTH} permission.
+     * <p>Requires {@link Manifest.permission#BLUETOOTH} permission.
      *
      * @return true, if the request to execute the transaction has been sent
      */

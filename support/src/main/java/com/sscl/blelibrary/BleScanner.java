@@ -23,6 +23,7 @@ import com.sscl.blelibrary.enums.BleCallbackType;
 import com.sscl.blelibrary.enums.BleMatchMode;
 import com.sscl.blelibrary.enums.BleNumOfMatches;
 import com.sscl.blelibrary.enums.BleScanMode;
+import com.sscl.blelibrary.enums.ScanPhy;
 import com.sscl.blelibrary.interfaces.OnBleScanStateChangedListener;
 import com.sscl.blelibrary.systems.BleScanRecord;
 
@@ -62,6 +63,18 @@ public final class BleScanner {
     private BleScanMode bleScanMode = BleScanMode.LOW_LATENCY;
 
     /**
+     * whether only legacy advertisments should be returned in scan results.
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private boolean legacy = true;
+
+    /**
+     * scan phy
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private ScanPhy scanPhy = ScanPhy.PHY_LE_ALL_SUPPORTED;
+
+    /**
      * BLE match mode
      */
     @RequiresApi(Build.VERSION_CODES.M)
@@ -70,7 +83,7 @@ public final class BleScanner {
     /**
      * BLE callback type
      */
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private BleCallbackType bleCallbackType = BleCallbackType.CALLBACK_TYPE_ALL_MATCHES;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -258,7 +271,7 @@ public final class BleScanner {
      *
      * @param bleCallbackType ble callback type
      */
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void setBleCallbackType(BleCallbackType bleCallbackType) {
         this.bleCallbackType = bleCallbackType;
     }
@@ -313,6 +326,16 @@ public final class BleScanner {
      */
     public Context getContext() {
         return context;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void setLegacy(boolean legacy) {
+        this.legacy = legacy;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void setScanPhy(ScanPhy scanPhy) {
+        this.scanPhy = scanPhy;
     }
 
     /**
@@ -511,10 +534,7 @@ public final class BleScanner {
 
         } else {
             try {
-                boolean b = bluetoothAdapter.startLeScan(this.scanCallback18);
-                if (!b) {
-                    return false;
-                }
+                bluetoothAdapter.startLeScan(scanCallback18);
                 scanTimer.startTimer(scanPeriod);
                 scanning = true;
                 return true;
@@ -614,8 +634,23 @@ public final class BleScanner {
                 if (!filterFullAddress(device.getAddress())) {
                     return;
                 }
+                int primaryPhy = 1;
+                int secondaryPhy = 1;
+                int advertisingSid = 255;
+                int periodicAdvertisingInterval = 0;
+                int dataStatus = 0;
+                int txPower = 127;
+                long timestampNanos = System.currentTimeMillis();
 
                 final BleDevice bleDevice = new BleDevice(device, rssi, bleScanRecord);
+                bleDevice.setPrimaryPhy(primaryPhy);
+                bleDevice.setSecondaryPhy(secondaryPhy);
+                bleDevice.setAdvertisingSid(advertisingSid);
+                bleDevice.setPeriodicAdvertisingInterval(periodicAdvertisingInterval);
+                bleDevice.setDataStatus(dataStatus);
+                bleDevice.setTxPower(txPower);
+                bleDevice.setTimestampNanos(timestampNanos);
+
                 callOnScanFindOneDeviceListener(bleDevice);
                 if (!scanResults.contains(bleDevice)) {
                     scanResults.add(bleDevice);
@@ -738,7 +773,6 @@ public final class BleScanner {
              */
             @Override
             public void onScanResult(int callbackType, ScanResult result) {
-                DebugUtil.warnOut(TAG, "onScanResult callbackType = " + callbackType);
                 onApi21ScanResultProcessor(result);
             }
 
@@ -788,37 +822,32 @@ public final class BleScanner {
         if (context == null) {
             return;
         }
+
         ScanRecord scanRecord = result.getScanRecord();
-        BluetoothDevice device = result.getDevice();
         if (scanRecord == null) {
-            DebugUtil.warnOut(TAG, "scanRecord = null,device name = " + device.getName() + ",device address = " + device.getAddress());
-            BleDevice bleDevice = new BleDevice(device, result.getRssi(), null);
-            callOnScanFindOneDeviceListener(bleDevice);
-            if (scanResults == null) {
-                return;
-            }
-            if (!scanResults.contains(bleDevice)) {
-                scanResults.add(bleDevice);
-                callOnScanFindOneNewDeviceListener(scanResults.size() - 1, bleDevice, scanResults);
-            } else {
-                int index = scanResults.indexOf(bleDevice);
-                BleDevice bleDevice1 = scanResults.get(index);
-                if (bleDevice1.getDeviceName() == null && bleDevice.getDeviceName() != null) {
-                    scanResults.set(index, bleDevice);
-                    callOnScanFindOneNewDeviceListener(index, bleDevice, scanResults);
-                }
-            }
             return;
         }
-        String deviceName = device.getName();
+
+        BluetoothDevice device = result.getDevice();
+
+        String deviceName;
+        deviceName = result.getDevice().getName();
+        DebugUtil.warnOut(TAG, "deviceName = " + deviceName);
         if (null == deviceName || "".equals(deviceName)) {
             deviceName = scanRecord.getDeviceName();
+            DebugUtil.warnOut(TAG, "deviceName = " + deviceName);
+        }
+        if (null == deviceName || "".equals(deviceName)) {
+            deviceName = scanRecord.getDeviceName();
+            DebugUtil.warnOut(TAG, "deviceName = " + deviceName);
         }
         String address = device.getAddress();
+        DebugUtil.warnOut(TAG, "address = " + address);
         BleScanRecord bleScanRecord = BleScanRecord.parseFromBytes(scanRecord.getBytes());
 
         if (null == deviceName || "".equals(deviceName)) {
             deviceName = bleScanRecord.getDeviceName();
+            DebugUtil.warnOut(TAG, "deviceName = " + deviceName);
         }
 
         if (!filterNames(deviceName)) {
@@ -837,7 +866,42 @@ public final class BleScanner {
 
         int rssi = result.getRssi();
 
+        long timestampNanos = result.getTimestampNanos();
+        int primaryPhy;
+        int secondaryPhy;
+        int advertisingSid;
+        int periodicAdvertisingInterval;
+        int dataStatus;
+        int txPower;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            primaryPhy = result.getPrimaryPhy();
+            secondaryPhy = result.getSecondaryPhy();
+            advertisingSid = result.getAdvertisingSid();
+            periodicAdvertisingInterval = result.getPeriodicAdvertisingInterval();
+            dataStatus = result.getDataStatus();
+            txPower = result.getTxPower();
+        } else {
+            primaryPhy = 1;
+            secondaryPhy = 1;
+            advertisingSid = 255;
+            periodicAdvertisingInterval = 0;
+            dataStatus = 0;
+            txPower = 127;
+        }
+
+        DebugUtil.warnOut(TAG,"primaryPhy = " + primaryPhy);
+        DebugUtil.warnOut(TAG,"secondaryPhy = " + secondaryPhy);
+
         final BleDevice bleDevice = new BleDevice(device, rssi, bleScanRecord);
+
+        bleDevice.setPrimaryPhy(primaryPhy);
+        bleDevice.setSecondaryPhy(secondaryPhy);
+        bleDevice.setAdvertisingSid(advertisingSid);
+        bleDevice.setPeriodicAdvertisingInterval(periodicAdvertisingInterval);
+        bleDevice.setDataStatus(dataStatus);
+        bleDevice.setTxPower(txPower);
+        bleDevice.setTimestampNanos(timestampNanos);
 
         callOnScanFindOneDeviceListener(bleDevice);
 
@@ -852,7 +916,7 @@ public final class BleScanner {
             BleDevice bleDevice1 = scanResults.get(index);
             if (bleDevice1.getDeviceName() == null && bleDevice.getDeviceName() != null) {
                 scanResults.set(index, bleDevice);
-                callOnScanFindOneNewDeviceListener(index, bleDevice, scanResults);
+                callOnScanFindOneNewDeviceListener(index, null, scanResults);
             }
         }
     }
@@ -899,8 +963,15 @@ public final class BleScanner {
                     .setNumOfMatches(bleNumOfMatches.getValue());
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            builder.setLegacy(true)
-                    .setPhy(ScanSettings.PHY_LE_ALL_SUPPORTED);
+            if (bluetoothAdapter.isLeCodedPhySupported()) {
+                DebugUtil.warnOut(TAG, "isLeCodedPhySupported = true");
+                builder.setLegacy(legacy)
+                        .setPhy(scanPhy.getValue());
+            } else {
+                DebugUtil.warnOut(TAG, "isLeCodedPhySupported = false");
+                builder.setLegacy(legacy)
+                        .setPhy(scanPhy.getValue());
+            }
         }
         return builder.build();
     }
@@ -946,7 +1017,7 @@ public final class BleScanner {
             }
         } else {
             try {
-                this.bluetoothAdapter.stopLeScan(this.scanCallback18);
+                this.bluetoothAdapter.stopLeScan(scanCallback18);
                 scanTimer.stopTimer();
                 scanning = false;
                 return true;
@@ -959,7 +1030,7 @@ public final class BleScanner {
         }
     }
 
-    private void callOnScanFindOneNewDeviceListener(final int inedx, @NonNull final BleDevice bleDevice, final ArrayList<BleDevice> mScanResults) {
+    private void callOnScanFindOneNewDeviceListener(final int inedx, final BleDevice bleDevice, final ArrayList<BleDevice> mScanResults) {
         BleManager.getHANDLER().post(new Runnable() {
             @Override
             public void run() {

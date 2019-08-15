@@ -33,6 +33,7 @@ import com.sscl.blelibrary.enums.BleCallbackType;
 import com.sscl.blelibrary.enums.BleMatchMode;
 import com.sscl.blelibrary.enums.BleNumOfMatches;
 import com.sscl.blelibrary.enums.BleScanMode;
+import com.sscl.blelibrary.enums.ScanPhy;
 import com.sscl.blelibrary.interfaces.OnBleScanStateChangedListener;
 import com.sscl.blelibrary.interfaces.OnBluetoothStateChangedListener;
 import com.sscl.blesample.R;
@@ -383,11 +384,14 @@ public class DeviceListActivity extends BaseAppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             bleScanner.setBleMatchMode(BleMatchMode.AGGRESSIVE);
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            bleScanner.setBleCallbackType(BleCallbackType.CALLBACK_TYPE_ALL_MATCHES);
-        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            bleScanner.setBleCallbackType(BleCallbackType.CALLBACK_TYPE_ALL_MATCHES);
             bleScanner.setBleNumOfMatches(BleNumOfMatches.MATCH_NUM_MAX_ADVERTISEMENT);
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            bleScanner.setLegacy(false);
+            bleScanner.setScanPhy(ScanPhy.PHY_LE_CODED);
         }
         //设置相关回调
         bleScanner.setOnBleScanStateChangedListener(onBleScanStateChangedListener);
