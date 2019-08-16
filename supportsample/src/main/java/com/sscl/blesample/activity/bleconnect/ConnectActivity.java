@@ -462,8 +462,13 @@ public class ConnectActivity extends BaseAppCompatActivity {
     private DialogInterface.OnDismissListener onDismissListener = new DialogInterface.OnDismissListener() {
         @Override
         public void onDismiss(DialogInterface dialogInterface) {
-            if (bleConnector.isConnected()) {
-                return;
+            if (bleConnector != null) {
+                if (bleConnector.isConnected()) {
+                    return;
+                }
+            }
+            if (connectingDialog != null) {
+                connectingDialog.setOnDismissListener(null);
             }
             onBackPressed();
         }
@@ -606,6 +611,11 @@ public class ConnectActivity extends BaseAppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         hideConnectingDialog();
+        if (connectingDialog != null) {
+            connectingDialog.setOnDismissListener(null);
+            connectingDialog = null;
+        }
+        onDismissListener = null;
         customTextCircleView = null;
         bleConnector = null;
         nameTv = null;
@@ -692,7 +702,7 @@ public class ConnectActivity extends BaseAppCompatActivity {
      * 发起连接
      */
     private void startConnect() {
-        if (bleConnector.connect(bleDevice.getBluetoothDevice(), autoReconnect, transport,phyMask)) {
+        if (bleConnector.connect(bleDevice.getBluetoothDevice(), autoReconnect, transport, phyMask)) {
             DebugUtil.warnOut("开始连接");
             BleManager.getHANDLER().post(() -> {
                 startTime = System.currentTimeMillis();
