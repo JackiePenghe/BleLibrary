@@ -463,12 +463,17 @@ public class ConnectActivity extends BaseAppCompatActivity {
     private DialogInterface.OnDismissListener onDismissListener = new DialogInterface.OnDismissListener() {
         @Override
         public void onDismiss(DialogInterface dialogInterface) {
+            if (connectingDialog != null) {
+                connectingDialog.setOnDismissListener(null);
+                connectingDialog = null;
+            }
+
             if (bleConnector != null) {
                 if (bleConnector.isConnected()) {
                     return;
                 }
+                onBackPressed();
             }
-            onBackPressed();
         }
     };
 
