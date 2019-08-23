@@ -90,4 +90,5 @@
     <string name="select_transport">选择传输方式</string>
     <string name="auto">自动</string>
     <string name="select_phy_mask">选择物理层</string>
+    <string name="le_coded_supported">本机支持BLE 5.0 CODED 属性</string>
 </resources>

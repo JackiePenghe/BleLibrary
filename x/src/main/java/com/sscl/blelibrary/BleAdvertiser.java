@@ -12,17 +12,17 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.ParcelUuid;
 
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+
 import com.sscl.blelibrary.enums.BleAdvertiseMode;
 import com.sscl.blelibrary.enums.BleAdvertiseTxPowerLevel;
 import com.sscl.blelibrary.interfaces.OnBleAdvertiseStateChangedListener;
 import com.sscl.blelibrary.interfaces.OnConnectedByOtherDevicesListener;
 
 import java.util.ArrayList;
-
-import androidx.annotation.IntRange;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 
 import static android.bluetooth.le.AdvertiseData.Builder;
 
@@ -377,7 +377,7 @@ public final class BleAdvertiser {
         } catch (Exception e) {
             DebugUtil.warnOut(TAG, "stop advertising failed");
         }
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (baseAdvertiseCallback != null) {

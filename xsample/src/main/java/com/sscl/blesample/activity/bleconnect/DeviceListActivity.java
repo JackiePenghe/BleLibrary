@@ -365,7 +365,11 @@ public class DeviceListActivity extends BaseAppCompatActivity {
      * 初始化扫描器
      */
     private void initBleScanner() {
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (BleManager.isLeCodedPhySupported()) {
+                ToastUtil.toastL(this, R.string.le_coded_supported);
+            }
+        }
         //创建扫描器实例
         bleScanner = BleManager.getBleScannerInstance();
         //如果手机不支持蓝牙的话，这里得到的是null,所以需要进行判空

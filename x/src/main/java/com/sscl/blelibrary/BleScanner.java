@@ -67,7 +67,7 @@ public final class BleScanner {
      * whether only legacy advertisments should be returned in scan results.
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private boolean legacy = true;
+    private boolean legacy = false;
 
     /**
      * scan phy
@@ -784,7 +784,7 @@ public final class BleScanner {
              */
             @Override
             public void onBatchScanResults(final List<ScanResult> results) {
-                BleManager.getHANDLER().post(new Runnable() {
+                BleManager.getHandler().post(new Runnable() {
                     @Override
                     public void run() {
                         if (onBleScanStateChangedListener != null) {
@@ -801,7 +801,7 @@ public final class BleScanner {
              */
             @Override
             public void onScanFailed(final int errorCode) {
-                BleManager.getHANDLER().post(new Runnable() {
+                BleManager.getHandler().post(new Runnable() {
                     @Override
                     public void run() {
                         if (onBleScanStateChangedListener != null) {
@@ -875,7 +875,7 @@ public final class BleScanner {
         int dataStatus;
         int txPower;
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             primaryPhy = result.getPrimaryPhy();
             secondaryPhy = result.getSecondaryPhy();
             advertisingSid = result.getAdvertisingSid();
@@ -970,8 +970,8 @@ public final class BleScanner {
                         .setPhy(scanPhy.getValue());
             } else {
                 DebugUtil.warnOut(TAG, "isLeCodedPhySupported = false");
-                builder.setLegacy(legacy)
-                        .setPhy(scanPhy.getValue());
+                builder.setLegacy(true)
+                        .setPhy(ScanPhy.PHY_LE_ALL_SUPPORTED.getValue());
             }
         }
         return builder.build();
@@ -1032,7 +1032,7 @@ public final class BleScanner {
     }
 
     private void callOnScanFindOneNewDeviceListener(final int inedx, final BleDevice bleDevice, final ArrayList<BleDevice> mScanResults) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onBleScanStateChangedListener != null) {
@@ -1043,7 +1043,7 @@ public final class BleScanner {
     }
 
     private void callOnScanFindOneDeviceListener(final BleDevice bleDevice) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onBleScanStateChangedListener != null) {

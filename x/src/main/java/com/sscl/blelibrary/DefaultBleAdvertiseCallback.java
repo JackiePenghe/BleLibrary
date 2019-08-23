@@ -5,10 +5,10 @@ import android.bluetooth.le.AdvertiseSettings;
 import android.bluetooth.le.BluetoothLeAdvertiser;
 import android.os.Build;
 
-import com.sscl.blelibrary.interfaces.OnBleAdvertiseStateChangedListener;
-
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+
+import com.sscl.blelibrary.interfaces.OnBleAdvertiseStateChangedListener;
 
 /**
  * BLE Advertise Callback of system api implement
@@ -89,7 +89,7 @@ public class DefaultBleAdvertiseCallback extends AdvertiseCallback {
     /*-----------------------------------private methods-----------------------------------*/
 
     private void triggerAdvertiseStartSuccessCallback(final AdvertiseSettings settingsInEffect) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onBleAdvertiseStateChangedListener != null) {
@@ -100,7 +100,7 @@ public class DefaultBleAdvertiseCallback extends AdvertiseCallback {
     }
 
     private void triggerAdvertiseStartFailedCallback(final int errorCode) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onBleAdvertiseStateChangedListener != null) {

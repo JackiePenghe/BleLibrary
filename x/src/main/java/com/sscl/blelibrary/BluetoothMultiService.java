@@ -793,7 +793,7 @@ public final class BluetoothMultiService extends Service {
                 long startTime = System.currentTimeMillis();
                 while (!baseBleConnectCallback.isConnected() && !baseBleConnectCallback.isServiceDiscovered()) {
                     if (System.currentTimeMillis() - startTime >= connectTimeOut) {
-                        BleManager.getHANDLER().post(new Runnable() {
+                        BleManager.getHandler().post(new Runnable() {
                             @Override
                             public void run() {
                                 baseBleConnectCallback.onConnectTimeOut(bluetoothGatt);
@@ -832,7 +832,7 @@ public final class BluetoothMultiService extends Service {
     }
 
     private void performLargeDataSendStartedListener(@Nullable final OnLargeDataSendStateChangedListener onLargeDataSendStateChangedListener) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onLargeDataSendStateChangedListener != null) {
@@ -845,7 +845,7 @@ public final class BluetoothMultiService extends Service {
     private void performLargeDataWriteSendTimeOut(@Nullable final OnLargeDataSendStateChangedListener onLargeDataSendStateChangedListener,
                                                   final int pageCount, final int currentPackageIndex,
                                                   @NonNull final byte[] data) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onLargeDataSendStateChangedListener != null) {
@@ -858,7 +858,7 @@ public final class BluetoothMultiService extends Service {
     private void performLargeDataWriteSendTimeOutAndRetry(final int pageCount, @NonNull final byte[] data,
                                                           final int tryCount, final int currentPackageIndex,
                                                           @Nullable final OnLargeDataSendStateChangedListener onLargeDataSendStateChangedListener) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onLargeDataSendStateChangedListener != null) {
@@ -939,7 +939,7 @@ public final class BluetoothMultiService extends Service {
     }
 
     private void performLargeDataSendFinishedListener(@Nullable final OnLargeDataSendStateChangedListener onLargeDataSendStateChangedListener) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onLargeDataSendStateChangedListener != null) {
@@ -952,7 +952,7 @@ public final class BluetoothMultiService extends Service {
     private void performLargeDataSendProgressChangedListener(final int pageCount, @NonNull final byte[] data,
                                                              final int currentPackageCount,
                                                              @Nullable final OnLargeDataSendStateChangedListener onLargeDataSendStateChangedListener) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onLargeDataSendStateChangedListener != null) {
@@ -965,7 +965,7 @@ public final class BluetoothMultiService extends Service {
     private void performLargeDataSendFailedListener(final int pageCount, @NonNull final byte[] data,
                                                     final int currentPackageCount,
                                                     @Nullable final OnLargeDataSendStateChangedListener onLargeDataSendStateChangedListener) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onLargeDataSendStateChangedListener != null) {
@@ -978,7 +978,7 @@ public final class BluetoothMultiService extends Service {
     private void performLargeDataSendFailedAndRetryListener(final int pageCount, @NonNull final byte[] data,
                                                             final int tryCount, final int currentPackageCount,
                                                             @Nullable final OnLargeDataSendStateChangedListener onLargeDataSendStateChangedListener) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onLargeDataSendStateChangedListener != null) {

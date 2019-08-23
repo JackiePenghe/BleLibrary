@@ -1,14 +1,14 @@
 package com.sscl.blelibrary;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.sscl.blelibrary.interfaces.OnBleScanStateChangedListener;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 /**
  * 扫描的定时器
@@ -36,7 +36,7 @@ final class ScanTimer {
 
             if (!bleScanner.isAutoStartNextScan()) {
                 bleScanner.stopScan();
-                BleManager.getHANDLER().post(new Runnable() {
+                BleManager.getHandler().post(new Runnable() {
                     @Override
                     public void run() {
                         if (onBleScanStateChangedListener != null) {

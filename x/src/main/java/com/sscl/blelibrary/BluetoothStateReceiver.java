@@ -8,11 +8,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 
+import androidx.annotation.NonNull;
+
 import com.sscl.blelibrary.interfaces.OnBluetoothStateChangedListener;
 
 import java.util.ArrayList;
-
-import androidx.annotation.NonNull;
 
 /**
  * Broadcast receiver listening to Bluetooth enabled status
@@ -69,33 +69,29 @@ public final class BluetoothStateReceiver extends BroadcastReceiver {
         if (action == null) {
             return;
         }
-        switch (action) {
-            case BluetoothAdapter.ACTION_STATE_CHANGED:
-                int bluetoothState = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1);
-                switch (bluetoothState) {
-                    case BluetoothAdapter.STATE_OFF:
-                        performBluetoothStateOffListener();
-                        break;
-                    case BluetoothAdapter.STATE_ON:
-                        performBluetoothStateOnListener();
-                        break;
-                    case BluetoothAdapter.STATE_TURNING_OFF:
-                        performBluetoothStateTurningOffListener();
-                        break;
-                    case BluetoothAdapter.STATE_TURNING_ON:
-                        performBluetoothStateTurningOnListener();
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            default:
-                break;
+        if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {
+            int bluetoothState = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1);
+            switch (bluetoothState) {
+                case BluetoothAdapter.STATE_OFF:
+                    performBluetoothStateOffListener();
+                    break;
+                case BluetoothAdapter.STATE_ON:
+                    performBluetoothStateOnListener();
+                    break;
+                case BluetoothAdapter.STATE_TURNING_OFF:
+                    performBluetoothStateTurningOffListener();
+                    break;
+                case BluetoothAdapter.STATE_TURNING_ON:
+                    performBluetoothStateTurningOnListener();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
     private void performBluetoothStateTurningOnListener() {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 for (int i = 0; i < onBluetoothStateChangedListeners.size(); i++) {
@@ -110,7 +106,7 @@ public final class BluetoothStateReceiver extends BroadcastReceiver {
     }
 
     private void performBluetoothStateTurningOffListener() {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 for (int i = 0; i < onBluetoothStateChangedListeners.size(); i++) {
@@ -126,7 +122,7 @@ public final class BluetoothStateReceiver extends BroadcastReceiver {
 
     private void performBluetoothStateOnListener() {
 
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 for (int i = 0; i < onBluetoothStateChangedListeners.size(); i++) {
@@ -141,7 +137,7 @@ public final class BluetoothStateReceiver extends BroadcastReceiver {
     }
 
     private void performBluetoothStateOffListener() {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 for (int i = 0; i < onBluetoothStateChangedListeners.size(); i++) {

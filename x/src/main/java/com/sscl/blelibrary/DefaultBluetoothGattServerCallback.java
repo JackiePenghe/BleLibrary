@@ -9,9 +9,9 @@ import android.bluetooth.BluetoothGattServerCallback;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
 
-import com.sscl.blelibrary.interfaces.OnConnectedByOtherDevicesListener;
-
 import androidx.annotation.Nullable;
+
+import com.sscl.blelibrary.interfaces.OnConnectedByOtherDevicesListener;
 
 /**
  * Default callback connected by other devices
@@ -48,7 +48,7 @@ final class DefaultBluetoothGattServerCallback extends BluetoothGattServerCallba
      */
     @Override
     public void onConnectionStateChange(final BluetoothDevice device, final int status, final int newState) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onConnectedByOtherDevicesListener != null) {
@@ -72,7 +72,7 @@ final class DefaultBluetoothGattServerCallback extends BluetoothGattServerCallba
     @Override
     public void onServiceAdded(final int status, final BluetoothGattService service) {
 
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onConnectedByOtherDevicesListener != null) {
@@ -99,7 +99,7 @@ final class DefaultBluetoothGattServerCallback extends BluetoothGattServerCallba
     @Override
     public void onCharacteristicReadRequest(final BluetoothDevice device, final int requestId,
                                             final int offset, final BluetoothGattCharacteristic characteristic) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onConnectedByOtherDevicesListener != null) {
@@ -134,7 +134,7 @@ final class DefaultBluetoothGattServerCallback extends BluetoothGattServerCallba
                                              final int requestId, final BluetoothGattCharacteristic characteristic,
                                              final boolean preparedWrite, final boolean responseNeeded, final int offset,
                                              final byte[] value) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onConnectedByOtherDevicesListener != null) {
@@ -165,7 +165,7 @@ final class DefaultBluetoothGattServerCallback extends BluetoothGattServerCallba
     @Override
     public void onDescriptorReadRequest(final BluetoothDevice device, final int requestId,
                                         final int offset, final BluetoothGattDescriptor descriptor) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onConnectedByOtherDevicesListener != null) {
@@ -198,7 +198,7 @@ final class DefaultBluetoothGattServerCallback extends BluetoothGattServerCallba
     public void onDescriptorWriteRequest(final BluetoothDevice device, final int requestId,
                                          final BluetoothGattDescriptor descriptor, final boolean preparedWrite,
                                          final boolean responseNeeded, final int offset, final byte[] value) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onConnectedByOtherDevicesListener != null) {
@@ -240,7 +240,7 @@ final class DefaultBluetoothGattServerCallback extends BluetoothGattServerCallba
                 }
             }
         };
-        BleManager.getHANDLER().post(runnable);
+        BleManager.getHandler().post(runnable);
     }
 
     /**
@@ -256,7 +256,7 @@ final class DefaultBluetoothGattServerCallback extends BluetoothGattServerCallba
      */
     @Override
     public void onNotificationSent(final BluetoothDevice device, final int status) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onConnectedByOtherDevicesListener != null) {
@@ -280,7 +280,7 @@ final class DefaultBluetoothGattServerCallback extends BluetoothGattServerCallba
      */
     @Override
     public void onMtuChanged(final BluetoothDevice device, final int mtu) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onConnectedByOtherDevicesListener != null) {
@@ -308,7 +308,7 @@ final class DefaultBluetoothGattServerCallback extends BluetoothGattServerCallba
     @Override
     public void onPhyUpdate(final BluetoothDevice device, final int txPhy, final int rxPhy,
                             final int status) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onConnectedByOtherDevicesListener != null) {
@@ -336,7 +336,7 @@ final class DefaultBluetoothGattServerCallback extends BluetoothGattServerCallba
     @Override
     public void onPhyRead(final BluetoothDevice device, final int txPhy, final int rxPhy,
                           final int status) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onConnectedByOtherDevicesListener != null) {

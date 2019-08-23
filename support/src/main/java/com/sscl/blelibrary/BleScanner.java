@@ -66,7 +66,7 @@ public final class BleScanner {
      * whether only legacy advertisments should be returned in scan results.
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private boolean legacy = true;
+    private boolean legacy = false;
 
     /**
      * scan phy
@@ -969,8 +969,8 @@ public final class BleScanner {
                         .setPhy(scanPhy.getValue());
             } else {
                 DebugUtil.warnOut(TAG, "isLeCodedPhySupported = false");
-                builder.setLegacy(legacy)
-                        .setPhy(scanPhy.getValue());
+                builder.setLegacy(true)
+                        .setPhy(ScanPhy.PHY_LE_ALL_SUPPORTED.getValue());
             }
         }
         return builder.build();

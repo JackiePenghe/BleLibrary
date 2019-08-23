@@ -707,7 +707,7 @@ public class ConnectActivity extends BaseAppCompatActivity {
     private void startConnect() {
         if (bleConnector.connect(bleDevice.getBluetoothDevice(), autoReconnect, transport, phyMask)) {
             DebugUtil.warnOut("开始连接");
-            BleManager.getHANDLER().post(() -> {
+            BleManager.getHandler().post(() -> {
                 startTime = System.currentTimeMillis();
                 ToastUtil.toastL(ConnectActivity.this, "发起连接");
                 customTextCircleView.setColor(Color.YELLOW);

@@ -185,7 +185,7 @@ public class BroadcastIntervalTestActivity extends BaseAppCompatActivity {
         bleScanner.startScan();
         Runnable runnable = () -> {
             startTime++;
-            BleManager.getHANDLER().post(() -> {
+            BleManager.getHandler().post(() -> {
                 timeTv.setText(String.format(Locale.getDefault(), "%d s", startTime));
                 setRssi();
             });

@@ -9,6 +9,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+
 import com.sscl.blelibrary.enums.PhyMask;
 import com.sscl.blelibrary.enums.Transport;
 import com.sscl.blelibrary.interfaces.OnLargeDataSendStateChangedListener;
@@ -16,11 +21,6 @@ import com.sscl.blelibrary.interfaces.OnLargeDataWriteWithNotificationSendStateC
 
 import java.util.List;
 import java.util.UUID;
-
-import androidx.annotation.IntRange;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 
 
 /**
@@ -94,7 +94,6 @@ public final class BleMultiConnector {
      *
      * @param connectTimeOut connect timeout(unit:ms)
      */
-    @SuppressWarnings("WeakerAccess")
     public void setConnectTimeOut(@IntRange(from = 0) long connectTimeOut) {
         this.connectTimeOut = connectTimeOut;
         if (bluetoothMultiService != null) {
@@ -904,7 +903,7 @@ public final class BleMultiConnector {
      * @param onLargeDataSendStateChangedListener 大量数据发送失败的回调
      */
     private void performOnLargeDataSendStateChangedListenerStartFailedListener(@Nullable final OnLargeDataSendStateChangedListener onLargeDataSendStateChangedListener) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onLargeDataSendStateChangedListener != null) {
@@ -915,7 +914,7 @@ public final class BleMultiConnector {
     }
 
     private void performOnLargeDataWriteWithNotificationSendStateChangedListenerStartFailedListener(final OnLargeDataWriteWithNotificationSendStateChangedListener onLargeDataWriteWithNotificationSendStateChangedListener) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onLargeDataWriteWithNotificationSendStateChangedListener != null) {

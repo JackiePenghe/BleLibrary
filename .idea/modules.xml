@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/BleSample.iml" filepath="$PROJECT_DIR$/.idea/BleSample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/baserecyclerviewadapterhelperxlibrary/baserecyclerviewadapterhelperxlibrary.iml" filepath="$PROJECT_DIR$/baserecyclerviewadapterhelperxlibrary/baserecyclerviewadapterhelperxlibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/support/support.iml" filepath="$PROJECT_DIR$/support/support.iml" />
+      <module fileurl="file://$PROJECT_DIR$/supportsample/supportsample.iml" filepath="$PROJECT_DIR$/supportsample/supportsample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/x/x.iml" filepath="$PROJECT_DIR$/x/x.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xsample/xsample.iml" filepath="$PROJECT_DIR$/xsample/xsample.iml" />
+    </modules>
+  </component>
+</project>

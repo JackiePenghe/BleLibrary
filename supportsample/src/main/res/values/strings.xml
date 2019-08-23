@@ -96,4 +96,5 @@
     <string name="le_1m" translatable="false">LE_1M</string>
     <string name="le_2m" translatable="false">LE_2M</string>
     <string name="le_coded" translatable="false">LE_CODED</string>
+    <string name="le_coded_supported">BLE 5.0 coded phy supported</string>
 </resources>

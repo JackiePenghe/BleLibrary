@@ -14,7 +14,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 
-
 import com.sscl.blelibrary.interfaces.OnBluetoothStateChangedListener;
 
 import java.lang.reflect.InvocationTargetException;
@@ -196,6 +195,20 @@ public final class BleManager {
             return false;
         }
         return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE);
+    }
+
+    /**
+     * Return true if LE Coded PHY feature is supported.
+     *
+     * @return true or false
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static boolean isLeCodedPhySupported() {
+        BluetoothAdapter defaultAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (defaultAdapter == null) {
+            return false;
+        }
+        return defaultAdapter.isLeCodedPhySupported();
     }
 
     /**
@@ -462,7 +475,6 @@ public final class BleManager {
      * Release the resources of the BleAdvertiser
      */
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    @SuppressWarnings("WeakerAccess")
     public static void releaseBleAdvertiser() {
         checkInitStatus();
         if (bleAdvertiser != null) {
@@ -496,7 +508,6 @@ public final class BleManager {
         }
     }
 
-    @SuppressWarnings("WeakerAccess")
     public static ScheduledExecutorService newScheduledExecutorService() {
         return new ScheduledThreadPoolExecutor(20, THREAD_FACTORY);
     }

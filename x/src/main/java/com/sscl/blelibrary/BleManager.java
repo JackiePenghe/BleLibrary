@@ -11,6 +11,10 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+
 import com.sscl.blelibrary.interfaces.OnBluetoothStateChangedListener;
 
 import java.lang.reflect.InvocationTargetException;
@@ -18,10 +22,6 @@ import java.lang.reflect.Method;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 
 /**
  * BlE Manager
@@ -315,6 +315,20 @@ public final class BleManager {
     }
 
     /**
+     * Return true if LE Coded PHY feature is supported.
+     *
+     * @return true or false
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static boolean isLeCodedPhySupported() {
+        BluetoothAdapter defaultAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (defaultAdapter == null) {
+            return false;
+        }
+        return defaultAdapter.isLeCodedPhySupported();
+    }
+
+    /**
      * Create a new BleAdvertiser
      *
      * @return BleAdvertiser
@@ -462,7 +476,6 @@ public final class BleManager {
      * Release the resources of the BleAdvertiser
      */
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    @SuppressWarnings("WeakerAccess")
     public static void releaseBleAdvertiser() {
         checkInitStatus();
         if (bleAdvertiser != null) {
@@ -496,12 +509,11 @@ public final class BleManager {
         }
     }
 
-    @SuppressWarnings("WeakerAccess")
     public static ScheduledExecutorService newScheduledExecutorService() {
         return new ScheduledThreadPoolExecutor(20, THREAD_FACTORY);
     }
 
-    public static Handler getHANDLER() {
+    public static Handler getHandler() {
         return HANDLER;
     }
 
