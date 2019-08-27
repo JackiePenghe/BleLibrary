@@ -394,6 +394,7 @@ public final class BleConnector implements Connector {
         if (!isInitialized()) {
             return false;
         }
+        //noinspection ConstantConditions
         boolean result = bluetoothLeService != null && bluetoothLeService.connect(address, autoReconnect, transport, phyMask);
         if (result) {
             closed = false;
@@ -518,6 +519,7 @@ public final class BleConnector implements Connector {
         if (!isInitialized()) {
             return false;
         }
+        //noinspection ConstantConditions
         boolean result = bluetoothLeService != null && bluetoothLeService.connect(bluetoothDevice, autoReconnect, transport, phyMask);
         if (result) {
             closed = false;
@@ -679,7 +681,6 @@ public final class BleConnector implements Connector {
      * @param onLargeDataSendStateChangedListener Callback during large data transmission
      */
     @Override
-    @SuppressWarnings("WeakerAccess")
     public void writeLargeData(@NonNull String serviceUuid, @NonNull String characteristicUuid, @NonNull byte[] largeData, @IntRange(from = 0) int packageDelayTime, @Nullable OnLargeDataSendStateChangedListener onLargeDataSendStateChangedListener) {
         writeLargeData(serviceUuid, characteristicUuid, largeData, packageDelayTime, DEFAULT_MAX_TRY_COUNT, onLargeDataSendStateChangedListener, true);
     }
@@ -696,7 +697,6 @@ public final class BleConnector implements Connector {
      * @param autoFormat                          whether to format the packet
      */
     @Override
-    @SuppressWarnings("WeakerAccess")
     public void writeLargeData(@NonNull String serviceUuid, @NonNull String characteristicUuid, @NonNull byte[] largeData, @IntRange(from = 0) int packageDelayTime, @Nullable OnLargeDataSendStateChangedListener onLargeDataSendStateChangedListener, boolean autoFormat) {
         writeLargeData(serviceUuid, characteristicUuid, largeData, packageDelayTime, DEFAULT_MAX_TRY_COUNT, onLargeDataSendStateChangedListener, autoFormat);
     }
@@ -713,7 +713,6 @@ public final class BleConnector implements Connector {
      * @param autoFormat                          whether to format the packet
      */
     @Override
-    @SuppressWarnings("WeakerAccess")
     public void writeLargeData(@NonNull String serviceUuid, @NonNull String characteristicUuid, @NonNull byte[] largeData, @IntRange(from = 0) int packageDelayTime, @IntRange(from = 0) int maxTryCount, @Nullable OnLargeDataSendStateChangedListener onLargeDataSendStateChangedListener, boolean autoFormat) {
         startThreadToWriteLargeData(serviceUuid, characteristicUuid, largeData, largeData.length, packageDelayTime, maxTryCount, onLargeDataSendStateChangedListener, autoFormat);
     }
@@ -724,7 +723,6 @@ public final class BleConnector implements Connector {
      * @return true means close Gatt successful
      */
     @Override
-    @SuppressWarnings("WeakerAccess")
     public boolean closeGatt() {
         return bluetoothLeService != null && bluetoothLeService.closeGatt();
     }
@@ -810,7 +808,6 @@ public final class BleConnector implements Connector {
      * @return Bluetooth Gatt Service
      */
     @Override
-    @SuppressWarnings("WeakerAccess")
     @Nullable
     public BluetoothGattService getService(UUID uuid) {
         if (bluetoothLeService == null) {
@@ -1388,6 +1385,10 @@ public final class BleConnector implements Connector {
         return bluetoothLeService.removeOnBleCharacteristicWriteListener(onBleCharacteristicWriteListener);
     }
 
+    public void setSendLargeDataPackageDelayTime(int sendLargeDataPackageDelayTime) {
+        this.sendLargeDataPackageDelayTime = sendLargeDataPackageDelayTime;
+    }
+
     /*-----------------------------------private method-----------------------------------*/
 
     /**
@@ -1405,7 +1406,7 @@ public final class BleConnector implements Connector {
                         break;
                     }
                     if (System.currentTimeMillis() - startTime >= connectTimeOut) {
-                        BleManager.getHANDLER().post(new Runnable() {
+                        BleManager.getHandler().post(new Runnable() {
                             @Override
                             public void run() {
                                 DebugUtil.warnOut(TAG, "connect time out");
@@ -1609,7 +1610,7 @@ public final class BleConnector implements Connector {
      * check close state to trigger call back
      */
     private void checkCloseStatus() {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onBleConnectStateChangedListener != null) {
@@ -1824,7 +1825,7 @@ public final class BleConnector implements Connector {
                                                                                @NonNull final int[] wrongNotificationResultCount,
                                                                                final int maxTryCount,
                                                                                @NonNull final boolean[] receivedNotification) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onLargeDataWriteWithNotificationSendStateChangedListener != null) {
@@ -1849,7 +1850,7 @@ public final class BleConnector implements Connector {
     }
 
     private void performLargeDataWriteWithNotificationSendStartListener(@Nullable final OnLargeDataWriteWithNotificationSendStateChangedListener onLargeDataWriteWithNotificationSendStateChangedListener) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onLargeDataWriteWithNotificationSendStateChangedListener != null) {
@@ -1864,7 +1865,7 @@ public final class BleConnector implements Connector {
                                                                           final int tryCount,
                                                                           final int currentPackageIndex,
                                                                           @Nullable final OnLargeDataWriteWithNotificationSendStateChangedListener onLargeDataWriteWithNotificationSendStateChangedListener) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onLargeDataWriteWithNotificationSendStateChangedListener != null) {
@@ -1878,7 +1879,7 @@ public final class BleConnector implements Connector {
                                                                   final int currentPackageIndex,
                                                                   final int packageCount,
                                                                   @NonNull final byte[] data) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onLargeDataWriteWithNotificationSendStateChangedListener != null) {
@@ -1891,7 +1892,7 @@ public final class BleConnector implements Connector {
     private void performLargeDataWriteSendTimeOutAndRetry(final int pageCount, @NonNull final byte[] data,
                                                           final int tryCount, final int currentPackageIndex,
                                                           @Nullable final OnLargeDataSendStateChangedListener onLargeDataSendStateChangedListener) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onLargeDataSendStateChangedListener != null) {
@@ -1904,7 +1905,7 @@ public final class BleConnector implements Connector {
     private void performLargeDataWriteSendTimeOut(@Nullable final OnLargeDataSendStateChangedListener onLargeDataSendStateChangedListener,
                                                   final int pageCount, final int currentPackageIndex,
                                                   @NonNull final byte[] data) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onLargeDataSendStateChangedListener != null) {
@@ -1917,7 +1918,7 @@ public final class BleConnector implements Connector {
     private void performLargeDataSendProgressChangedListener(final int pageCount, @NonNull final byte[] data,
                                                              final int currentPackageCount,
                                                              @Nullable final OnLargeDataSendStateChangedListener onLargeDataSendStateChangedListener) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onLargeDataSendStateChangedListener != null) {
@@ -1935,7 +1936,7 @@ public final class BleConnector implements Connector {
     private void performLargeDataSendFailedAndRetryListener(final int pageCount, @NonNull final byte[] data,
                                                             final int tryCount, final int currentPackageCount,
                                                             @Nullable final OnLargeDataSendStateChangedListener onLargeDataSendStateChangedListener) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onLargeDataSendStateChangedListener != null) {
@@ -1948,7 +1949,7 @@ public final class BleConnector implements Connector {
     private void performLargeDataSendFailedListener(final int pageCount, @NonNull final byte[] data,
                                                     final int currentPackageCount,
                                                     @Nullable final OnLargeDataSendStateChangedListener onLargeDataSendStateChangedListener) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onLargeDataSendStateChangedListener != null) {
@@ -1959,7 +1960,7 @@ public final class BleConnector implements Connector {
     }
 
     private void performLargeDataSendFinishedListener(@Nullable final OnLargeDataSendStateChangedListener onLargeDataSendStateChangedListener) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onLargeDataSendStateChangedListener != null) {
@@ -1970,7 +1971,7 @@ public final class BleConnector implements Connector {
     }
 
     private void performLargeDataSendStartedListener(@Nullable final OnLargeDataSendStateChangedListener onLargeDataSendStateChangedListener) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onLargeDataSendStateChangedListener != null) {
@@ -1981,7 +1982,7 @@ public final class BleConnector implements Connector {
     }
 
     private void performLargeDataWriteWithNotificationSendFinishedListener(@Nullable final OnLargeDataWriteWithNotificationSendStateChangedListener onLargeDataWriteWithNotificationSendStateChangedListener) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onLargeDataWriteWithNotificationSendStateChangedListener != null) {
@@ -1995,7 +1996,7 @@ public final class BleConnector implements Connector {
                                                                          @NonNull final byte[] data,
                                                                          final int currentPackageCount,
                                                                          @Nullable final OnLargeDataWriteWithNotificationSendStateChangedListener onLargeDataWriteWithNotificationSendStateChangedListener) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onLargeDataWriteWithNotificationSendStateChangedListener != null) {
@@ -2010,7 +2011,7 @@ public final class BleConnector implements Connector {
                                                                                  final int tryCount,
                                                                                  final int currentPackageCount,
                                                                                  @Nullable final OnLargeDataWriteWithNotificationSendStateChangedListener onLargeDataWriteWithNotificationSendStateChangedListener) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onLargeDataWriteWithNotificationSendStateChangedListener != null) {
@@ -2024,7 +2025,7 @@ public final class BleConnector implements Connector {
                                                                                   @NonNull final byte[] data,
                                                                                   final int currentPackageCount,
                                                                                   @Nullable final OnLargeDataWriteWithNotificationSendStateChangedListener onLargeDataWriteWithNotificationSendStateChangedListener) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onLargeDataWriteWithNotificationSendStateChangedListener != null) {
@@ -2035,7 +2036,7 @@ public final class BleConnector implements Connector {
     }
 
     private void performLargeDataWriteWithNotificationSendFailedWithWrongNotifyDataListener(@Nullable final OnLargeDataWriteWithNotificationSendStateChangedListener onLargeDataWriteWithNotificationSendStateChangedListener) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onLargeDataWriteWithNotificationSendStateChangedListener != null) {
@@ -2050,7 +2051,7 @@ public final class BleConnector implements Connector {
                                                                                                     final int currentPackageIndex,
                                                                                                     final int packageCount,
                                                                                                     @Nullable final byte[] data) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onLargeDataWriteWithNotificationSendStateChangedListener != null) {
@@ -2061,7 +2062,7 @@ public final class BleConnector implements Connector {
     }
 
     private void performLargeDataSendWithNotificationStartFailedListener(@Nullable final OnLargeDataWriteWithNotificationSendStateChangedListener onLargeDataWriteWithNotificationSendStateChangedListener) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onLargeDataWriteWithNotificationSendStateChangedListener != null) {
@@ -2072,7 +2073,7 @@ public final class BleConnector implements Connector {
     }
 
     private void performLargeDataSendStartFailedListener(@Nullable final OnLargeDataSendStateChangedListener onLargeDataSendStateChangedListener) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onLargeDataSendStateChangedListener != null) {
@@ -2080,9 +2081,5 @@ public final class BleConnector implements Connector {
                 }
             }
         });
-    }
-
-    public void setSendLargeDataPackageDelayTime(int i) {
-
     }
 }

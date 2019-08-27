@@ -244,7 +244,7 @@ public class BleAdvertiseActivity extends BaseAppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            BleManager.releaseBleAdvertiser();
+            BleManager.releaseBleAdvertiserInstance();
         }
     }
 }

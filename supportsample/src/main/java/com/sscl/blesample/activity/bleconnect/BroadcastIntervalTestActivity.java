@@ -182,18 +182,12 @@ public class BroadcastIntervalTestActivity extends BaseAppCompatActivity {
     @Override
     protected void doAfterAll() {
         bleScanner.startScan();
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                startTime++;
-                BleManager.getHANDLER().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        timeTv.setText(String.format(Locale.getDefault(), "%d s", startTime));
-                        setRssi();
-                    }
-                });
-            }
+        Runnable runnable = () -> {
+            startTime++;
+            BleManager.getHandler().post(() -> {
+                timeTv.setText(String.format(Locale.getDefault(), "%d s", startTime));
+                setRssi();
+            });
         };
         scheduledExecutorService.scheduleAtFixedRate(runnable, 0, 1, TimeUnit.SECONDS);
     }

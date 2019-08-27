@@ -1386,6 +1386,10 @@ public final class BleConnector implements Connector {
         return bluetoothLeService.removeOnBleCharacteristicWriteListener(onBleCharacteristicWriteListener);
     }
 
+    public void setSendLargeDataPackageDelayTime(int sendLargeDataPackageDelayTime) {
+        this.sendLargeDataPackageDelayTime = sendLargeDataPackageDelayTime;
+    }
+
     /*-----------------------------------private method-----------------------------------*/
 
     /**
@@ -2078,9 +2082,5 @@ public final class BleConnector implements Connector {
                 }
             }
         });
-    }
-
-    public void setSendLargeDataPackageDelayTime(int i) {
-
     }
 }

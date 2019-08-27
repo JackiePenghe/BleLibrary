@@ -18,6 +18,7 @@ import com.sscl.blelibrary.interfaces.OnBluetoothStateChangedListener;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
@@ -95,6 +96,15 @@ public final class BleManager {
     private static BleServiceConnection bleServiceConnection = new BleServiceConnection();
 
     private static BluetoothLeService bluetoothLeService;
+
+    private static ArrayList<BleScanner> bleScanners = new ArrayList<>();
+
+    private static ArrayList<BleConnector> bleConnectors = new ArrayList<>();
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private static ArrayList<BleAdvertiser> bleAdvertisers = new ArrayList<>();
+
+    private static ArrayList<BleMultiConnector> bleMultiConnectors = new ArrayList<>();
 
     /*-----------------------------------Package private method-----------------------------------*/
 
@@ -198,20 +208,6 @@ public final class BleManager {
     }
 
     /**
-     * Return true if LE Coded PHY feature is supported.
-     *
-     * @return true or false
-     */
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public static boolean isLeCodedPhySupported() {
-        BluetoothAdapter defaultAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (defaultAdapter == null) {
-            return false;
-        }
-        return defaultAdapter.isLeCodedPhySupported();
-    }
-
-    /**
      * initialization
      *
      * @param context Context
@@ -233,7 +229,9 @@ public final class BleManager {
         if (!isSupportBle()) {
             return null;
         }
-        return new BleConnector(bluetoothLeService);
+        BleConnector bleConnector = new BleConnector(bluetoothLeService);
+        bleConnectors.add(bleConnector);
+        return bleConnector;
     }
 
     public static Context getContext() {
@@ -271,7 +269,9 @@ public final class BleManager {
         if (!isSupportBle()) {
             return null;
         }
-        return new BleScanner(context);
+        BleScanner bleScanner = new BleScanner(context);
+        bleScanners.add(bleScanner);
+        return bleScanner;
     }
 
     /**
@@ -328,6 +328,20 @@ public final class BleManager {
     }
 
     /**
+     * Return true if LE Coded PHY feature is supported.
+     *
+     * @return true or false
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static boolean isLeCodedPhySupported() {
+        BluetoothAdapter defaultAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (defaultAdapter == null) {
+            return false;
+        }
+        return defaultAdapter.isLeCodedPhySupported();
+    }
+
+    /**
      * Create a new BleAdvertiser
      *
      * @return BleAdvertiser
@@ -339,7 +353,9 @@ public final class BleManager {
             return null;
         }
 
-        return new BleAdvertiser(context);
+        BleAdvertiser bleAdvertiser = new BleAdvertiser(context);
+        bleAdvertisers.add(bleAdvertiser);
+        return bleAdvertiser;
     }
 
 
@@ -374,7 +390,9 @@ public final class BleManager {
         if (!isSupportBle()) {
             return null;
         }
-        return new BleMultiConnector();
+        BleMultiConnector bleMultiConnector = new BleMultiConnector();
+        bleMultiConnectors.add(bleMultiConnector);
+        return bleMultiConnector;
     }
 
     /**
@@ -423,7 +441,7 @@ public final class BleManager {
     /**
      * Release the resources of the BleConnector
      */
-    public static void releaseBleConnector() {
+    public static void releaseBleConnectorInstance() {
         checkInitStatus();
         if (bleConnector != null) {
             bleConnector.close();
@@ -431,11 +449,35 @@ public final class BleManager {
         }
     }
 
+    public static boolean releaseBleMultiConnector(@NonNull BleMultiConnector bleMultiConnector) {
+        checkInitStatus();
+        bleMultiConnector.closeAll();
+        return bleMultiConnectors.remove(bleMultiConnector);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public static boolean releaseBleAdvertiser(@NonNull BleAdvertiser bleAdvertiser) {
+        checkInitStatus();
+        bleAdvertiser.close();
+        return bleAdvertisers.remove(bleAdvertiser);
+    }
+
+    public static boolean releaseBleConnector(@NonNull BleConnector bleConnector) {
+        checkInitStatus();
+        bleConnector.close();
+        return bleConnectors.remove(bleConnector);
+    }
+
+    public static boolean releaseBleScanner(@NonNull BleScanner bleScanner) {
+        checkInitStatus();
+        bleScanner.close();
+        return bleScanners.remove(bleScanner);
+    }
+
     /**
      * Release the resources of the BleScanner
      */
-    @SuppressWarnings("WeakerAccess")
-    public static void releaseBleScanner() {
+    public static void releaseBleScannerInstance() {
         checkInitStatus();
         if (bleScanner != null) {
             bleScanner.close();
@@ -453,7 +495,7 @@ public final class BleManager {
     /**
      * remove  Bluetooth status changed listener
      *
-     * @param onBluetoothStateChangedListener  Bluetooth status changed listener
+     * @param onBluetoothStateChangedListener Bluetooth status changed listener
      */
     public static void removeOnBluetoothStateChangedListener(@NonNull OnBluetoothStateChangedListener onBluetoothStateChangedListener) {
         BLUETOOTH_STATE_RECEIVER.removeOnBluetoothStateChangedListener(onBluetoothStateChangedListener);
@@ -462,8 +504,7 @@ public final class BleManager {
     /**
      * Release the resources of the BleMultiConnector
      */
-    @SuppressWarnings("WeakerAccess")
-    public static void releaseBleMultiConnector() {
+    public static void releaseBleMultiConnectorInstance() {
         checkInitStatus();
         if (bleMultiConnector != null) {
             bleMultiConnector.closeAll();
@@ -475,7 +516,7 @@ public final class BleManager {
      * Release the resources of the BleAdvertiser
      */
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public static void releaseBleAdvertiser() {
+    public static void releaseBleAdvertiserInstance() {
         checkInitStatus();
         if (bleAdvertiser != null) {
             bleAdvertiser.close();
@@ -488,12 +529,12 @@ public final class BleManager {
      */
     public static void releaseAll() {
         checkInitStatus();
-        releaseBleConnector();
-        releaseBleScanner();
-        releaseBleMultiConnector();
+        releaseBleConnectorInstance();
+        releaseBleScannerInstance();
+        releaseBleMultiConnectorInstance();
         BLUETOOTH_STATE_RECEIVER.removeAllOnBluetoothStateChangedListener();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            releaseBleAdvertiser();
+            releaseBleAdvertiserInstance();
         }
     }
 
@@ -512,7 +553,7 @@ public final class BleManager {
         return new ScheduledThreadPoolExecutor(20, THREAD_FACTORY);
     }
 
-    public static Handler getHANDLER() {
+    public static Handler getHandler() {
         return HANDLER;
     }
 

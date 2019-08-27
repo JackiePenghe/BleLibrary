@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.le.ScanResult;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -256,7 +257,9 @@ public class MultiConnectDeviceListActivity extends BaseAppCompatActivity {
         adapter = null;
         buttonClickCount = 0;
         bleScanner = null;
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            BleManager.releaseBleAdvertiserInstance();
+        }
         //解除输入法内存泄漏
         Tool.releaseInputMethodManagerMemory(this);
     }

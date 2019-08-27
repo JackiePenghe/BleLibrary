@@ -81,30 +81,24 @@ public class MultiConnectDeviceListActivity extends BaseAppCompatActivity {
     /**
      * 适配器的子选项被点击了
      */
-    private BaseQuickAdapter.OnItemClickListener onItemClickListener = new BaseQuickAdapter.OnItemClickListener() {
-        @Override
-        public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-            BleDeviceWithBoolean bleDeviceWithBoolean = adapterList.get(position);
-            bleDeviceWithBoolean.setSelected(!bleDeviceWithBoolean.isSelected());
-            adapterList.set(position, bleDeviceWithBoolean);
-            adapter.notifyItemChanged(position);
-        }
+    private BaseQuickAdapter.OnItemClickListener onItemClickListener = (adapter, view, position) -> {
+        BleDeviceWithBoolean bleDeviceWithBoolean = adapterList.get(position);
+        bleDeviceWithBoolean.setSelected(!bleDeviceWithBoolean.isSelected());
+        adapterList.set(position, bleDeviceWithBoolean);
+        adapter.notifyItemChanged(position);
     };
 
     /**
      * 点击事件的监听
      */
-    private View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            //noinspection SwitchStatementWithTooFewBranches
-            switch (view.getId()) {
-                case R.id.button:
-                    doButtonClicked();
-                    break;
-                default:
-                    break;
-            }
+    private View.OnClickListener onClickListener = view -> {
+        //noinspection SwitchStatementWithTooFewBranches
+        switch (view.getId()) {
+            case R.id.button:
+                doButtonClicked();
+                break;
+            default:
+                break;
         }
     };
     private OnBleScanStateChangedListener onBleScanStateChangedListener = new OnBleScanStateChangedListener() {
@@ -261,7 +255,7 @@ public class MultiConnectDeviceListActivity extends BaseAppCompatActivity {
         adapter = null;
         buttonClickCount = 0;
         bleScanner = null;
-
+        BleManager.releaseBleScannerInstance();
         //解除输入法内存泄漏
         Tool.releaseInputMethodManagerMemory(this);
     }

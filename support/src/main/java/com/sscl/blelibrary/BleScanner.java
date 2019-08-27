@@ -783,7 +783,7 @@ public final class BleScanner {
              */
             @Override
             public void onBatchScanResults(final List<ScanResult> results) {
-                BleManager.getHANDLER().post(new Runnable() {
+                BleManager.getHandler().post(new Runnable() {
                     @Override
                     public void run() {
                         if (onBleScanStateChangedListener != null) {
@@ -800,7 +800,7 @@ public final class BleScanner {
              */
             @Override
             public void onScanFailed(final int errorCode) {
-                BleManager.getHANDLER().post(new Runnable() {
+                BleManager.getHandler().post(new Runnable() {
                     @Override
                     public void run() {
                         if (onBleScanStateChangedListener != null) {
@@ -1031,7 +1031,7 @@ public final class BleScanner {
     }
 
     private void callOnScanFindOneNewDeviceListener(final int inedx, final BleDevice bleDevice, final ArrayList<BleDevice> mScanResults) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onBleScanStateChangedListener != null) {
@@ -1042,7 +1042,7 @@ public final class BleScanner {
     }
 
     private void callOnScanFindOneDeviceListener(final BleDevice bleDevice) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onBleScanStateChangedListener != null) {

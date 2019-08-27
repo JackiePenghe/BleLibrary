@@ -7,7 +7,6 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothProfile;
 
-
 import java.util.HashMap;
 
 /**
@@ -263,7 +262,7 @@ public final class BleBluetoothMultiGattCallback extends BluetoothGattCallback {
     /*-----------------------------------private method-----------------------------------*/
 
     private void triggerDevicePhyUpdateCallback(final BluetoothGatt gatt, final int txPhy, final int rxPhy, final int status, final BaseBleConnectCallback baseBleConnectCallback) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (baseBleConnectCallback != null) {
@@ -278,7 +277,7 @@ public final class BleBluetoothMultiGattCallback extends BluetoothGattCallback {
     }
 
     private void triggerDevicePhyReadCallback(final BluetoothGatt gatt, final int txPhy, final int rxPhy, final int status, final BaseBleConnectCallback baseBleConnectCallback) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (baseBleConnectCallback != null) {
@@ -293,7 +292,7 @@ public final class BleBluetoothMultiGattCallback extends BluetoothGattCallback {
     }
 
     private void triggerDeviceDisconnectedCallback(final BluetoothGatt gatt, final BaseBleConnectCallback baseBleConnectCallback) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (baseBleConnectCallback != null) {
@@ -306,7 +305,7 @@ public final class BleBluetoothMultiGattCallback extends BluetoothGattCallback {
     }
 
     private void triggerDeviceConnectingCallback(final BluetoothGatt gatt, final BaseBleConnectCallback baseBleConnectCallback) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (baseBleConnectCallback != null) {
@@ -317,7 +316,7 @@ public final class BleBluetoothMultiGattCallback extends BluetoothGattCallback {
     }
 
     private void triggerDeviceConnectedCallback(final BluetoothGatt gatt, final BaseBleConnectCallback baseBleConnectCallback) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (baseBleConnectCallback != null) {
@@ -329,7 +328,7 @@ public final class BleBluetoothMultiGattCallback extends BluetoothGattCallback {
     }
 
     private void triggerDeviceAutoDiscoverServiceFailedCallback(final BluetoothGatt gatt, final BaseBleConnectCallback baseBleConnectCallback) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (baseBleConnectCallback != null) {
@@ -340,7 +339,7 @@ public final class BleBluetoothMultiGattCallback extends BluetoothGattCallback {
     }
 
     private void triggerDeviceDisconnectingCallback(final BluetoothGatt gatt, final BaseBleConnectCallback baseBleConnectCallback) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (baseBleConnectCallback != null) {
@@ -351,7 +350,7 @@ public final class BleBluetoothMultiGattCallback extends BluetoothGattCallback {
     }
 
     private void triggerDeviceUnknownStateCallback(final int state, final BluetoothGatt gatt, final BaseBleConnectCallback baseBleConnectCallback) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (baseBleConnectCallback != null) {
@@ -362,7 +361,7 @@ public final class BleBluetoothMultiGattCallback extends BluetoothGattCallback {
     }
 
     private void triggerDeviceServiceDiscoveredCallback(final BluetoothGatt gatt, final int status, final BaseBleConnectCallback baseBleConnectCallback) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (baseBleConnectCallback != null) {
@@ -378,7 +377,7 @@ public final class BleBluetoothMultiGattCallback extends BluetoothGattCallback {
     }
 
     private void triggerDeviceCharacteristicReadCallback(final BluetoothGatt gatt, final BluetoothGattCharacteristic gattCharacteristic, final int status, final BaseBleConnectCallback baseBleConnectCallback, final byte[] values) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (baseBleConnectCallback != null) {
@@ -393,7 +392,7 @@ public final class BleBluetoothMultiGattCallback extends BluetoothGattCallback {
     }
 
     private void triggerDeviceCharacteristicWriteCallback(final BluetoothGatt gatt, final BluetoothGattCharacteristic gattCharacteristic, final int status, final byte[] values, final BaseBleConnectCallback baseBleConnectCallback) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (baseBleConnectCallback != null) {
@@ -408,7 +407,7 @@ public final class BleBluetoothMultiGattCallback extends BluetoothGattCallback {
     }
 
     private void triggerDeviceCharacteristicChangedCallback(final BluetoothGatt gatt, final BluetoothGattCharacteristic gattCharacteristic, final byte[] values, final BaseBleConnectCallback baseBleConnectCallback) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (baseBleConnectCallback != null) {
@@ -419,7 +418,7 @@ public final class BleBluetoothMultiGattCallback extends BluetoothGattCallback {
     }
 
     private void triggerDeviceDescriptorReadCallback(final BluetoothGatt gatt, final BluetoothGattDescriptor gattDescriptor, final int status, final byte[] values, final BaseBleConnectCallback baseBleConnectCallback) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (baseBleConnectCallback != null) {
@@ -434,7 +433,7 @@ public final class BleBluetoothMultiGattCallback extends BluetoothGattCallback {
     }
 
     private void triggerDeviceDescriptorWriteCallback(final BluetoothGatt gatt, final BluetoothGattDescriptor gattDescriptor, final int status, final byte[] values, final BaseBleConnectCallback baseBleConnectCallback) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (baseBleConnectCallback != null) {
@@ -449,7 +448,7 @@ public final class BleBluetoothMultiGattCallback extends BluetoothGattCallback {
     }
 
     private void triggerDeviceReliableWriteCompletedCallback(final BluetoothGatt gatt, final int status, final BaseBleConnectCallback baseBleConnectCallback) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (baseBleConnectCallback != null) {
@@ -464,7 +463,7 @@ public final class BleBluetoothMultiGattCallback extends BluetoothGattCallback {
     }
 
     private void triggerDeviceReadRemoteRssiCallback(final BluetoothGatt gatt, final int rssi, final int status, final BaseBleConnectCallback baseBleConnectCallback) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (baseBleConnectCallback != null) {
@@ -479,7 +478,7 @@ public final class BleBluetoothMultiGattCallback extends BluetoothGattCallback {
     }
 
     private void triggerDeviceMtuChangedCallback(final BluetoothGatt gatt, final int mtu, final int status, final BaseBleConnectCallback baseBleConnectCallback) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (baseBleConnectCallback != null) {

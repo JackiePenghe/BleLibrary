@@ -491,7 +491,7 @@ final class BleBluetoothGattCallback extends BluetoothGattCallback {
     /*-----------------------------------private method-----------------------------------*/
 
     private void performDeviceDisconnectedListener() {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onBleConnectStateChangedListener != null) {
@@ -502,7 +502,7 @@ final class BleBluetoothGattCallback extends BluetoothGattCallback {
     }
 
     private void performGattStatusErrorListener(final int status) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onBleConnectStateChangedListener != null) {
@@ -513,7 +513,7 @@ final class BleBluetoothGattCallback extends BluetoothGattCallback {
     }
 
     private void performDeviceConnectingListener() {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onBleConnectStateChangedListener != null) {
@@ -524,7 +524,7 @@ final class BleBluetoothGattCallback extends BluetoothGattCallback {
     }
 
     private void performDeviceConnectedListener() {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onBleConnectStateChangedListener != null) {
@@ -535,7 +535,7 @@ final class BleBluetoothGattCallback extends BluetoothGattCallback {
     }
 
     private void performAutoDiscoverServicesFailedListener() {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onBleConnectStateChangedListener != null) {
@@ -546,7 +546,7 @@ final class BleBluetoothGattCallback extends BluetoothGattCallback {
     }
 
     private void performDeviceDisconnectingListener() {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onBleConnectStateChangedListener != null) {
@@ -557,7 +557,7 @@ final class BleBluetoothGattCallback extends BluetoothGattCallback {
     }
 
     private void performGattUnknownStatusListener(final int newState) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onBleConnectStateChangedListener != null) {
@@ -568,7 +568,7 @@ final class BleBluetoothGattCallback extends BluetoothGattCallback {
     }
 
     private void performGattPerformTaskFailedListener(final int status, final String methodName) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onBleConnectStateChangedListener != null) {
@@ -579,7 +579,7 @@ final class BleBluetoothGattCallback extends BluetoothGattCallback {
     }
 
     private void performDeviceServicesDiscoveredListener() {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onBleConnectStateChangedListener != null) {
@@ -590,7 +590,7 @@ final class BleBluetoothGattCallback extends BluetoothGattCallback {
     }
 
     private void performGattReadCharacteristicDataListener(final BluetoothGattCharacteristic characteristic, final byte[] value) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onBleConnectStateChangedListener != null) {
@@ -601,7 +601,7 @@ final class BleBluetoothGattCallback extends BluetoothGattCallback {
     }
 
     private void performGattWriteCharacteristicDataListener(final BluetoothGattCharacteristic characteristic, final byte[] value) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onBleConnectStateChangedListener != null) {
@@ -619,7 +619,7 @@ final class BleBluetoothGattCallback extends BluetoothGattCallback {
     }
 
     private void performReceivedNotificationListener(final BluetoothGattCharacteristic characteristic, final byte[] value) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onBleConnectStateChangedListener != null) {
@@ -636,7 +636,7 @@ final class BleBluetoothGattCallback extends BluetoothGattCallback {
     }
 
     private void performGattReadDescriptorListener(final BluetoothGattDescriptor descriptor, final byte[] value) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onBleConnectStateChangedListener != null) {
@@ -647,7 +647,7 @@ final class BleBluetoothGattCallback extends BluetoothGattCallback {
     }
 
     private void performGattWriteDescriptorListener(final BluetoothGattDescriptor descriptor, final byte[] value) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onBleConnectStateChangedListener != null) {
@@ -664,7 +664,7 @@ final class BleBluetoothGattCallback extends BluetoothGattCallback {
     }
 
     private void performGattReliableWriteCompletedListener() {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onBleConnectStateChangedListener != null) {
@@ -675,7 +675,7 @@ final class BleBluetoothGattCallback extends BluetoothGattCallback {
     }
 
     private void performGattReadRemoteRssiListener(final int rssi) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onBleConnectStateChangedListener != null) {
@@ -686,7 +686,7 @@ final class BleBluetoothGattCallback extends BluetoothGattCallback {
     }
 
     private void performGattMtuChangedListener(final int mtu) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onBleConnectStateChangedListener != null) {
@@ -697,7 +697,7 @@ final class BleBluetoothGattCallback extends BluetoothGattCallback {
     }
 
     private void performGattPhyUpdateListener(final int txPhy, final int rxPhy) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onBleConnectStateChangedListener != null) {
@@ -708,7 +708,7 @@ final class BleBluetoothGattCallback extends BluetoothGattCallback {
     }
 
     private void performGattReadPhyListener(final int txPhy, final int rxPhy) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onBleConnectStateChangedListener != null) {

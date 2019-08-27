@@ -376,7 +376,7 @@ public final class BleAdvertiser {
         } catch (Exception e) {
             DebugUtil.warnOut(TAG,"stop advertising failed");
         }
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (baseAdvertiseCallback != null) {

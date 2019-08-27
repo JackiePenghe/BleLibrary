@@ -4,7 +4,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
-import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.Context;
 import android.content.Intent;
@@ -94,7 +93,6 @@ public final class BleMultiConnector {
      *
      * @param connectTimeOut connect timeout(unit:ms)
      */
-    @SuppressWarnings("WeakerAccess")
     public void setConnectTimeOut(@IntRange(from = 0) long connectTimeOut) {
         this.connectTimeOut = connectTimeOut;
         if (bluetoothMultiService != null) {
@@ -903,7 +901,7 @@ public final class BleMultiConnector {
      * @param onLargeDataSendStateChangedListener 大量数据发送失败的回调
      */
     private void performOnLargeDataSendStateChangedListenerStartFailedListener(@Nullable final OnLargeDataSendStateChangedListener onLargeDataSendStateChangedListener) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onLargeDataSendStateChangedListener != null) {
@@ -914,7 +912,7 @@ public final class BleMultiConnector {
     }
 
     private void performOnLargeDataWriteWithNotificationSendStateChangedListenerStartFailedListener(final OnLargeDataWriteWithNotificationSendStateChangedListener onLargeDataWriteWithNotificationSendStateChangedListener) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onLargeDataWriteWithNotificationSendStateChangedListener != null) {

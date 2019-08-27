@@ -355,7 +355,7 @@ public class DeviceListActivity extends BaseAppCompatActivity {
         button = null;
         adapter = null;
         bleScanner = null;
-
+        BleManager.releaseBleScannerInstance();
         //解除输入法内存泄漏
         Tool.releaseInputMethodManagerMemory(this);
     }

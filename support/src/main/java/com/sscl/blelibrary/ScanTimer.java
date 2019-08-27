@@ -3,7 +3,6 @@ package com.sscl.blelibrary;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-
 import com.sscl.blelibrary.interfaces.OnBleScanStateChangedListener;
 
 import java.lang.ref.WeakReference;
@@ -37,7 +36,7 @@ final class ScanTimer {
 
             if (!bleScanner.isAutoStartNextScan()) {
                 bleScanner.stopScan();
-                BleManager.getHANDLER().post(new Runnable() {
+                BleManager.getHandler().post(new Runnable() {
                     @Override
                     public void run() {
                         if (onBleScanStateChangedListener != null) {

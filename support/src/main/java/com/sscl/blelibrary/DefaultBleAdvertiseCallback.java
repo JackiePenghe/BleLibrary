@@ -88,7 +88,7 @@ public class DefaultBleAdvertiseCallback extends AdvertiseCallback {
     /*-----------------------------------private methods-----------------------------------*/
 
     private void triggerAdvertiseStartSuccessCallback(final AdvertiseSettings settingsInEffect) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onBleAdvertiseStateChangedListener != null) {
@@ -99,7 +99,7 @@ public class DefaultBleAdvertiseCallback extends AdvertiseCallback {
     }
 
     private void triggerAdvertiseStartFailedCallback(final int errorCode) {
-        BleManager.getHANDLER().post(new Runnable() {
+        BleManager.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (onBleAdvertiseStateChangedListener != null) {

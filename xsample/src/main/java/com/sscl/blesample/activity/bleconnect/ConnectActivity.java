@@ -449,7 +449,7 @@ public class ConnectActivity extends BaseAppCompatActivity {
 
         @Override
         public void onCloseComplete() {
-            BleManager.releaseBleConnector();
+            BleManager.releaseBleConnectorInstance();
             finish();
         }
 
@@ -635,7 +635,7 @@ public class ConnectActivity extends BaseAppCompatActivity {
         onCharacteristicClickListener = null;
         defaultOnLargeDataSendStateChangedListener = null;
         defaultLargeDataWriteWithNotificationSendStateChangedListener = null;
-        BleManager.releaseBleConnector();
+        BleManager.releaseBleConnectorInstance();
     }
 
     /**
