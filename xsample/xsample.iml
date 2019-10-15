@@ -127,5 +127,7 @@
     <orderEntry type="library" name="Gradle: androidx.multidex:multidex:2.0.1@aar" level="project" />
     <orderEntry type="module" module-name="x" />
     <orderEntry type="module" module-name="baserecyclerviewadapterhelperxlibrary" />
+    <orderEntry type="module" module-name="x" />
+    <orderEntry type="module" module-name="baserecyclerviewadapterhelperxlibrary" />
   </component>
 </module>

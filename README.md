@@ -21,13 +21,13 @@ RecyclerView Adapter use BRVAH
 1.直接将library依赖到项目
 
 2.gradle配置依赖
-support版本，最高支持到API28,已经基本停止维护
+support版本，最高支持到API28,已经完全停止维护，并不再更新
 ```xml
 implementation 'com.sscl.blelibrary:support:0.0.9'
 ```
-androidx版本，可支持到最新版API，目前最高API29（截至2019-09-15）
+androidx版本，可支持到最新版API，目前最高API29（截至2019-10-15）
 ```xml
-implementation 'com.sscl.blelibrary:x:0.0.10'
+implementation 'com.sscl.blelibrary:x:0.0.11'
 ```
 一下所有示例均以androidx版本为准：
 
@@ -343,7 +343,6 @@ BleManager.releaseAll();
 
 ### 多连接(Multi-connection)
 
-```
 获取多连接的连接器(Get multiple connectors)
 ```java
  bleMultiConnector = BleManager.getBleMultiConnectorInstance();
@@ -467,7 +466,12 @@ bleDeviceController.writData(serviceUUID,characteristicUUID,data);
 ```
 # 特别注意
 ## 连接与扫描
-安卓手机因为系统各个厂家定制的原因，可能会有一些莫名其妙的问题。如：UUID发现后跟设备本身不一致等。这种问题通常可以通过重启蓝牙解决。但是也有那种顽固无比的手机。如：三星盖乐世3.这个手机必须要回复出厂设置才能正确发现UUID，原因是：系统记录了同一个设备地址的UUID。一旦连接的是同一个地址，UUID第一次发现之后，后续不论怎么更改设备的UUID，系统的缓存都是不会更新的。对于这种手机，只想说：别用BLE了。没救了
+安卓手机因为系统各个厂家定制的原因，可能会有一些莫名其妙的问题。
+
+如：
+UUID发现后跟设备本身不一致。
+
+这种问题通常可以通过重启蓝牙解决，但是也有那种顽固无比的手机。如：三星 Galaxy 3。这个手机必须要回复出厂设置才能正确发现UUID，原因是：系统记录了同一个设备地址的UUID。一旦连接的是同一个地址，UUID第一次发现之后，后续不论怎么更改设备的UUID，系统的缓存都是不会更新的。对于这种手机，只想说：别用BLE了。没救了
 ## 广播
-对于手机来说，广播的时候，广播的地址会不断的变化，且不同厂商对这个变化周期有不同的设置，所以这种广播一般不推荐别人连接。仅用于广播数据却非常合适。如果有谁知道怎么关掉地址切换或设置地址不变的高手请请留下您的建议与方案。我会尽力完善
+对于绝大多数手机来说，广播的时候，手机的广播地址会不断的变化，且不同厂商对这个变化周期有不同的设置，所以这种广播一般不推荐启用可连接。仅用于广播数据却非常合适。如果有谁知道怎么关掉地址切换或设置地址不变的高手请请留下您的建议与方案。我会尽力完善
 
