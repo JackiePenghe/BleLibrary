@@ -1,7 +1,15 @@
+
+
 # BleSample
 BleSample
 
+这个库我自己已经使用了很长一段时间了，我自己也经常维护。现在感觉已经比较稳定，所以就大胆拿出来分享一下，希望能帮助到正在准备进行BLE开发或进入BLE开发不久的安卓程序员们。
+
+这个库最开始我只是为了自己做调试的时候使用，后来写着写着就把它写成了一个库，于是就慢慢的维护了起来。因为最开始的原因，所以到现在为止，这个库在发布到github上时，就叫做BleSample。是不是总感觉这不是依赖库呢？
+
 [API文档](http://penghe.xyz/api/blelibrary/index.html)
+
+API文档已经有很长一段时间没有更新过了，可能跟实际有很大差别，最好是下载源码进行查看
 
 RecyclerView Adapter use BRVAH 
 
@@ -12,31 +20,45 @@ RecyclerView Adapter use BRVAH
 
 1.直接将library依赖到项目
 
-2.gradle配置依赖(gradle dependency)
-support版本
+2.gradle配置依赖
+support版本，最高支持到API28,已经基本停止维护
 ```xml
-compile 'com.sscl.blelibrary:support:0.0.1'
+implementation 'com.sscl.blelibrary:support:0.0.9'
 ```
-androidx版本
+androidx版本，可支持到最新版API，目前最高API29（截至2019-09-15）
 ```xml
-compile 'com.sscl.blelibrary:x:0.0.1'
+implementation 'com.sscl.blelibrary:x:0.0.10'
 ```
+一下所有示例均以androidx版本为准：
 
 ###  权限配置：
-权限默认是集成在库中的，但是此处还是列出来做参考
+权限默认已经集成在依赖库中了，但是此处还是列出来做参考
 ```xml
-<!--蓝牙权限(Declare the Bluetooth permission(s) in your application manifest file)-->
+<!--蓝牙权限-->
    <uses-permission android:name="android.permission.BLUETOOTH" />
    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-<!--BLE权限(If you want to declare that your app is available to BLE-capable devices only, include the following in your app's manifest)-->
+<!--BLE权限-->
     <uses-feature
        android:name="android.hardware.bluetooth_le"
         android:required="true" />
-<!-- 5.0以上的手机可能会需要这个权限(If your Android version is above 21 (including 21(Android 5.0)),maybe need declare this permission) -->
+<!-- 5.0以上的手机可能会需要这个权限 -->
 <uses-feature android:name="android.hardware.location.gps" />
-<!-- 6.0及以上的手机需要定位权限权限 (If your Android version is above 23 (including 23(Android 6.0)),must declare this permission) -->
+<!-- 6.0及以上的手机需要定位权限权限 -->
 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+    <application>
+        <!--    这个服务用于BLE标准单个连接    -->
+        <service
+            android:name=".BluetoothLeService"
+            android:enabled="true"
+            android:exported="false" />
+        <!--    这个服务用于BLE多设备连接    -->
+        <service
+            android:name=".BluetoothMultiService"
+            android:enabled="true"
+            android:exported="false" />
+    </application>
 ```
 ### 初始化
 在程序的Application类中初始化
@@ -57,10 +79,10 @@ public class MyApplication extends Application {
 ### 判断设备本身是否支持BLE：
 ```java
 if(!BleManager.isSupportBle()){
-  Log.w(TAG,"device not supprot BLE");
+  //如果设备不支持BLE，在这里执行操作
   return;
 }
-//TODO continue
+//如果设备支持BLE，继续往下操作
 ```
 ### BLE扫描：
 ```java
@@ -68,8 +90,14 @@ if(!BleManager.isSupportBle()){
      * 初始化扫描器
      */
     private void initBleScanner() {
-
-        //创建扫描器实例
+    
+        //检查当前设备是否支持LE_CODED属性（通常用于检测是否支持BLE 5.0）
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (BleManager.isLeCodedPhySupported()) {
+                ToastUtil.toastL(this, R.string.le_coded_supported);
+            }
+        }
+        //创建(或获取)扫描器实例
         bleScanner = BleManager.getBleScannerInstance();
         //如果手机不支持蓝牙的话，这里得到的是null,所以需要进行判空
         if (bleScanner == null) {
@@ -78,17 +106,23 @@ if(!BleManager.isSupportBle()){
         }
         //初始化扫描器
         bleScanner.init();
-        //设置扫描周期，扫描会在自动在一段时间后自动停止
+        //设置扫描周期，扫描会在自动在一段时间后自动停止，单位：毫秒
         bleScanner.setScanPeriod(10000);
-        //设置是否一直持续扫描，true表示一直扫描，false表示在扫描结束后不再进行扫描
+        /*
+         *设置是否一直持续扫描
+         *true表示扫描周期到了之后，自动开启下一次扫描。
+         *false表示在扫描结束后不再进行扫描
+         */
         bleScanner.setAutoStartNextScan(true);
+        //如果当前系统版本在android 5.0以上，可以设置扫描模式，这里设置的是默认值
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             bleScanner.setBleScanMode(BleScanMode.LOW_LATENCY);
         }
+        //如果当前系统版本在Android6.0以上，可以设置匹配模式，这里设置的是默认值
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             bleScanner.setBleMatchMode(BleMatchMode.AGGRESSIVE);
         }
-        //设置相关回调
+        //设置扫描状态相关回调
         bleScanner.setOnBleScanStateChangedListener(onBleScanStateChangedListener);
     }
 ```
@@ -140,32 +174,32 @@ BleManager.releaseAll();
      * 初始化连接工具
      */
     private void initBleConnector() {
-        //创建BLE连接器实例
+        //创建（或获取）BLE连接器实例
         bleConnector = BleManager.getBleConnectorInstance();
         //如果手机不支持蓝牙的话，这里得到的是null,所以需要进行判空
         if (bleConnector == null) {
             ToastUtil.toastL(ConnectActivity.this, R.string.ble_not_supported);
             return;
         }
-        //设置连接超时的时间，单位ms
+        //设置连接超时的时间，单位：毫秒
         bleConnector.setConnectTimeOut(60000);
-        //设置连接相关的监听
+        //设置发送分包数据时，每一包数据之间的延时
+        bleConnector.setSendLargeDataPackageDelayTime(500);
+        //设置发送分包数据时，每一包数据发送超时的时间
+        bleConnector.setSendLargeDataTimeOut(10000);        
+        //设置相关的监听回调
         setConnectListener();
     }
 
     /**
-     * 设置连接相关的监听
+     * 设置相关的监听回调
      */
     private void setConnectListener() {
         //设置 连接 相关的回调
         bleConnector.setOnBleConnectStateChangedListener(onBleConnectStateChangedListener);
-        //设置发送分包数据时，每一包数据之间的延时
-        bleConnector.setSendLargeDataPackageDelayTime(500);
-        //设置发送分包数据时，每一包数据发送超时的时间
-        bleConnector.setSendLargeDataTimeOut(10000);
     }
 ```
-#### 注意：请不要在“onConnectedListener”回调中判断为设备连接成功。有些情况下，在连接上设备之后会立刻断开。所以一定要在“onServicesDiscoveredListener”中判断为设备已经连接成功。
+#### 注意：请不要在“onConnectedListener”回调中判断为设备连接成功。有些(异常)情况下，在连接上设备之后会立刻断开。所以一定要在“onServicesDiscoveredListener”中判断为设备已经连接成功。
 
 发起连接请求
 
@@ -180,29 +214,36 @@ BleManager.releaseAll();
             DebugUtil.warnOut("发起连接失败");
         }
 
+         //connect方法有很多重载参数，请根据实际情况自行判断场景并调用相关的重载方法
     }
 ```
 
-在连接成功之后，可以获取远端设备的服务列表(If Callback BleInterface.OnServicesDiscoveredListener was triggered,you can get remote device services now)
+在连接成功之后，可以获取远端设备的服务列表，这一步操作在封装时已经自动操作了，一般情况下无需再手动调用
 ```java
+//手动获取设备的服务列表，通常情况下不需要执行
 List<BluetoothGattService> deviceServices = bleConnector.getServices();
 ```
 
-对目标进行数据的传输(Data sending and reading)
+对目标进行数据的传输
 
-发送数据(send data)
+向设备写入数据
 ```java
+
+//发送数据时，需要知道目标设备的服务UUID，特征UUID，传输的value是一个数组，一般情况下长度不能大于20
 boolean succeed = bleConnector.writeData(serviceUUID,characteristicUUID,value);
+
+//写入是否成功一般需要在回调中判断
 ```
 
-获取数据(read data)
+从设备读取数据
 ```java
+//
 boolean succeed = bleConnector.readData(serviceUUID,characteristicUUID);
+
+//读取的结果在回调中获取
 ```
 
-上面的发送与获取数据的方法返回的都是boolean类型，代表命令执行成功或失败(其实bleConnector的函数基本上都是返回boolean类型的)
-
-获取到的数据在相关的回调中查看
+上面的发送与获取数据的方法返回的都是boolean类型，true代表命令执行中没有出错,false代表操作失败(其实bleConnector的函数基本上都是返回boolean类型的)
 
 通知
 
@@ -216,7 +257,7 @@ boolean succeed = bleConnector.readData(serviceUUID,characteristicUUID);
  boolean succeed = bleConnector.enableNotification(serviceUUID, characteristicUUID, false);
 ```
 
-只有开启了通知，才能触发通知的回调
+只有开启了通知，才会触发通知的回调
 ```java
 bleConnector.setOnReceiveNotificationListener(onReceiveNotificationListener);
 ```
@@ -265,9 +306,9 @@ BleManager.releaseAll();
 
 ```java
 
- int boundState = bleConnector.startBound("");
+ int boundState = bleConnector.startBound(deviceAddress);
         /*
-         * 调用绑定的方法（如果需要绑定)，否则请直接调用连接的方法
+         * 绑定设备，除非必要，否则请直接调用连接的方法
          * 注意：如果该设备不支持绑定，会直接回调绑定成功的回调，在绑定成功的回调中发起连接即可
          * 第一次绑定某一个设备会触发回调，之后再次绑定，可根据绑定时的函数的返回值来判断绑定状态，以进行下一步操作
          */
