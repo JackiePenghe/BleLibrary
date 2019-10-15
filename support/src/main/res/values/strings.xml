@@ -1,7 +1,0 @@
-<resources>
-    <string name="ble_not_supported">Your phone doesn\'t support BLE mode</string>
-    <string name="bluetooth_off">Bluetooth has been mClosed</string>
-    <string name="bluetooth_on">Bluetooth has been opened</string>
-    <string name="bluetooth_not_enable">Some functions cannot be used before you open the bluetooth</string>
-    <string name="no_bluetooth_mode">Your phone has no bluetooth function</string>
-</resources>

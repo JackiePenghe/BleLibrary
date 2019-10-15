@@ -1,7 +1,0 @@
-<resources>
-    <string name="ble_not_supported">您的手机不支持BLE模式</string>
-    <string name="bluetooth_off">蓝牙已关闭</string>
-    <string name="bluetooth_on">蓝牙已开启</string>
-    <string name="bluetooth_not_enable">在您打开蓝牙之前，将无法使用某些功能</string>
-    <string name="no_bluetooth_mode">您的手机不支持蓝牙</string>
-</resources>

@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Gradle: com.sscl.baselibrary:support:0.0.9@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f501363a558c184b98dfedfc7227c568/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f501363a558c184b98dfedfc7227c568/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.sscl.baselibrary/support/0.0.9/bee373f451df2e4d94f9a4a2ac177ca0b4692a96/support-0.0.9-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.sscl.baselibrary/support/0.0.9/df9ce5ba4870de248fe2e01309ff681b6cc0f018/support-0.0.9-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
