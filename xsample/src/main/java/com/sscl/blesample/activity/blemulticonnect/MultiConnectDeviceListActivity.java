@@ -44,63 +44,60 @@ public class MultiConnectDeviceListActivity extends BaseAppCompatActivity {
      * 按钮点击时，计算当前是开始扫描，还是停止扫描的参数
      */
     private static final int CALCULATE_PARAMS = 2;
-
     /**
      * 最大可选设备数量
      */
     private static final int MAX_DEVICE_SELECT_COUNT = 5;
-
     /**
      * 显示设备列表的控件
      */
     private RecyclerView recyclerView;
-
     /**
      * 开始/停止扫描按钮
      */
     private Button button;
-
     /**
      * BLE扫描器
      */
     private BleScanner bleScanner;
-
     /**
      * 记录按钮的点击次数，用于计算是开始扫描还是停止扫描
      */
     private int buttonClickCount;
-
     /**
      * 设备列表适配器数据源
      */
     private ArrayList<BleDeviceWithBoolean> adapterList = new ArrayList<>();
-
     /**
      * 适配器
      */
     private MultiConnectDeviceRecyclerViewListAdapter adapter = new MultiConnectDeviceRecyclerViewListAdapter(adapterList);
-
     /**
      * 适配器的子选项被点击了
      */
-    private BaseQuickAdapter.OnItemClickListener onItemClickListener = (adapter, view, position) -> {
-        BleDeviceWithBoolean bleDeviceWithBoolean = adapterList.get(position);
-        bleDeviceWithBoolean.setSelected(!bleDeviceWithBoolean.isSelected());
-        adapterList.set(position, bleDeviceWithBoolean);
-        adapter.notifyItemChanged(position);
+    private BaseQuickAdapter.OnItemClickListener onItemClickListener = new BaseQuickAdapter.OnItemClickListener() {
+        @Override
+        public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+            BleDeviceWithBoolean bleDeviceWithBoolean = adapterList.get(position);
+            bleDeviceWithBoolean.setSelected(!bleDeviceWithBoolean.isSelected());
+            adapterList.set(position, bleDeviceWithBoolean);
+            adapter.notifyItemChanged(position);
+        }
     };
-
     /**
      * 点击事件的监听
      */
-    private View.OnClickListener onClickListener = view -> {
-        //noinspection SwitchStatementWithTooFewBranches
-        switch (view.getId()) {
-            case R.id.button:
-                doButtonClicked();
-                break;
-            default:
-                break;
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            //noinspection SwitchStatementWithTooFewBranches
+            switch (v.getId()) {
+                case R.id.button:
+                    doButtonClicked();
+                    break;
+                default:
+                    break;
+            }
         }
     };
     private OnBleScanStateChangedListener onBleScanStateChangedListener = new OnBleScanStateChangedListener() {
@@ -221,7 +218,7 @@ public class MultiConnectDeviceListActivity extends BaseAppCompatActivity {
      * @return 只是重写 public boolean onCreateOptionsMenu(Menu menu)
      */
     @Override
-    protected boolean createOptionsMenu(Menu menu) {
+    protected boolean createOptionsMenu(@NonNull Menu menu) {
         getMenuInflater().inflate(R.menu.activity_multi_connect_device_list, menu);
         return true;
     }
@@ -326,12 +323,12 @@ public class MultiConnectDeviceListActivity extends BaseAppCompatActivity {
             buttonClickCount++;
         }
         if (selectedDeviceList.size() == 0) {
-            ToastUtil.toastL(MultiConnectDeviceListActivity.this, R.string.nothing_selected);
+            ToastUtil.toastLong(MultiConnectDeviceListActivity.this, R.string.nothing_selected);
             return;
         }
 
         if (selectedDeviceList.size() > MAX_DEVICE_SELECT_COUNT) {
-            ToastUtil.toastL(MultiConnectDeviceListActivity.this, R.string.selected_more_than);
+            ToastUtil.toastLong(MultiConnectDeviceListActivity.this, R.string.selected_more_than);
             return;
         }
 

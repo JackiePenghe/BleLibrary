@@ -40,7 +40,7 @@ public class Device4Callback extends BaseBleConnectCallback {
     @Override
     public void onBluetoothGattOptionsNotSuccess(BluetoothGatt gatt, String methodName, int errorStatus) {
         DebugUtil.warnOut(TAG, "onBluetoothGattOptionsNotSuccess");
-        ToastUtil.toastL(customTextCircleView.getContext(), gatt.getDevice().getAddress() + ":onBluetoothGattOptionsNotSuccess");
+        ToastUtil.toastLong(customTextCircleView.getContext(), gatt.getDevice().getAddress() + ":onBluetoothGattOptionsNotSuccess");
     }
 
     /**
@@ -62,14 +62,14 @@ public class Device4Callback extends BaseBleConnectCallback {
     @Override
     public void onConnectTimeOut(BluetoothGatt gatt) {
         DebugUtil.warnOut(TAG, "onBluetoothGattOptionsNotSuccess");
-        ToastUtil.toastL(customTextCircleView.getContext(), gatt.getDevice().getAddress() + ":onConnectTimeOut");
+        ToastUtil.toastLong(customTextCircleView.getContext(), gatt.getDevice().getAddress() + ":onConnectTimeOut");
     }
 
     @Override
     public void onServicesDiscovered(BluetoothGatt gatt) {
         DebugUtil.warnOut(TAG, gatt.getDevice().getAddress() + " onServicesDiscovered");
         customTextCircleView.setColor(Color.GREEN);
-        ToastUtil.toastL(customTextCircleView.getContext(), gatt.getDevice().getAddress() + ":onServicesDiscovered");
+        ToastUtil.toastLong(customTextCircleView.getContext(), gatt.getDevice().getAddress() + ":onServicesDiscovered");
         BleDeviceController bleDeviceController = bleMultiConnector.getBleDeviceController(gatt.getDevice().getAddress());
         if (bleDeviceController != null) {
             if (bleDeviceController.isConnected()) {
@@ -87,7 +87,7 @@ public class Device4Callback extends BaseBleConnectCallback {
     public void onServicesAutoDiscoverFailed(BluetoothGatt gatt) {
         DebugUtil.warnOut(TAG, "onDiscoverServicesFailed");
         customTextCircleView.setColor(Color.RED);
-        ToastUtil.toastL(customTextCircleView.getContext(), gatt.getDevice().getAddress() + ":onDiscoverServicesFailed");
+        ToastUtil.toastLong(customTextCircleView.getContext(), gatt.getDevice().getAddress() + ":onDiscoverServicesFailed");
     }
 
     /**
@@ -98,18 +98,18 @@ public class Device4Callback extends BaseBleConnectCallback {
     @Override
     public void onGattClosed(@Nullable BluetoothDevice address) {
         DebugUtil.warnOut(TAG, "onGattClosed");
-        ToastUtil.toastL(customTextCircleView.getContext(), address + ":onGattClosed");
+        ToastUtil.toastLong(customTextCircleView.getContext(), address + ":onGattClosed");
     }
 
     @Override
     public void onConnected(BluetoothGatt gatt) {
         customTextCircleView.setColor(Color.BLUE);
-        ToastUtil.toastL(customTextCircleView.getContext(), gatt.getDevice().getAddress() + ":onConnected");
+        ToastUtil.toastLong(customTextCircleView.getContext(), gatt.getDevice().getAddress() + ":onConnected");
     }
 
     @Override
     public void onDisConnected(BluetoothGatt gatt) {
         customTextCircleView.setColor(Color.RED);
-        ToastUtil.toastL(customTextCircleView.getContext(), gatt.getDevice().getAddress() + ":onDisConnected");
+        ToastUtil.toastLong(customTextCircleView.getContext(), gatt.getDevice().getAddress() + ":onDisConnected");
     }
 }

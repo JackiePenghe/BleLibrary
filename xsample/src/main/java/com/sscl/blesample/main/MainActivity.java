@@ -1,6 +1,5 @@
 package com.sscl.blesample.main;
 
-import android.bluetooth.BluetoothGatt;
 import android.content.Intent;
 import android.os.Build;
 import android.view.Menu;
@@ -8,15 +7,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
+
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
-import com.sscl.baselibrary.utils.DebugUtil;
 import com.sscl.baselibrary.utils.ToastUtil;
-import com.sscl.blelibrary.BleConnector;
 import com.sscl.blelibrary.BleManager;
-import com.sscl.blelibrary.enums.PhyMask;
-import com.sscl.blelibrary.enums.Transport;
-import com.sscl.blelibrary.interfaces.OnBleConnectStateChangedListener;
-import com.sscl.blelibrary.interfaces.implementations.DefaultBleConnectStateChangedListener;
 import com.sscl.blesample.R;
 import com.sscl.blesample.activity.bleadvertisement.BleAdvertiseActivity;
 import com.sscl.blesample.activity.bleconnect.DeviceListActivity;
@@ -31,19 +26,22 @@ public class MainActivity extends BaseAppCompatActivity {
     private Button simpleUseBtn;
     private Button multiConnectBtn;
     private Button bleBroadCastBtn;
-    private View.OnClickListener onClickListener = view -> {
-        switch (view.getId()) {
-            case R.id.simple_use_button:
-                toDeviceListActivity();
-                break;
-            case R.id.multi_connect_button:
-                toMultiConnectActivity();
-                break;
-            case R.id.ble_broadcast_button:
-                toBroadcastActivity();
-                break;
-            default:
-                break;
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.simple_use_button:
+                    toDeviceListActivity();
+                    break;
+                case R.id.multi_connect_button:
+                    toMultiConnectActivity();
+                    break;
+                case R.id.ble_broadcast_button:
+                    toBroadcastActivity();
+                    break;
+                default:
+                    break;
+            }
         }
     };
 
@@ -132,7 +130,7 @@ public class MainActivity extends BaseAppCompatActivity {
      * @return 只是重写 public boolean onCreateOptionsMenu(Menu menu)
      */
     @Override
-    protected boolean createOptionsMenu(Menu menu) {
+    protected boolean createOptionsMenu(@NonNull Menu menu) {
         return false;
     }
 
@@ -143,7 +141,7 @@ public class MainActivity extends BaseAppCompatActivity {
      * @return true表示处理了监听事件
      */
     @Override
-    protected boolean optionsItemSelected(MenuItem item) {
+    protected boolean optionsItemSelected(@NonNull MenuItem item) {
         return false;
     }
 
@@ -161,7 +159,7 @@ public class MainActivity extends BaseAppCompatActivity {
     private void toDeviceListActivity() {
 
         if (!BleManager.isSupportBle()) {
-            ToastUtil.toastL(this, R.string.ble_not_supported);
+            ToastUtil.toastLong(this, R.string.ble_not_supported);
             return;
         }
         Intent intent = new Intent(MainActivity.this, DeviceListActivity.class);
@@ -174,7 +172,7 @@ public class MainActivity extends BaseAppCompatActivity {
     private void toMultiConnectActivity() {
 
         if (!BleManager.isSupportBle()) {
-            ToastUtil.toastL(this, R.string.ble_not_supported);
+            ToastUtil.toastLong(this, R.string.ble_not_supported);
             return;
         }
         Intent intent = new Intent(MainActivity.this, MultiConnectDeviceListActivity.class);
@@ -186,11 +184,11 @@ public class MainActivity extends BaseAppCompatActivity {
      */
     private void toBroadcastActivity() {
         if (!BleManager.isSupportBle()) {
-            ToastUtil.toastL(this, R.string.ble_not_supported);
+            ToastUtil.toastLong(this, R.string.ble_not_supported);
             return;
         }
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            ToastUtil.toastL(this, R.string.android_version_too_low);
+            ToastUtil.toastLong(this, R.string.android_version_too_low);
             return;
         }
 

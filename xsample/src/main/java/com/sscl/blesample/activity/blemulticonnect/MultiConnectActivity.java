@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
 import com.sscl.baselibrary.utils.Tool;
 import com.sscl.blelibrary.BleDeviceController;
@@ -31,7 +33,12 @@ import java.util.concurrent.ThreadFactory;
  */
 public class MultiConnectActivity extends BaseAppCompatActivity {
 
-    private static final ThreadFactory THREAD_FACTORY = Thread::new;
+    private static final ThreadFactory THREAD_FACTORY = new ThreadFactory() {
+        @Override
+        public Thread newThread(@NonNull Runnable r) {
+            return new Thread(r);
+        }
+    };
 
     private BleMultiConnector bleMultiConnector;
     private Button connectButton;
@@ -57,22 +64,25 @@ public class MultiConnectActivity extends BaseAppCompatActivity {
     private Device5Callback device5BleCallback;
 
 
-    private View.OnClickListener onClickListener = view -> {
-        switch (view.getId()) {
-            case R.id.connect_button:
-                doConnect();
-                break;
-            case R.id.open_socket:
-                openSocket();
-                break;
-            case R.id.close_socket:
-                closeSocket();
-                break;
-            case R.id.disconnect:
-                disconnect();
-                break;
-            default:
-                break;
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.connect_button:
+                    doConnect();
+                    break;
+                case R.id.open_socket:
+                    openSocket();
+                    break;
+                case R.id.close_socket:
+                    closeSocket();
+                    break;
+                case R.id.disconnect:
+                    disconnect();
+                    break;
+                default:
+                    break;
+            }
         }
     };
 
@@ -236,7 +246,7 @@ public class MultiConnectActivity extends BaseAppCompatActivity {
      * @return 只是重写 public boolean onCreateOptionsMenu(Menu menu)
      */
     @Override
-    protected boolean createOptionsMenu(Menu menu) {
+    protected boolean createOptionsMenu(@NonNull Menu menu) {
         return false;
     }
 
@@ -247,7 +257,7 @@ public class MultiConnectActivity extends BaseAppCompatActivity {
      * @return true表示处理了监听事件
      */
     @Override
-    protected boolean optionsItemSelected(MenuItem item) {
+    protected boolean optionsItemSelected(@NonNull MenuItem item) {
         return false;
     }
 
@@ -266,16 +276,19 @@ public class MultiConnectActivity extends BaseAppCompatActivity {
 
 
         //我在此处使用线程顺序发起连接
-        Runnable runnable = () -> {
-            connectDevice1();
-            Tool.sleep(1000);
-            connectDevice2();
-            Tool.sleep(1000);
-            connectDevice3();
-            Tool.sleep(1000);
-            connectDevice4();
-            Tool.sleep(1000);
-            connectDevice5();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                connectDevice1();
+                Tool.sleep(1000);
+                connectDevice2();
+                Tool.sleep(1000);
+                connectDevice3();
+                Tool.sleep(1000);
+                connectDevice4();
+                Tool.sleep(1000);
+                connectDevice5();
+            }
         };
         THREAD_FACTORY.newThread(runnable).start();
     }
@@ -287,7 +300,17 @@ public class MultiConnectActivity extends BaseAppCompatActivity {
         if (device5 == null) {
             return;
         }
-        Runnable runnable = () -> runOnUiThread(() -> bleMultiConnector.connect(device5, true, device5BleCallback));
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        bleMultiConnector.connect(device5, true, device5BleCallback);
+                    }
+                });
+            }
+        };
         THREAD_FACTORY.newThread(runnable).start();
     }
 
@@ -298,7 +321,17 @@ public class MultiConnectActivity extends BaseAppCompatActivity {
         if (device4 == null) {
             return;
         }
-        Runnable runnable = () -> runOnUiThread(() -> bleMultiConnector.connect(device4, true, device4BleCallback));
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        bleMultiConnector.connect(device4, true, device4BleCallback);
+                    }
+                });
+            }
+        };
         THREAD_FACTORY.newThread(runnable).start();
     }
 
@@ -309,7 +342,17 @@ public class MultiConnectActivity extends BaseAppCompatActivity {
         if (device3 == null) {
             return;
         }
-        Runnable runnable = () -> runOnUiThread(() -> bleMultiConnector.connect(device3, true, device3BleCallback));
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        bleMultiConnector.connect(device3, true, device3BleCallback);
+                    }
+                });
+            }
+        };
         THREAD_FACTORY.newThread(runnable).start();
     }
 
@@ -320,7 +363,17 @@ public class MultiConnectActivity extends BaseAppCompatActivity {
         if (device2 == null) {
             return;
         }
-        Runnable runnable = () -> runOnUiThread(() -> bleMultiConnector.connect(device2, true, device2BleCallback));
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        bleMultiConnector.connect(device2, true, device2BleCallback);
+                    }
+                });
+            }
+        };
         THREAD_FACTORY.newThread(runnable).start();
     }
 
@@ -331,7 +384,17 @@ public class MultiConnectActivity extends BaseAppCompatActivity {
         if (device1 == null) {
             return;
         }
-        Runnable runnable = () -> runOnUiThread(() -> bleMultiConnector.connect(device1, true, device1BleCallback));
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        bleMultiConnector.connect(device1, true, device1BleCallback);
+                    }
+                });
+            }
+        };
         THREAD_FACTORY.newThread(runnable).start();
     }
 

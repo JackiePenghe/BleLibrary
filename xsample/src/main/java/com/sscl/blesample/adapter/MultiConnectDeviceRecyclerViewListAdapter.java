@@ -101,7 +101,7 @@ public class MultiConnectDeviceRecyclerViewListAdapter extends BaseQuickAdapter<
      */
     public void selectAll() {
 
-        ToastUtil.toastL(mContext, "设备数量：" + mData.size());
+        ToastUtil.toastLong(mContext, "设备数量：" + mData.size());
 
         for (int i = 0; i < mData.size(); i++) {
             BleDeviceWithBoolean bleDeviceWithBoolean = mData.get(i);

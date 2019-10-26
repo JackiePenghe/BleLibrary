@@ -2,6 +2,7 @@ package com.sscl.blesample.activity.bleconnect;
 
 import android.Manifest;
 import android.bluetooth.le.ScanResult;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -85,45 +86,58 @@ public class DeviceListActivity extends BaseAppCompatActivity {
      */
     private BleScanner bleScanner;
     private static final int TWO = 2;
-    private BaseQuickAdapter.OnItemClickListener onItemClickListener = (adapter, view, position) -> doListViewItemClick(position);
-
+    private BaseQuickAdapter.OnItemClickListener onItemClickListener = new BaseQuickAdapter.OnItemClickListener() {
+        @Override
+        public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+            doListViewItemClick(position);
+        }
+    };
 
     /**
      * 点击事件的监听
      */
-    private View.OnClickListener onClickListener = view -> {
-        //noinspection SwitchStatementWithTooFewBranches
-        switch (view.getId()) {
-            case R.id.button:
-                checkAPIVersion();
-                break;
-            default:
-                break;
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            //noinspection SwitchStatementWithTooFewBranches
+            switch (v.getId()) {
+                case R.id.button:
+                    checkAPIVersion();
+                    break;
+                default:
+                    break;
+            }
         }
     };
     /**
      * 列表子选项被长按时进行的回调
      */
-    private BaseQuickAdapter.OnItemLongClickListener onItemLongClickListener = (adapter, view, position) -> {
-        BleDevice bleDevice = adapterList.get(position);
-        showOptionsDialog(bleDevice);
-        return true;
+    private BaseQuickAdapter.OnItemLongClickListener onItemLongClickListener = new BaseQuickAdapter.OnItemLongClickListener() {
+        @Override
+        public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+            BleDevice bleDevice = adapterList.get(position);
+            showOptionsDialog(bleDevice);
+            return true;
+        }
     };
 
     private void showOptionsDialog(final BleDevice bleDevice) {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.options)
-                .setItems(R.array.device_list_options, (dialog, which) -> {
-                    bleScanner.stopScan();
-                    switch (which) {
-                        case 0:
-                            toBroadcastIntervalTestActivity(bleDevice.getDeviceAddress());
-                            break;
-                        case 1:
-                            toAdRecordParseActivity(bleDevice);
-                            break;
-                        default:
-                            break;
+                .setItems(R.array.device_list_options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        bleScanner.stopScan();
+                        switch (which) {
+                            case 0:
+                                toBroadcastIntervalTestActivity(bleDevice.getDeviceAddress());
+                                break;
+                            case 1:
+                                toAdRecordParseActivity(bleDevice);
+                                break;
+                            default:
+                                break;
+                        }
                     }
                 })
                 .setNegativeButton(R.string.cancel, null)
@@ -303,7 +317,7 @@ public class DeviceListActivity extends BaseAppCompatActivity {
      * @return 只是重写 public boolean onCreateOptionsMenu(Menu menu)
      */
     @Override
-    protected boolean createOptionsMenu(Menu menu) {
+    protected boolean createOptionsMenu(@NonNull Menu menu) {
         getMenuInflater().inflate(R.menu.activity_device_list, menu);
         return true;
     }
@@ -336,7 +350,7 @@ public class DeviceListActivity extends BaseAppCompatActivity {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     doButtonClick();
                 } else {
-                    ToastUtil.toastL(DeviceListActivity.this, R.string.no_permission_for_local);
+                    ToastUtil.toastLong(DeviceListActivity.this, R.string.no_permission_for_local);
                 }
                 break;
             default:
@@ -367,14 +381,14 @@ public class DeviceListActivity extends BaseAppCompatActivity {
     private void initBleScanner() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (BleManager.isLeCodedPhySupported()) {
-                ToastUtil.toastL(this, R.string.le_coded_supported);
+                ToastUtil.toastLong(this, R.string.le_coded_supported);
             }
         }
         //创建扫描器实例
         bleScanner = BleManager.getBleScannerInstance();
         //如果手机不支持蓝牙的话，这里得到的是null,所以需要进行判空
         if (bleScanner == null) {
-            ToastUtil.toastL(DeviceListActivity.this, R.string.ble_not_supported);
+            ToastUtil.toastLong(DeviceListActivity.this, R.string.ble_not_supported);
             return;
         }
         bleScanner.init();
@@ -473,12 +487,15 @@ public class DeviceListActivity extends BaseAppCompatActivity {
         new AlertDialog.Builder(DeviceListActivity.this)
                 .setTitle(R.string.filter_name)
                 .setView(editText)
-                .setPositiveButton(R.string.confirm, (dialog, which) -> {
-                    String text = editText.getText().toString();
-                    if (text.isEmpty()) {
-                        filterName = null;
-                    } else {
-                        filterName = text;
+                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String text = editText.getText().toString();
+                        if (text.isEmpty()) {
+                            filterName = null;
+                        } else {
+                            filterName = text;
+                        }
                     }
                 })
                 .setNegativeButton(R.string.cancel, null)
@@ -494,12 +511,15 @@ public class DeviceListActivity extends BaseAppCompatActivity {
         new AlertDialog.Builder(DeviceListActivity.this)
                 .setTitle(R.string.filter_address)
                 .setView(editText)
-                .setPositiveButton(R.string.confirm, (dialog, which) -> {
-                    String text = editText.getText().toString();
-                    if (text.isEmpty()) {
-                        filterAddress = null;
-                    } else {
-                        filterAddress = text;
+                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String text = editText.getText().toString();
+                        if (text.isEmpty()) {
+                            filterAddress = null;
+                        } else {
+                            filterAddress = text;
+                        }
                     }
                 })
                 .setNegativeButton(R.string.cancel, null)

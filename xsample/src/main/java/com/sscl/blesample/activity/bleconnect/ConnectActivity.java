@@ -99,10 +99,6 @@ public class ConnectActivity extends BaseAppCompatActivity {
      */
     private ServicesCharacteristicsListAdapter servicesCharacteristicsListAdapter;
 
-    private ServicesCharacteristicsListAdapter.OnCharacteristicClickListener onCharacteristicClickListener = (serviceUUID, characteristicUUID) -> {
-        DebugUtil.warnOut(TAG, "serviceUUID = " + serviceUUID + ",characteristicUUID = " + characteristicUUID);
-        showOptionsDialog(serviceUUID, characteristicUUID);
-    };
     private ServicesCharacteristicsListAdapter.OnServiceClickListener onServiceClickListener = new ServicesCharacteristicsListAdapter.OnServiceClickListener() {
         @Override
         public void onServiceClick(String serviceUuid, int position, int childCount) {
@@ -119,9 +115,7 @@ public class ConnectActivity extends BaseAppCompatActivity {
             }
         }
     };
-
     private int toastKeepTime = 500;
-
     private DefaultOnLargeDataSendStateChangedListener defaultOnLargeDataSendStateChangedListener = new DefaultOnLargeDataSendStateChangedListener() {
         /**
          * 传输开始
@@ -152,7 +146,7 @@ public class ConnectActivity extends BaseAppCompatActivity {
         public void packageSendProgressChanged(int currentPackageCount, int pageCount, @NonNull byte[] data) {
             super.packageSendProgressChanged(currentPackageCount, pageCount, data);
             ToastUtil.toast(ConnectActivity.this, "packageSendProgressChanged " + currentPackageCount + " / " + pageCount, toastKeepTime);
-            DebugUtil.warnOut(TAG, "data = " + ConversionUtil.bytesToHexStr(data));
+            DebugUtil.warnOut(TAG, "data = " + ConversionUtil.byteArrayToHexStr(data));
         }
 
         /**
@@ -231,7 +225,7 @@ public class ConnectActivity extends BaseAppCompatActivity {
         @Override
         public void onDataSendFinished() {
             super.onDataSendFinished();
-            ToastUtil.toastL(ConnectActivity.this, "onDataSendFinished");
+            ToastUtil.toastLong(ConnectActivity.this, "onDataSendFinished");
         }
 
         /**
@@ -244,7 +238,7 @@ public class ConnectActivity extends BaseAppCompatActivity {
         @Override
         public void onDataSendFailed(int currentPackageCount, int pageCount, byte[] data) {
             super.onDataSendFailed(currentPackageCount, pageCount, data);
-            ToastUtil.toastL(ConnectActivity.this, "onDataSendFailed");
+            ToastUtil.toastLong(ConnectActivity.this, "onDataSendFailed");
         }
 
         /**
@@ -321,56 +315,63 @@ public class ConnectActivity extends BaseAppCompatActivity {
             super.onDataSendTimeOutAndRetry(data, tryCount, currentPackageIndex, packageCount);
         }
     };
+    private ServicesCharacteristicsListAdapter.OnCharacteristicClickListener onCharacteristicClickListener = new ServicesCharacteristicsListAdapter.OnCharacteristicClickListener() {
+        @Override
+        public void onCharacteristicClick(String serviceUuid, String characteristicUuid) {
+            DebugUtil.warnOut(TAG, "serviceUUID = " + serviceUuid + ",characteristicUUID = " + characteristicUuid);
+            showOptionsDialog(serviceUuid, characteristicUuid);
+        }
+    };
     private OnBleConnectStateChangedListener onBleConnectStateChangedListener = new OnBleConnectStateChangedListener() {
         @Override
         public void connected() {
             //连接成功，将指示标志设置为蓝色
             customTextCircleView.setColor(Color.BLUE);
             DebugUtil.warnOut(TAG, "connected! use time " + (System.currentTimeMillis() - startTime));
-            ToastUtil.toastL(ConnectActivity.this, R.string.connected);
+            ToastUtil.toastLong(ConnectActivity.this, R.string.connected);
         }
 
         @Override
         public void disconnected() {
             //断开连接，将指示标志设置为红色
             customTextCircleView.setColor(Color.RED);
-            ToastUtil.toastL(ConnectActivity.this, R.string.disconnected);
+            ToastUtil.toastLong(ConnectActivity.this, R.string.disconnected);
         }
 
         @Override
         public void gattStatusError(int errorStatus) {
             DebugUtil.warnOut(TAG, "连接出错，状态码：" + errorStatus);
-            ToastUtil.toastL(ConnectActivity.this, "连接出错，状态码：" + errorStatus);
+            ToastUtil.toastLong(ConnectActivity.this, "连接出错，状态码：" + errorStatus);
             onBackPressed();
         }
 
         @Override
         public void connecting() {
             customTextCircleView.setColor(Color.YELLOW);
-            ToastUtil.toastL(ConnectActivity.this, R.string.connecting);
+            ToastUtil.toastLong(ConnectActivity.this, R.string.connecting);
         }
 
         @Override
         public void autoDiscoverServicesFailed() {
             DebugUtil.warnOut(TAG, "远端设备服务列表扫描失败");
-            ToastUtil.toastL(ConnectActivity.this, R.string.service_discovery_failed);
+            ToastUtil.toastLong(ConnectActivity.this, R.string.service_discovery_failed);
         }
 
         @Override
         public void disconnecting() {
             DebugUtil.warnOut(TAG, "onDisconnecting");
-            ToastUtil.toastL(ConnectActivity.this, R.string.disconnecting);
+            ToastUtil.toastLong(ConnectActivity.this, R.string.disconnecting);
         }
 
         @Override
         public void unknownStatus(int statusCode) {
-            ToastUtil.toastL(ConnectActivity.this, R.string.unknown_gatt_state);
+            ToastUtil.toastLong(ConnectActivity.this, R.string.unknown_gatt_state);
         }
 
         @Override
         public void gattPerformTaskFailed(int errorStatus, String methodName) {
             DebugUtil.warnOut(TAG, "");
-            ToastUtil.toastL(ConnectActivity.this, R.string.operation_failed);
+            ToastUtil.toastLong(ConnectActivity.this, R.string.operation_failed);
         }
 
         @Override
@@ -378,7 +379,7 @@ public class ConnectActivity extends BaseAppCompatActivity {
             hideConnectingDialog();
             //服务发现完成，将指示标志设置为绿色（对BLE远端设备的所有操作都在服务扫描完成之后）
             customTextCircleView.setColor(Color.GREEN);
-            ToastUtil.toastL(ConnectActivity.this, R.string.get_service_success);
+            ToastUtil.toastLong(ConnectActivity.this, R.string.get_service_success);
             refreshAdapterData();
             //提取设备名与设备地址
             nameTv.setText(bleDevice.getDeviceName());
@@ -388,28 +389,28 @@ public class ConnectActivity extends BaseAppCompatActivity {
         @Override
         public void readCharacteristicData(BluetoothGattCharacteristic characteristic,
                                            byte[] data) {
-            String hexStr = ConversionUtil.bytesToHexStr(data);
+            String hexStr = ConversionUtil.byteArrayToHexStr(data);
             String str = new String(data);
             DebugUtil.warnOut(TAG, "读取到的数据 = " + hexStr);
             showReadDataResultDialog(hexStr, str);
-            ToastUtil.toastL(ConnectActivity.this, R.string.read_success);
+            ToastUtil.toastLong(ConnectActivity.this, R.string.read_success);
         }
 
         @Override
         public void writeCharacteristicData(BluetoothGattCharacteristic characteristic,
                                             byte[] data) {
-            String hexStr = ConversionUtil.bytesToHexStr(data);
+            String hexStr = ConversionUtil.byteArrayToHexStr(data);
             DebugUtil.warnOut(TAG, "onCharacteristicWrite hexStr = " + hexStr);
-            ToastUtil.toastL(ConnectActivity.this, R.string.write_success);
+            ToastUtil.toastLong(ConnectActivity.this, R.string.write_success);
         }
 
         @Override
         public void receivedNotification(BluetoothGattCharacteristic characteristic, byte[] data) {
-            String hexStr = ConversionUtil.bytesToHexStr(data);
+            String hexStr = ConversionUtil.byteArrayToHexStr(data);
             String str = new String(data);
             DebugUtil.warnOut("ConnectActivity", "value = " + hexStr);
             showReceiveNotificationDialog(hexStr, str);
-            ToastUtil.toastL(ConnectActivity.this, R.string.received_data);
+            ToastUtil.toastLong(ConnectActivity.this, R.string.received_data);
         }
 
         @Override
@@ -455,7 +456,7 @@ public class ConnectActivity extends BaseAppCompatActivity {
 
         @Override
         public void onConnectTimeOut() {
-            ToastUtil.toastL(ConnectActivity.this, R.string.connect_time_out);
+            ToastUtil.toastLong(ConnectActivity.this, R.string.connect_time_out);
             onBackPressed();
         }
     };
@@ -502,7 +503,7 @@ public class ConnectActivity extends BaseAppCompatActivity {
         //获取BleDevice对象
         BleDevice bleDevice = (BleDevice) intent.getSerializableExtra(Constants.DEVICE);
         if (bleDevice == null) {
-            ToastUtil.toastL(ConnectActivity.this, R.string.device_info_error);
+            ToastUtil.toastLong(ConnectActivity.this, R.string.device_info_error);
             finish();
             return;
         }
@@ -583,7 +584,7 @@ public class ConnectActivity extends BaseAppCompatActivity {
      * @return 只是重写 public boolean onCreateOptionsMenu(Menu menu)
      */
     @Override
-    protected boolean createOptionsMenu(Menu menu) {
+    protected boolean createOptionsMenu(@NonNull Menu menu) {
         return false;
     }
 
@@ -594,7 +595,7 @@ public class ConnectActivity extends BaseAppCompatActivity {
      * @return true表示处理了监听事件
      */
     @Override
-    protected boolean optionsItemSelected(MenuItem item) {
+    protected boolean optionsItemSelected(@NonNull MenuItem item) {
         return false;
     }
 
@@ -646,7 +647,7 @@ public class ConnectActivity extends BaseAppCompatActivity {
         bleConnector = BleManager.getBleConnectorInstance();
         //如果手机不支持蓝牙的话，这里得到的是null,所以需要进行判空
         if (bleConnector == null) {
-            ToastUtil.toastL(ConnectActivity.this, R.string.ble_not_supported);
+            ToastUtil.toastLong(ConnectActivity.this, R.string.ble_not_supported);
             return;
         }
         bleConnector.setConnectTimeOut(10000);
@@ -707,16 +708,19 @@ public class ConnectActivity extends BaseAppCompatActivity {
     private void startConnect() {
         if (bleConnector.connect(bleDevice.getBluetoothDevice(), autoReconnect, transport, phyMask)) {
             DebugUtil.warnOut("开始连接");
-            BleManager.getHandler().post(() -> {
-                startTime = System.currentTimeMillis();
-                ToastUtil.toastL(ConnectActivity.this, "发起连接");
-                customTextCircleView.setColor(Color.YELLOW);
-                showConnectingDialog();
+            BleManager.getHandler().post(new Runnable() {
+                @Override
+                public void run() {
+                    startTime = System.currentTimeMillis();
+                    ToastUtil.toastLong(ConnectActivity.this, "发起连接");
+                    customTextCircleView.setColor(Color.YELLOW);
+                    showConnectingDialog();
+                }
             });
         } else {
             DebugUtil.warnOut("发起连接失败");
             onBackPressed();
-            ToastUtil.toastL(this, R.string.connect_failed);
+            ToastUtil.toastLong(this, R.string.connect_failed);
         }
 
     }
@@ -750,38 +754,41 @@ public class ConnectActivity extends BaseAppCompatActivity {
     private void showOptionsDialog(final String serviceUUID, final String characteristicUUID) {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.select_options)
-                .setItems(R.array.device_options, (dialog, which) -> {
-                    switch (which) {
-                        //读
-                        case 0:
-                            readData(serviceUUID, characteristicUUID);
-                            break;
-                        //写
-                        case 1:
-                            writeData(serviceUUID, characteristicUUID);
-                            break;
-                        //打开通知
-                        case 2:
-                            enableNotification(serviceUUID, characteristicUUID);
-                            break;
-                        //写入超长数据,自动格式化（分包传输）
-                        case 3:
-                            writeLargeData(serviceUUID, characteristicUUID, true);
-                            break;
-                        //写入超长数据，自动格式化（分包传输且需要通知处理）
-                        case 4:
-                            writeLargeDataWithNotification(serviceUUID, characteristicUUID, true);
-                            break;
-                        //写入超长数据,不自动格式化（分包传输）
-                        case 5:
-                            writeLargeData(serviceUUID, characteristicUUID, false);
-                            break;
-                        //写入超长数据，不自动格式化（分包传输且需要通知处理）
-                        case 6:
-                            writeLargeDataWithNotification(serviceUUID, characteristicUUID, false);
-                            break;
-                        default:
-                            break;
+                .setItems(R.array.device_options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            //读
+                            case 0:
+                                readData(serviceUUID, characteristicUUID);
+                                break;
+                            //写
+                            case 1:
+                                writeData(serviceUUID, characteristicUUID);
+                                break;
+                            //打开通知
+                            case 2:
+                                enableNotification(serviceUUID, characteristicUUID);
+                                break;
+                            //写入超长数据,自动格式化（分包传输）
+                            case 3:
+                                writeLargeData(serviceUUID, characteristicUUID, true);
+                                break;
+                            //写入超长数据，自动格式化（分包传输且需要通知处理）
+                            case 4:
+                                writeLargeDataWithNotification(serviceUUID, characteristicUUID, true);
+                                break;
+                            //写入超长数据,不自动格式化（分包传输）
+                            case 5:
+                                writeLargeData(serviceUUID, characteristicUUID, false);
+                                break;
+                            //写入超长数据，不自动格式化（分包传输且需要通知处理）
+                            case 6:
+                                writeLargeDataWithNotification(serviceUUID, characteristicUUID, false);
+                                break;
+                            default:
+                                break;
+                        }
                     }
                 })
                 .setCancelable(false)
@@ -789,7 +796,7 @@ public class ConnectActivity extends BaseAppCompatActivity {
                 .show();
     }
 
-    private void showWriteBigDataWithNotifyDialog(final String serviceUUID, final String characteristicUUID, final boolean autoFormat) {
+    private void showWriteBigDataWithNotifyDialog(final String serviceUuid, final String characteristicUuid, final boolean autoFormat) {
         final EditText editText = (EditText) View.inflate(this, R.layout.dialog_show_write_big_data_with_notify, null);
         EditTextWatcherForHexData editTextWatcherForHexData = new EditTextWatcherForHexData(editText);
         editText.addTextChangedListener(editTextWatcherForHexData);
@@ -797,28 +804,30 @@ public class ConnectActivity extends BaseAppCompatActivity {
         for (int i = 0; i < bytes.length; i++) {
             bytes[i] = (byte) i;
         }
-        editText.setText(ConversionUtil.bytesToHexStr(bytes));
+        editText.setText(ConversionUtil.byteArrayToHexStr(bytes));
         new AlertDialog.Builder(this)
                 .setTitle(R.string.input_data)
                 .setView(editText)
-                .setPositiveButton(R.string.ok, (dialog, which) -> {
-                    String text = editText.getText().toString();
-                    if ("".equals(text)) {
-                        ToastUtil.toastL(ConnectActivity.this, R.string.set_nothing);
-                        showWriteDataDialog(serviceUUID, characteristicUUID);
-                        return;
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String text = editText.getText().toString();
+                        if ("".equals(text)) {
+                            ToastUtil.toastLong(ConnectActivity.this, R.string.set_nothing);
+                            showWriteDataDialog(serviceUuid, characteristicUuid);
+                            return;
+                        }
+                        text = text.replace(" ", "");
+                        byte[] bytes1 = ConversionUtil.hexStrToByteArray(text);
+                        bleConnector.writeLargeDataWithNotification(serviceUuid, characteristicUuid, bytes1, defaultLargeDataWriteWithNotificationSendStateChangedListener, autoFormat);
                     }
-                    text = text.replace(" ", "");
-                    byte[] bytes1 = ConversionUtil.hexStrToBytes(text);
-                    bleConnector.writeLargeDataWithNotification(serviceUUID, characteristicUUID, bytes1, defaultLargeDataWriteWithNotificationSendStateChangedListener, autoFormat);
-
                 })
                 .setNegativeButton(R.string.cancel, null)
                 .setCancelable(false)
                 .show();
     }
 
-    private void showWriteBigDataDialog(final String serviceUUID, final String characteristicUUID, final boolean autoFormat) {
+    private void showWriteBigDataDialog(final String serviceUuid, final String characteristicUuid, final boolean autoFormat) {
         final EditText editText = (EditText) View.inflate(this, R.layout.dialog_show_write_big_data, null);
         EditTextWatcherForHexData editTextWatcherForHexData = new EditTextWatcherForHexData(editText);
         editText.addTextChangedListener(editTextWatcherForHexData);
@@ -826,47 +835,53 @@ public class ConnectActivity extends BaseAppCompatActivity {
         for (int i = 0; i < bytes.length; i++) {
             bytes[i] = (byte) i;
         }
-        editText.setText(ConversionUtil.bytesToHexStr(bytes));
+        editText.setText(ConversionUtil.byteArrayToHexStr(bytes));
         new AlertDialog.Builder(this)
                 .setTitle(R.string.input_data)
                 .setView(editText)
-                .setPositiveButton(R.string.ok, (dialog, which) -> {
-                    String text = editText.getText().toString();
-                    if ("".equals(text)) {
-                        ToastUtil.toastL(ConnectActivity.this, R.string.set_nothing);
-                        showWriteDataDialog(serviceUUID, characteristicUUID);
-                        return;
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String text = editText.getText().toString();
+                        if ("".equals(text)) {
+                            ToastUtil.toastLong(ConnectActivity.this, R.string.set_nothing);
+                            showWriteDataDialog(serviceUuid, characteristicUuid);
+                            return;
+                        }
+                        text = text.replace(" ", "");
+                        byte[] bytes1 = ConversionUtil.hexStrToByteArray(text);
+                        bleConnector.writeLargeData(serviceUuid, characteristicUuid, bytes1, defaultOnLargeDataSendStateChangedListener, autoFormat);
                     }
-                    text = text.replace(" ", "");
-                    byte[] bytes1 = ConversionUtil.hexStrToBytes(text);
-                    bleConnector.writeLargeData(serviceUUID, characteristicUUID, bytes1, defaultOnLargeDataSendStateChangedListener, autoFormat);
                 })
                 .setNegativeButton(R.string.cancel, null)
                 .setCancelable(false)
                 .show();
     }
 
-    private void showWriteDataDialog(final String serviceUUID, final String characteristicUUID) {
+    private void showWriteDataDialog(final String serviceUuid, final String characteristicUuid) {
         final EditText editText = (EditText) View.inflate(this, R.layout.dialog_show_write_data, null);
         EditTextWatcherForHexDataWithin20 editTextWatcherForHexData = new EditTextWatcherForHexDataWithin20(editText);
         editText.addTextChangedListener(editTextWatcherForHexData);
         new AlertDialog.Builder(this)
                 .setTitle(R.string.input_data)
                 .setView(editText)
-                .setPositiveButton(R.string.ok, (dialog, which) -> {
-                    String text = editText.getText().toString();
-                    if ("".equals(text)) {
-                        ToastUtil.toastL(ConnectActivity.this, R.string.set_nothing);
-                        showWriteDataDialog(serviceUUID, characteristicUUID);
-                        return;
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String text = editText.getText().toString();
+                        if ("".equals(text)) {
+                            ToastUtil.toastLong(ConnectActivity.this, R.string.set_nothing);
+                            showWriteDataDialog(serviceUuid, characteristicUuid);
+                            return;
+                        }
+                        text = text.replace(" ", "");
+                        byte[] bytes = ConversionUtil.hexStrToByteArray(text);
+                        boolean b = bleConnector.writeData(serviceUuid, characteristicUuid, bytes);
+                        if (!b) {
+                            ToastUtil.toastLong(ConnectActivity.this, R.string.write_failed);
+                        }
+                        ToastUtil.toastLong(ConnectActivity.this, R.string.writting_data);
                     }
-                    text = text.replace(" ", "");
-                    byte[] bytes = ConversionUtil.hexStrToBytes(text);
-                    boolean b = bleConnector.writeData(serviceUUID, characteristicUUID, bytes);
-                    if (!b) {
-                        ToastUtil.toastL(ConnectActivity.this, R.string.write_failed);
-                    }
-                    ToastUtil.toastL(ConnectActivity.this, R.string.writting_data);
                 })
                 .setNegativeButton(R.string.cancel, null)
                 .setCancelable(false)
@@ -902,20 +917,20 @@ public class ConnectActivity extends BaseAppCompatActivity {
 
     private void readData(String serviceUUID, String characteristicUUID) {
         if (!bleConnector.canRead(serviceUUID, characteristicUUID)) {
-            ToastUtil.toastL(ConnectActivity.this, R.string.read_not_support);
+            ToastUtil.toastLong(ConnectActivity.this, R.string.read_not_support);
             return;
         }
         boolean readData = bleConnector.readData(serviceUUID, characteristicUUID);
         if (!readData) {
-            ToastUtil.toastL(ConnectActivity.this, R.string.read_failed);
+            ToastUtil.toastLong(ConnectActivity.this, R.string.read_failed);
             return;
         }
-        ToastUtil.toastL(ConnectActivity.this, R.string.request_sent);
+        ToastUtil.toastLong(ConnectActivity.this, R.string.request_sent);
     }
 
     private void writeData(String serviceUUID, String characteristicUUID) {
         if (!bleConnector.canWrite(serviceUUID, characteristicUUID)) {
-            ToastUtil.toastL(ConnectActivity.this, R.string.write_not_support);
+            ToastUtil.toastLong(ConnectActivity.this, R.string.write_not_support);
             return;
         }
         showWriteDataDialog(serviceUUID, characteristicUUID);
@@ -923,7 +938,7 @@ public class ConnectActivity extends BaseAppCompatActivity {
 
     private void enableNotification(String serviceUUID, String characteristicUUID) {
         if (!bleConnector.canNotify(serviceUUID, characteristicUUID)) {
-            ToastUtil.toastL(ConnectActivity.this, R.string.notify_not_support);
+            ToastUtil.toastLong(ConnectActivity.this, R.string.notify_not_support);
             return;
         }
         bleConnector.addOnBleDescriptorWriteListener(new OnBleDescriptorWriteListener() {
@@ -936,21 +951,21 @@ public class ConnectActivity extends BaseAppCompatActivity {
              */
             @Override
             public void onBleDescriptorWrite(BluetoothGattDescriptor bluetoothGattDescriptor, byte[] data) {
-                ToastUtil.toastL(ConnectActivity.this, R.string.open_notification_success);
+                ToastUtil.toastLong(ConnectActivity.this, R.string.open_notification_success);
                 bleConnector.removeOnBleDescriptorWriteListener(this);
             }
         });
         boolean openNotification = bleConnector.enableNotification(serviceUUID, characteristicUUID, true);
         if (!openNotification) {
-            ToastUtil.toastL(ConnectActivity.this, R.string.open_notification_failed);
+            ToastUtil.toastLong(ConnectActivity.this, R.string.open_notification_failed);
             return;
         }
-        ToastUtil.toastL(ConnectActivity.this, R.string.request_sent);
+        ToastUtil.toastLong(ConnectActivity.this, R.string.request_sent);
     }
 
     private void writeLargeData(String serviceUUID, String characteristicUUID, boolean autoFormat) {
         if (!bleConnector.canWrite(serviceUUID, characteristicUUID)) {
-            ToastUtil.toastL(ConnectActivity.this, R.string.write_not_support);
+            ToastUtil.toastLong(ConnectActivity.this, R.string.write_not_support);
             return;
         }
         showWriteBigDataDialog(serviceUUID, characteristicUUID, autoFormat);
@@ -958,11 +973,11 @@ public class ConnectActivity extends BaseAppCompatActivity {
 
     private void writeLargeDataWithNotification(String serviceUUID, String characteristicUUID, boolean autoFormat) {
         if (!bleConnector.canWrite(serviceUUID, characteristicUUID)) {
-            ToastUtil.toastL(ConnectActivity.this, R.string.write_not_support);
+            ToastUtil.toastLong(ConnectActivity.this, R.string.write_not_support);
             return;
         }
         if (!bleConnector.canNotify(serviceUUID, characteristicUUID)) {
-            ToastUtil.toastL(ConnectActivity.this, R.string.notify_not_support);
+            ToastUtil.toastLong(ConnectActivity.this, R.string.notify_not_support);
             return;
         }
         showWriteBigDataWithNotifyDialog(serviceUUID, characteristicUUID, autoFormat);
@@ -971,87 +986,111 @@ public class ConnectActivity extends BaseAppCompatActivity {
     private void showAutoReconnectParamDialog() {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.auto_reconnect)
-                .setItems(R.array.connect_param_auto_reconnect, (dialog, which) -> {
-                    switch (which) {
-                        //自动重连为true
-                        case 0:
-                            autoReconnect = true;
-                            showTransportParamDialog();
-                            break;
-                        //自动重连为false
-                        case 1:
-                            autoReconnect = false;
-                            showTransportParamDialog();
-                            break;
-                        //跳过所有设置
-                        case 3:
-                        default:
-                            startConnect();
-                            break;
+                .setItems(R.array.connect_param_auto_reconnect, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            //自动重连为true
+                            case 0:
+                                autoReconnect = true;
+                                showTransportParamDialog();
+                                break;
+                            //自动重连为false
+                            case 1:
+                                autoReconnect = false;
+                                showTransportParamDialog();
+                                break;
+                            //跳过所有设置
+                            case 3:
+                            default:
+                                startConnect();
+                                break;
+                        }
                     }
                 })
                 .setCancelable(false)
-                .setNegativeButton(R.string.cancel, (dialog, which) -> onBackPressed())
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        onBackPressed();
+                    }
+                })
                 .show();
     }
 
     private void showTransportParamDialog() {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.select_transport)
-                .setItems(R.array.connect_param_transpost, (dialog, which) -> {
-                    switch (which) {
-                        //自动
-                        case 0:
-                            transport = Transport.TRANSPORT_AUTO;
-                            showPhyMaskParamDialog();
-                            break;
-                        //BREDR
-                        case 1:
-                            transport = Transport.TRANSPORT_BREDR;
-                            showPhyMaskParamDialog();
-                            break;
-                        //LE
-                        case 2:
-                            transport = Transport.TRANSPORT_LE;
-                            showPhyMaskParamDialog();
-                            break;
-                        case 3:
-                            startConnect();
-                        default:
-                            break;
+                .setItems(R.array.connect_param_transpost, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            //自动
+                            case 0:
+                                transport = Transport.TRANSPORT_AUTO;
+                                showPhyMaskParamDialog();
+                                break;
+                            //BREDR
+                            case 1:
+                                transport = Transport.TRANSPORT_BREDR;
+                                showPhyMaskParamDialog();
+                                break;
+                            //LE
+                            case 2:
+                                transport = Transport.TRANSPORT_LE;
+                                showPhyMaskParamDialog();
+                                break;
+                            case 3:
+                                startConnect();
+                            default:
+                                break;
+                        }
                     }
                 })
                 .setCancelable(false)
-                .setNegativeButton(R.string.cancel, (dialog, which) -> onBackPressed())
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        onBackPressed();
+                    }
+                })
                 .show();
     }
 
     private void showPhyMaskParamDialog() {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.select_phy_mask)
-                .setItems(R.array.connect_param_phy_mask, (dialog, which) -> {
-                    switch (which) {
-                        //LE_1M
-                        case 0:
-                            phyMask = PhyMask.PHY_LE_1M_MASK;
-                            break;
-                        //LE_2M
-                        case 1:
-                            phyMask = PhyMask.PHY_LE_2M_MASK;
-                            break;
-                        //CODED
-                        case 2:
-                            phyMask = PhyMask.PHY_LE_CODED_MASK;
-                            break;
-                        case 3:
-                        default:
-                            break;
-                    }
+                .setItems(R.array.connect_param_phy_mask, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            //LE_1M
+                            case 0:
+                                phyMask = PhyMask.PHY_LE_1M_MASK;
+                                break;
+                            //LE_2M
+                            case 1:
+                                phyMask = PhyMask.PHY_LE_2M_MASK;
+                                break;
+                            //CODED
+                            case 2:
+                                phyMask = PhyMask.PHY_LE_CODED_MASK;
+                                break;
+                            case 3:
+                            default:
+                                break;
+                        }
 
-                    startConnect();
+                        startConnect();
+                    }
                 })
                 .setCancelable(false)
-                .setNegativeButton(R.string.cancel, (dialog, which) -> onBackPressed())
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        onBackPressed();
+                    }
+                })
                 .show();
     }
 

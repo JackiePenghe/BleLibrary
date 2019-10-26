@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -134,7 +135,7 @@ public class AdRecordParseActivity extends BaseAppCompatActivity {
      * @return 只是重写 public boolean onCreateOptionsMenu(Menu menu)
      */
     @Override
-    protected boolean createOptionsMenu(Menu menu) {
+    protected boolean createOptionsMenu(@NonNull Menu menu) {
         return false;
     }
 
@@ -145,7 +146,7 @@ public class AdRecordParseActivity extends BaseAppCompatActivity {
      * @return true表示处理了监听事件
      */
     @Override
-    protected boolean optionsItemSelected(MenuItem item) {
+    protected boolean optionsItemSelected(@NonNull MenuItem item) {
         return false;
     }
 
@@ -169,7 +170,7 @@ public class AdRecordParseActivity extends BaseAppCompatActivity {
             return;
         }
         byte[] scanRecordBytes = bleDevice.getScanRecordBytes();
-        scanRecordEditText.setText(ConversionUtil.bytesToHexStr(scanRecordBytes));
+        scanRecordEditText.setText(ConversionUtil.byteArrayToHexStr(scanRecordBytes));
     }
 
     private void initRecyclerView() {

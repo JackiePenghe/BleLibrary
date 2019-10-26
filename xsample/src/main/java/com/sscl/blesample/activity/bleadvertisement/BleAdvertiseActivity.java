@@ -10,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
 import com.sscl.baselibrary.utils.DebugUtil;
 import com.sscl.baselibrary.utils.ToastUtil;
@@ -126,7 +128,7 @@ public class BleAdvertiseActivity extends BaseAppCompatActivity {
                 }
             }
         } else {
-            ToastUtil.toastL(BleAdvertiseActivity.this, "系统版本过低，不支持蓝牙广播");
+            ToastUtil.toastLong(BleAdvertiseActivity.this, "系统版本过低，不支持蓝牙广播");
         }
     }
 
@@ -207,7 +209,7 @@ public class BleAdvertiseActivity extends BaseAppCompatActivity {
      * @return 只是重写 public boolean onCreateOptionsMenu(Menu menu)
      */
     @Override
-    protected boolean createOptionsMenu(Menu menu) {
+    protected boolean createOptionsMenu(@NonNull Menu menu) {
         return false;
     }
 
@@ -218,7 +220,7 @@ public class BleAdvertiseActivity extends BaseAppCompatActivity {
      * @return true表示处理了监听事件
      */
     @Override
-    protected boolean optionsItemSelected(MenuItem item) {
+    protected boolean optionsItemSelected(@NonNull MenuItem item) {
         return false;
     }
 

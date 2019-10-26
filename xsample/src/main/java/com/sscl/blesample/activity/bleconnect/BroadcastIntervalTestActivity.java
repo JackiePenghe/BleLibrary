@@ -183,12 +183,18 @@ public class BroadcastIntervalTestActivity extends BaseAppCompatActivity {
     @Override
     protected void doAfterAll() {
         bleScanner.startScan();
-        Runnable runnable = () -> {
-            startTime++;
-            BleManager.getHandler().post(() -> {
-                timeTv.setText(String.format(Locale.getDefault(), "%d s", startTime));
-                setRssi();
-            });
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                startTime++;
+                BleManager.getHandler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        timeTv.setText(String.format(Locale.getDefault(), "%d s", startTime));
+                        setRssi();
+                    }
+                });
+            }
         };
         scheduledExecutorService.scheduleAtFixedRate(runnable, 0, 1, TimeUnit.SECONDS);
     }
@@ -200,7 +206,7 @@ public class BroadcastIntervalTestActivity extends BaseAppCompatActivity {
      * @return 只是重写 public boolean onCreateOptionsMenu(Menu menu)
      */
     @Override
-    protected boolean createOptionsMenu(Menu menu) {
+    protected boolean createOptionsMenu(@NonNull Menu menu) {
         return false;
     }
 
@@ -211,7 +217,7 @@ public class BroadcastIntervalTestActivity extends BaseAppCompatActivity {
      * @return true表示处理了监听事件
      */
     @Override
-    protected boolean optionsItemSelected(MenuItem item) {
+    protected boolean optionsItemSelected(@NonNull MenuItem item) {
         return false;
     }
 

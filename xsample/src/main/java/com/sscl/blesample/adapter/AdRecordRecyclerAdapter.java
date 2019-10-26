@@ -39,7 +39,7 @@ public class AdRecordRecyclerAdapter extends BaseQuickAdapter<AdvertiseRecord, B
             data = new byte[0];
         }
         helper.setText(R.id.length, String.valueOf(item.getLength()))
-                .setText(R.id.type, ConversionUtil.bytesToHexStr(new byte[]{item.getType()}))
-                .setText(R.id.data, ConversionUtil.bytesToHexStr(data));
+                .setText(R.id.type, ConversionUtil.byteArrayToHexStr(new byte[]{item.getType()}))
+                .setText(R.id.data, ConversionUtil.byteArrayToHexStr(data));
     }
 }

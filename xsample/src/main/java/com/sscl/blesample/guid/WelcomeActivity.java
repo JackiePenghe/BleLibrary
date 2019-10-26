@@ -45,7 +45,7 @@ public class WelcomeActivity extends BaseWelcomeActivity {
         @Override
         public void onAction(List<String> deniedPermissions) {
             if (!AndPermission.hasAlwaysDeniedPermission(WelcomeActivity.this, deniedPermissions)) {
-                ToastUtil.toastL(WelcomeActivity.this, R.string.no_permission_exits);
+                ToastUtil.toastLong(WelcomeActivity.this, R.string.no_permission_exits);
                 finish();
             } else {
                 List<String> strings = Permission.transformText(WelcomeActivity.this, deniedPermissions);
@@ -109,7 +109,7 @@ public class WelcomeActivity extends BaseWelcomeActivity {
             NotificationManagerCompat manager = NotificationManagerCompat.from(WelcomeActivity.this.getApplicationContext());
             boolean isOpened = manager.areNotificationsEnabled();
             if (!isOpened) {
-                ToastUtil.toastL(WelcomeActivity.this, R.string.no_notification_permission);
+                ToastUtil.toastLong(WelcomeActivity.this, R.string.no_notification_permission);
                 //去打开通知权限
                 showOpenNotificationPermissionDialog();
                 return;
