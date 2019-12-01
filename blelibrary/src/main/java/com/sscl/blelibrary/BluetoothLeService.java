@@ -358,6 +358,9 @@ public final class BluetoothLeService extends Service {
             return false;
         }
         BluetoothGattCharacteristic bluetoothGattCharacteristic = bluetoothGattService.getCharacteristic(UUID.fromString(characteristicUuid));
+        if (bluetoothGattCharacteristic == null) {
+            return false;
+        }
         if (!bluetoothGatt.setCharacteristicNotification(bluetoothGattCharacteristic, enable)) {
             return false;
         }
