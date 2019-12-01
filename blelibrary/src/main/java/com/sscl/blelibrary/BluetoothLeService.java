@@ -154,7 +154,7 @@ public final class BluetoothLeService extends Service {
      *
      * @return true means initialization successful
      */
-    boolean initialize() {
+    synchronized boolean initialize() {
 
         bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
 
@@ -184,7 +184,7 @@ public final class BluetoothLeService extends Service {
      *                      BluetoothDevice#PHY_LE_CODED_MASK}. This option does not take effect if {@code autoConnect}
      * @return true means request successful
      */
-    boolean connect(@NonNull String address, boolean autoReconnect, @Nullable Transport transport, @Nullable PhyMask phyMask) {
+    synchronized boolean connect(@NonNull String address, boolean autoReconnect, @Nullable Transport transport, @Nullable PhyMask phyMask) {
         if (bluetoothAdapter == null) {
             return false;
         }
@@ -212,7 +212,7 @@ public final class BluetoothLeService extends Service {
      *                        BluetoothDevice#PHY_LE_CODED_MASK}. This option does not take effect if {@code autoConnect}
      * @return true means request successful.
      */
-    boolean connect(@NonNull BluetoothDevice bluetoothDevice, boolean autoReconnect, @Nullable Transport transport, @Nullable PhyMask phyMask) {
+    synchronized boolean connect(@NonNull BluetoothDevice bluetoothDevice, boolean autoReconnect, @Nullable Transport transport, @Nullable PhyMask phyMask) {
         if (bluetoothAdapter == null) {
             return false;
         }
@@ -245,7 +245,7 @@ public final class BluetoothLeService extends Service {
      *
      * @return true means request successful.
      */
-    boolean disconnect() {
+    synchronized boolean disconnect() {
         if (bluetoothGatt == null) {
             return false;
         }
@@ -258,7 +258,7 @@ public final class BluetoothLeService extends Service {
      *
      * @return true means close Gatt successful
      */
-    boolean closeGatt() {
+    synchronized boolean closeGatt() {
         if (bluetoothGatt == null) {
             return false;
         }
@@ -282,7 +282,7 @@ public final class BluetoothLeService extends Service {
      * @param data               data
      * @return true means request successful
      */
-    boolean writeData(@NonNull String serviceUuid, @NonNull String characteristicUuid, @NonNull byte[] data) {
+    synchronized boolean writeData(@NonNull String serviceUuid, @NonNull String characteristicUuid, @NonNull byte[] data) {
         DebugUtil.warnOut(TAG, "bluetoothGatt == " + bluetoothGatt);
         if (bluetoothGatt == null) {
             return false;
@@ -320,7 +320,7 @@ public final class BluetoothLeService extends Service {
      * @param characteristicUuid characteristic UUID
      * @return true means request successful
      */
-    boolean readData(@NonNull String serviceUuid, @NonNull String characteristicUuid) {
+    synchronized boolean readData(@NonNull String serviceUuid, @NonNull String characteristicUuid) {
         if (bluetoothGatt == null) {
             return false;
         }
@@ -349,7 +349,7 @@ public final class BluetoothLeService extends Service {
      * @param enable             true means enable notification,false means disable notification
      * @return true means successful
      */
-    boolean enableNotification(@NonNull String serviceUuid, @NonNull String characteristicUuid, boolean enable) {
+    synchronized boolean enableNotification(@NonNull String serviceUuid, @NonNull String characteristicUuid, boolean enable) {
         if (bluetoothGatt == null) {
             return false;
         }
@@ -375,7 +375,7 @@ public final class BluetoothLeService extends Service {
      *
      * @return true means request successful
      */
-    boolean getRssi() {
+    synchronized boolean getRssi() {
         if (bluetoothGatt == null) {
             return false;
         }
@@ -388,7 +388,7 @@ public final class BluetoothLeService extends Service {
      *
      * @return true means successful.
      */
-    boolean refreshGattCache() {
+    synchronized boolean refreshGattCache() {
         if (bluetoothGatt == null) {
             return false;
         }
@@ -413,7 +413,7 @@ public final class BluetoothLeService extends Service {
      * @return service Bluetooth Gatt list
      */
     @Nullable
-    List<BluetoothGattService> getServices() {
+    synchronized List<BluetoothGattService> getServices() {
         if (bluetoothGatt == null) {
             return null;
         }
@@ -427,7 +427,7 @@ public final class BluetoothLeService extends Service {
      * @return Bluetooth Gatt Service
      */
     @Nullable
-    BluetoothGattService getService(UUID uuid) {
+    synchronized BluetoothGattService getService(UUID uuid) {
         if (bluetoothGatt == null) {
             return null;
         }
@@ -441,7 +441,7 @@ public final class BluetoothLeService extends Service {
      * @return true means request send successful.
      */
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    boolean requestMtu(int mtu) {
+    synchronized boolean requestMtu(int mtu) {
         return bluetoothGatt != null && bluetoothGatt.requestMtu(mtu);
     }
 
@@ -451,7 +451,7 @@ public final class BluetoothLeService extends Service {
      * @return BluetoothGatt instance
      */
     @Nullable
-    BluetoothGatt getBluetoothGatt() {
+    synchronized BluetoothGatt getBluetoothGatt() {
         return bluetoothGatt;
     }
 
@@ -461,7 +461,7 @@ public final class BluetoothLeService extends Service {
      * @param characteristic BluetoothGattCharacteristic
      * @return true means support
      */
-    boolean canNotify(@NonNull BluetoothGattCharacteristic characteristic) {
+    synchronized boolean canNotify(@NonNull BluetoothGattCharacteristic characteristic) {
         int properties = characteristic.getProperties();
         return (properties & BluetoothGattCharacteristic.PROPERTY_NOTIFY) != 0;
     }
@@ -472,7 +472,7 @@ public final class BluetoothLeService extends Service {
      * @param characteristic BluetoothGattCharacteristic
      * @return true means support
      */
-    boolean canRead(@NonNull BluetoothGattCharacteristic characteristic) {
+    synchronized boolean canRead(@NonNull BluetoothGattCharacteristic characteristic) {
         int properties = characteristic.getProperties();
         return (properties & BluetoothGattCharacteristic.PROPERTY_READ) != 0;
     }
@@ -483,7 +483,7 @@ public final class BluetoothLeService extends Service {
      * @param characteristic BluetoothGattCharacteristic
      * @return true means support
      */
-    boolean canSignedWrite(@NonNull BluetoothGattCharacteristic characteristic) {
+    synchronized boolean canSignedWrite(@NonNull BluetoothGattCharacteristic characteristic) {
         int properties = characteristic.getProperties();
         return (properties & BluetoothGattCharacteristic.PROPERTY_SIGNED_WRITE) != 0;
     }
@@ -494,7 +494,7 @@ public final class BluetoothLeService extends Service {
      * @param characteristic BluetoothGattCharacteristic
      * @return true means support
      */
-    boolean canWrite(@NonNull BluetoothGattCharacteristic characteristic) {
+    synchronized boolean canWrite(@NonNull BluetoothGattCharacteristic characteristic) {
         int properties = characteristic.getProperties();
         return (properties & BluetoothGattCharacteristic.PROPERTY_WRITE) != 0;
     }
@@ -505,7 +505,7 @@ public final class BluetoothLeService extends Service {
      * @param characteristic BluetoothGattCharacteristic
      * @return true means support
      */
-    boolean canWriteNoResponse(@NonNull BluetoothGattCharacteristic characteristic) {
+    synchronized boolean canWriteNoResponse(@NonNull BluetoothGattCharacteristic characteristic) {
 
         int properties = characteristic.getProperties();
         return (properties & BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE) != 0;
@@ -516,7 +516,7 @@ public final class BluetoothLeService extends Service {
      *
      * @return true means remote device is connected
      */
-    boolean isConnected() {
+    synchronized boolean isConnected() {
         return bluetoothGatt != null && bleBluetoothGattCallback.isConnected();
     }
 
@@ -525,7 +525,7 @@ public final class BluetoothLeService extends Service {
      *
      * @return true means remote device is discovered
      */
-    boolean isServiceDiscovered() {
+    synchronized boolean isServiceDiscovered() {
         return bluetoothGatt != null && bleBluetoothGattCallback.isServiceDiscovered();
     }
 
@@ -535,7 +535,7 @@ public final class BluetoothLeService extends Service {
      * @param onBleDescriptorWriteListener callback triggered when descriptor write successful
      * @return true means successful
      */
-    boolean addOnBleDescriptorWriteListener(@NonNull OnBleDescriptorWriteListener onBleDescriptorWriteListener) {
+    synchronized boolean addOnBleDescriptorWriteListener(@NonNull OnBleDescriptorWriteListener onBleDescriptorWriteListener) {
         return bleBluetoothGattCallback.addOnBleDescriptorWriteListener(onBleDescriptorWriteListener);
     }
 
@@ -545,7 +545,7 @@ public final class BluetoothLeService extends Service {
      * @param onBleDescriptorWriteListener callback triggered when descriptor write successful
      * @return true means successful
      */
-    boolean removeOnBleDescriptorWriteListener(@NonNull OnBleDescriptorWriteListener onBleDescriptorWriteListener) {
+    synchronized boolean removeOnBleDescriptorWriteListener(@NonNull OnBleDescriptorWriteListener onBleDescriptorWriteListener) {
         return bleBluetoothGattCallback.removeOnBleDescriptorWriteListener(onBleDescriptorWriteListener);
     }
 
@@ -555,7 +555,7 @@ public final class BluetoothLeService extends Service {
      * @param onBleReceiveNotificationListener callback triggered when descriptor write successful
      * @return true means successful
      */
-    boolean addOnBleReceiveNotificationListener(@NonNull OnBleReceiveNotificationListener onBleReceiveNotificationListener) {
+    synchronized boolean addOnBleReceiveNotificationListener(@NonNull OnBleReceiveNotificationListener onBleReceiveNotificationListener) {
         return bleBluetoothGattCallback.addOnBleReceiveNotificationListener(onBleReceiveNotificationListener);
     }
 
@@ -565,7 +565,7 @@ public final class BluetoothLeService extends Service {
      * @param onBleReceiveNotificationListener callback triggered when received notification data
      * @return true means successful
      */
-    boolean removeOnBleReceiveNotificationListener(@NonNull OnBleReceiveNotificationListener onBleReceiveNotificationListener) {
+    synchronized boolean removeOnBleReceiveNotificationListener(@NonNull OnBleReceiveNotificationListener onBleReceiveNotificationListener) {
         return bleBluetoothGattCallback.removeOnBleReceiveNotificationListener(onBleReceiveNotificationListener);
     }
 
@@ -575,7 +575,7 @@ public final class BluetoothLeService extends Service {
      * @param onBleCharacteristicWriteListener callback triggered when gatt characteristic write data successful
      * @return true means successful
      */
-    boolean addOnBleCharacteristicWriteListener(@NonNull OnBleCharacteristicWriteListener onBleCharacteristicWriteListener) {
+    synchronized boolean addOnBleCharacteristicWriteListener(@NonNull OnBleCharacteristicWriteListener onBleCharacteristicWriteListener) {
         return bleBluetoothGattCallback.addOnBleCharacteristicWriteListener(onBleCharacteristicWriteListener);
     }
 
@@ -585,7 +585,7 @@ public final class BluetoothLeService extends Service {
      * @param onBleCharacteristicWriteListener callback triggered when gatt characteristic write data successful
      * @return true means successful
      */
-    boolean removeOnBleCharacteristicWriteListener(@NonNull OnBleCharacteristicWriteListener onBleCharacteristicWriteListener) {
+    synchronized boolean removeOnBleCharacteristicWriteListener(@NonNull OnBleCharacteristicWriteListener onBleCharacteristicWriteListener) {
         return bleBluetoothGattCallback.removeOnBleCharacteristicWriteListener(onBleCharacteristicWriteListener);
     }
 
@@ -594,7 +594,7 @@ public final class BluetoothLeService extends Service {
      *
      * @param onBleConnectStateChangedListener BLE device connect status changed listener
      */
-    void setOnBleConnectStateChangedListener(@Nullable OnBleConnectStateChangedListener onBleConnectStateChangedListener) {
+    synchronized void setOnBleConnectStateChangedListener(@Nullable OnBleConnectStateChangedListener onBleConnectStateChangedListener) {
         bleBluetoothGattCallback.setOnBleConnectStateChangedListener(onBleConnectStateChangedListener);
 
     }
@@ -619,7 +619,7 @@ public final class BluetoothLeService extends Service {
      *
      * @return true, if the reliable write transaction has been initiated
      */
-    boolean beginReliableWrite() {
+    synchronized boolean beginReliableWrite() {
         if (bluetoothGatt == null) {
             return false;
         }
@@ -635,7 +635,7 @@ public final class BluetoothLeService extends Service {
      * <p>Requires {@link Manifest.permission#BLUETOOTH} permission.
      */
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    boolean abortReliableWrite() {
+    synchronized boolean abortReliableWrite() {
         if (bluetoothGatt == null) {
             return false;
         }
@@ -656,7 +656,7 @@ public final class BluetoothLeService extends Service {
      *
      * @return true, if the remote service discovery has been started
      */
-    boolean discoverServices() {
+    synchronized boolean discoverServices() {
         if (bluetoothGatt == null) {
             return false;
         }
@@ -676,7 +676,7 @@ public final class BluetoothLeService extends Service {
      *
      * @return true, if the request to execute the transaction has been sent
      */
-    boolean executeReliableWrite() {
+    synchronized boolean executeReliableWrite() {
         if (bluetoothGatt == null) {
             return false;
         }

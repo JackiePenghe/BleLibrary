@@ -121,39 +121,21 @@ public final class BleConnector implements Connector {
 
     /*-----------------------------------package private setter-----------------------------------*/
 
-    /**
-     * set BluetoothLeService
-     *
-     * @param bluetoothLeService BluetoothLeService
-     */
-    void setBluetoothLeService(@Nullable BluetoothLeService bluetoothLeService) {
-        this.bluetoothLeService = bluetoothLeService;
-        if (this.bluetoothLeService != null) {
-            this.bluetoothLeService.setOnBleConnectStateChangedListener(onBleConnectStateChangedListener);
-        }
-    }
+//    /**
+//     * set BluetoothLeService
+//     *
+//     * @param bluetoothLeService BluetoothLeService
+//     */
+//    synchronized void setBluetoothLeService(@Nullable BluetoothLeService bluetoothLeService) {
+//        this.bluetoothLeService = bluetoothLeService;
+//        if (this.bluetoothLeService != null) {
+//            this.bluetoothLeService.setOnBleConnectStateChangedListener(onBleConnectStateChangedListener);
+//        }
+//    }
 
     /*-----------------------------------setter and getter-----------------------------------*/
 
-    /**
-     * set connect timeout
-     *
-     * @param connectTimeOut timeout(unit:ms)
-     */
-    public void setConnectTimeOut(@IntRange(from = 0) long connectTimeOut) {
-        this.connectTimeOut = connectTimeOut;
-    }
-
-    /**
-     * set large data send timeout
-     *
-     * @param sendLargeDataTimeOut timeout(unit:ms)
-     */
-    public void setSendLargeDataTimeOut(@IntRange(from = 0) long sendLargeDataTimeOut) {
-        this.sendLargeDataTimeOut = sendLargeDataTimeOut;
-    }
-
-    public int getSendLargeDataPackageDelayTime() {
+    public synchronized int getSendLargeDataPackageDelayTime() {
         return sendLargeDataPackageDelayTime;
     }
 
@@ -162,8 +144,17 @@ public final class BleConnector implements Connector {
      *
      * @return timeout value
      */
-    public long getConnectTimeOut() {
+    public synchronized long getConnectTimeOut() {
         return connectTimeOut;
+    }
+
+    /**
+     * set connect timeout
+     *
+     * @param connectTimeOut timeout(unit:ms)
+     */
+    public synchronized void setConnectTimeOut(@IntRange(from = 0) long connectTimeOut) {
+        this.connectTimeOut = connectTimeOut;
     }
 
     /**
@@ -171,8 +162,17 @@ public final class BleConnector implements Connector {
      *
      * @return timeout for sending large data pack
      */
-    public long getSendLargeDataTimeOut() {
+    public synchronized long getSendLargeDataTimeOut() {
         return sendLargeDataTimeOut;
+    }
+
+    /**
+     * set large data send timeout
+     *
+     * @param sendLargeDataTimeOut timeout(unit:ms)
+     */
+    public synchronized void setSendLargeDataTimeOut(@IntRange(from = 0) long sendLargeDataTimeOut) {
+        this.sendLargeDataTimeOut = sendLargeDataTimeOut;
     }
 
     /**
@@ -181,7 +181,7 @@ public final class BleConnector implements Connector {
      * @return BluetoothLeService
      */
     @Nullable
-    public BluetoothLeService getBluetoothLeService() {
+    public synchronized BluetoothLeService getBluetoothLeService() {
         return bluetoothLeService;
     }
 
@@ -191,7 +191,7 @@ public final class BleConnector implements Connector {
      * @return Bluetooth Adapter
      */
     @Nullable
-    public BluetoothAdapter getBluetoothAdapter() {
+    public synchronized BluetoothAdapter getBluetoothAdapter() {
         if (bluetoothLeService == null) {
             return null;
         }
@@ -209,7 +209,7 @@ public final class BleConnector implements Connector {
      */
     @Override
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    public boolean requestMtu(int mtu) {
+    public synchronized boolean requestMtu(int mtu) {
         return bluetoothLeService != null && bluetoothLeService.requestMtu(mtu);
     }
 
@@ -229,7 +229,7 @@ public final class BleConnector implements Connector {
 
     @Override
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public int startBound(@NonNull String address) {
+    public synchronized int startBound(@NonNull String address) {
         //Register a broadcast receiver for bound to BLE bleDevice
         BleManager.getContext().registerReceiver(boundBleBroadcastReceiver, makeBoundBLEIntentFilter());
         if (BleManager.getContext() == null) {
@@ -275,7 +275,7 @@ public final class BleConnector implements Connector {
      * @return true means disconnect success
      */
     @Override
-    public boolean disconnect() {
+    public synchronized boolean disconnect() {
         return bluetoothLeService != null && bluetoothLeService.disconnect();
     }
 
@@ -391,7 +391,7 @@ public final class BleConnector implements Connector {
      * @return true means request successful
      */
     @Override
-    public boolean connect(@NonNull final String address, final boolean autoReconnect, @Nullable Transport transport, @Nullable PhyMask phyMask) {
+    public synchronized boolean connect(@NonNull final String address, final boolean autoReconnect, @Nullable Transport transport, @Nullable PhyMask phyMask) {
         if (!isInitialized()) {
             return false;
         }
@@ -516,7 +516,7 @@ public final class BleConnector implements Connector {
      * @return true means request successful.
      */
     @Override
-    public boolean connect(@NonNull final BluetoothDevice bluetoothDevice, final boolean autoReconnect, @Nullable Transport transport, @Nullable PhyMask phyMask) {
+    public synchronized boolean connect(@NonNull final BluetoothDevice bluetoothDevice, final boolean autoReconnect, @Nullable Transport transport, @Nullable PhyMask phyMask) {
         if (!isInitialized()) {
             return false;
         }
