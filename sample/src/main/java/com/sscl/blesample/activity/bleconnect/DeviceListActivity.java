@@ -164,7 +164,9 @@ public class DeviceListActivity extends BaseAppCompatActivity {
                     return;
                 }
             }
-
+            if (adapterList == null) {
+                return;
+            }
             //只要发现一个设备就会回调此函数
             if (!adapterList.contains(bleDevice)) {
                 adapterList.add(bleDevice);

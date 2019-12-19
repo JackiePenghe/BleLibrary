@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BleSample x</string>
+    <string name="app_name" translatable="false">BleSample</string>
     <string name="simple_use">Simple use</string>
     <string name="no_permission_for_local">You don\'t have location permissions to search</string>
     <string name="stop_scan">Stop search</string>
