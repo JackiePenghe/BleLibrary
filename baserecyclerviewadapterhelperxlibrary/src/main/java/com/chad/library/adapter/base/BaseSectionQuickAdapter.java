@@ -2,11 +2,11 @@ package com.chad.library.adapter.base;
 
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+
 import com.chad.library.adapter.base.entity.SectionEntity;
 
 import java.util.List;
-
-import androidx.annotation.NonNull;
 
 /**
  * https://github.com/CymChad/BaseRecyclerViewAdapterHelper

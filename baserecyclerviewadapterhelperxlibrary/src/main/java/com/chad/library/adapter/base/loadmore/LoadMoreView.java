@@ -1,10 +1,10 @@
 package com.chad.library.adapter.base.loadmore;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
-
 import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
+
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 
 /**
  * Created by BlingBling on 2016/11/11.

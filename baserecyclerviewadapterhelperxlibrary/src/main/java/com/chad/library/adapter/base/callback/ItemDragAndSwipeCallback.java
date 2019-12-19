@@ -3,13 +3,13 @@ package com.chad.library.adapter.base.callback;
 import android.graphics.Canvas;
 import android.view.View;
 
-import com.chad.library.R;
-import com.chad.library.adapter.base.BaseItemDraggableAdapter;
-import com.chad.library.adapter.base.BaseQuickAdapter;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.chad.library.R;
+import com.chad.library.adapter.base.BaseItemDraggableAdapter;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 
 /**
  * Created by luoxw on 2016/6/20.

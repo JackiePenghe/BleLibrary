@@ -10,8 +10,8 @@ android {
     defaultConfig {
         minSdkVersion 18
         targetSdkVersion 29
-        versionCode 12
-        versionName "0.0.12"
+        versionCode 15
+        versionName "0.0.15"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -31,13 +31,13 @@ dependencies {
 }
 
 
-version = "0.0.12"
+version = "0.0.15"
 
 def siteUrl = 'https://github.com/JackiePenghe/BleSample'
 def gitUrl = 'https://github.com/JackiePenghe/BleSample.git'
 
 //noinspection GroovyUnusedAssignment
-group = "com.sscl.blelibrary"
+group = "com.sscl"
 
 install {
     repositories.mavenInstaller {
@@ -110,7 +110,7 @@ bintray {
     configurations = ['archives']
     pkg {
         repo = "maven"
-        name = "blelibrary-x"
+        name = "blelibrary"
         userOrg = 'sscl'
         websiteUrl = siteUrl
         vcsUrl = gitUrl
