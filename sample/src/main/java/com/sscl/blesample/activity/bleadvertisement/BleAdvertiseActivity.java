@@ -1,29 +1,32 @@
 package com.sscl.blesample.activity.bleadvertisement;
 
-import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.BluetoothGattServer;
-import android.bluetooth.BluetoothGattService;
 import android.bluetooth.le.AdvertiseSettings;
 import android.bluetooth.le.BluetoothLeAdvertiser;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
+import com.sscl.baselibrary.exception.WrongByteArrayLengthException;
+import com.sscl.baselibrary.textwatcher.HexTextAutoAddEmptyCharInputWatcher;
+import com.sscl.baselibrary.utils.ConversionUtil;
 import com.sscl.baselibrary.utils.DebugUtil;
 import com.sscl.baselibrary.utils.ToastUtil;
 import com.sscl.blelibrary.AdvertiseData;
 import com.sscl.blelibrary.BleAdvertiser;
 import com.sscl.blelibrary.BleManager;
 import com.sscl.blelibrary.enums.BleAdvertiseMode;
+import com.sscl.blelibrary.enums.BleAdvertiseTxPowerLevel;
 import com.sscl.blesample.R;
 import com.sscl.blesample.callback.DefaultOnBleAdvertiseStateChangedListener;
 import com.sscl.blesample.callback.DefaultOnConnectedByOtherDevicesListener;
-
-import java.util.UUID;
 
 /**
  * @author jacke
@@ -95,41 +98,41 @@ public class BleAdvertiseActivity extends BaseAppCompatActivity {
      */
     @Override
     protected void doBeforeSetLayout() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            bleAdvertiser = BleManager.getBleAdvertiserInstance();
-            if (bleAdvertiser == null) {
-                return;
-            }
-            byte[] bytes = new byte[4];
-            for (int i = 0; i < bytes.length; i++) {
-                bytes[i] = (byte) 0xFF;
-            }
-            AdvertiseData advertiseData = new AdvertiseData(0x0000FFFF, bytes);
-            bleAdvertiser.addAdvertiseDataAdvertiseRecord(advertiseData);
-            bleAdvertiser.setAdvertiseDataIncludeDeviceName(true);
-            bleAdvertiser.setScanResponseIncludeDeviceName(false);
-            bleAdvertiser.setAdvertiseDataIncludeTxPowerLevel(true);
-            bleAdvertiser.setBleAdvertiseMode(BleAdvertiseMode.LOW_LATENCY);
-            bleAdvertiser.setConnectable(false);
-            bleAdvertiser.setOnBleAdvertiseStateChangedListener(defaultOnBleAdvertiseStateChangedListener);
-            bleAdvertiser.setTimeOut(20000);
-            //初始化
-            if (!bleAdvertiser.init()) {
-                DebugUtil.warnOut(TAG, "初始化失败");
-            } else {
-                DebugUtil.warnOut(TAG, "初始化成功");
-                bleAdvertiser.setOnBluetoothGattServerCallbackListener(defaultOnBluetoothGattServerCallbackListener);
-                BluetoothGattServer bluetoothGattServer = bleAdvertiser.getBluetoothGattServer();
-                if (bluetoothGattServer != null) {
-                    BluetoothGattService bluetoothGattService1 = new BluetoothGattService(UUID.fromString("0000fff0-0000-1000-8000-00805f9b34fb"), BluetoothGattService.SERVICE_TYPE_PRIMARY);
-                    BluetoothGattCharacteristic bluetoothGattCharacteristic = new BluetoothGattCharacteristic(UUID.fromString("0000fff1-0000-1000-8000-00805f9b34fb"), BluetoothGattCharacteristic.PROPERTY_READ | BluetoothGattCharacteristic.PROPERTY_WRITE | BluetoothGattCharacteristic.PROPERTY_NOTIFY, BluetoothGattCharacteristic.PERMISSION_READ | BluetoothGattCharacteristic.PERMISSION_WRITE);
-                    bluetoothGattService1.addCharacteristic(bluetoothGattCharacteristic);
-                    bluetoothGattServer.addService(bluetoothGattService1);
-                }
-            }
-        } else {
-            ToastUtil.toastLong(BleAdvertiseActivity.this, "系统版本过低，不支持蓝牙广播");
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            bleAdvertiser = BleManager.getBleAdvertiserInstance();
+//            if (bleAdvertiser == null) {
+//                return;
+//            }
+//            byte[] bytes = new byte[4];
+//            for (int i = 0; i < bytes.length; i++) {
+//                bytes[i] = (byte) 0xFF;
+//            }
+//            AdvertiseData advertiseData = new AdvertiseData(0x0000FFFF, bytes);
+//            bleAdvertiser.addAdvertiseDataAdvertiseRecord(advertiseData);
+//            bleAdvertiser.setAdvertiseDataIncludeDeviceName(true);
+//            bleAdvertiser.setScanResponseIncludeDeviceName(false);
+//            bleAdvertiser.setAdvertiseDataIncludeTxPowerLevel(true);
+//            bleAdvertiser.setBleAdvertiseMode(BleAdvertiseMode.LOW_LATENCY);
+//            bleAdvertiser.setConnectable(false);
+//            bleAdvertiser.setOnBleAdvertiseStateChangedListener(defaultOnBleAdvertiseStateChangedListener);
+//            bleAdvertiser.setTimeOut(20000);
+//            //初始化
+//            if (!bleAdvertiser.init()) {
+//                DebugUtil.warnOut(TAG, "初始化失败");
+//            } else {
+//                DebugUtil.warnOut(TAG, "初始化成功");
+//                bleAdvertiser.setOnBluetoothGattServerCallbackListener(defaultOnBluetoothGattServerCallbackListener);
+//                BluetoothGattServer bluetoothGattServer = bleAdvertiser.getBluetoothGattServer();
+//                if (bluetoothGattServer != null) {
+//                    BluetoothGattService bluetoothGattService1 = new BluetoothGattService(UUID.fromString("0000fff0-0000-1000-8000-00805f9b34fb"), BluetoothGattService.SERVICE_TYPE_PRIMARY);
+//                    BluetoothGattCharacteristic bluetoothGattCharacteristic = new BluetoothGattCharacteristic(UUID.fromString("0000fff1-0000-1000-8000-00805f9b34fb"), BluetoothGattCharacteristic.PROPERTY_READ | BluetoothGattCharacteristic.PROPERTY_WRITE | BluetoothGattCharacteristic.PROPERTY_NOTIFY, BluetoothGattCharacteristic.PERMISSION_READ | BluetoothGattCharacteristic.PERMISSION_WRITE);
+//                    bluetoothGattService1.addCharacteristic(bluetoothGattCharacteristic);
+//                    bluetoothGattServer.addService(bluetoothGattService1);
+//                }
+//            }
+//        } else {
+//            ToastUtil.toastLong(BleAdvertiseActivity.this, "系统版本过低，不支持蓝牙广播");
+//        }
     }
 
 
@@ -188,17 +191,21 @@ public class BleAdvertiseActivity extends BaseAppCompatActivity {
      */
     @Override
     protected void doAfterAll() {
-        if (bleAdvertiser != null) {
-            boolean b = false;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                b = bleAdvertiser.startAdvertising();
-            }
-            if (b) {
-                DebugUtil.warnOut(TAG, "广播请求发起成功（是否真的成功，在init的advertiseCallback回调中查看）");
-            } else {
-                DebugUtil.warnOut(TAG, "广播请求发起失败（这是真的失败了，连请求都没有发起成功）");
-            }
-            DebugUtil.warnOut(TAG, "startAdvertising = " + b);
+//        if (bleAdvertiser != null) {
+//            boolean b = false;
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                b = bleAdvertiser.startAdvertising();
+//            }
+//            if (b) {
+//                DebugUtil.warnOut(TAG, "广播请求发起成功（是否真的成功，在init的advertiseCallback回调中查看）");
+//            } else {
+//                DebugUtil.warnOut(TAG, "广播请求发起失败（这是真的失败了，连请求都没有发起成功）");
+//            }
+//            DebugUtil.warnOut(TAG, "startAdvertising = " + b);
+//        }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            ToastUtil.toastLong(BleAdvertiseActivity.this, "系统版本过低，不支持蓝牙广播");
+            onBackPressed();
         }
     }
 
@@ -210,7 +217,8 @@ public class BleAdvertiseActivity extends BaseAppCompatActivity {
      */
     @Override
     protected boolean createOptionsMenu(@NonNull Menu menu) {
-        return false;
+        getMenuInflater().inflate(R.menu.activity_ble_advertise, menu);
+        return true;
     }
 
     /**
@@ -221,7 +229,20 @@ public class BleAdvertiseActivity extends BaseAppCompatActivity {
      */
     @Override
     protected boolean optionsItemSelected(@NonNull MenuItem item) {
-        return false;
+        switch (item.getItemId()) {
+            case R.id.set_advertise_content:
+                showSetContentDialog();
+                break;
+            case R.id.start_advertise:
+                startAdvertise();
+                break;
+            case R.id.stop_advertise:
+                stopAdvertiser();
+                break;
+            default:
+                return false;
+        }
+        return true;
     }
 
     /**
@@ -247,6 +268,100 @@ public class BleAdvertiseActivity extends BaseAppCompatActivity {
         super.onDestroy();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             BleManager.releaseBleAdvertiserInstance();
+        }
+    }
+
+
+    /**
+     * 显示设置广播内容的对话框
+     */
+    private void showSetContentDialog() {
+//        final AdStructureView adStructureView = (AdStructureView) View.inflate(this, R.layout.dialog_set_advertise_content, null);
+        final EditText editText = (EditText) View.inflate(this, R.layout.dialog_set_advertise_content, null);
+        editText.addTextChangedListener(new HexTextAutoAddEmptyCharInputWatcher(editText, 25));
+        new AlertDialog.Builder(this).
+                setTitle(R.string.set_advertise_content)
+//                .setView(adStructureView)
+                .setView(editText)
+                .setCancelable(false)
+                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            String content = editText.getText().toString();
+                            if (content.isEmpty()) {
+                                ToastUtil.toastLong(BleAdvertiseActivity.this, R.string.init_advertiser_failed);
+                                return;
+                            }
+                            byte[] bytes = ConversionUtil.hexStringToByteArray(content);
+                            if (bytes == null) {
+                                return;
+                            }
+                            if (bytes.length < 3) {
+                                ToastUtil.toastLong(BleAdvertiseActivity.this, R.string.min_length);
+                                return;
+                            }
+                            if (bleAdvertiser != null) {
+                                if (bleAdvertiser.isAdvertising()) {
+                                    bleAdvertiser.stopAdvertising();
+                                }
+                                BleManager.releaseBleAdvertiser(bleAdvertiser);
+                                bleAdvertiser = null;
+                            }
+                            bleAdvertiser = BleManager.newBleAdvertiser();
+                            if (bleAdvertiser == null) {
+                                ToastUtil.toastLong(BleAdvertiseActivity.this, R.string.init_advertiser_failed);
+                                return;
+                            }
+//                            }
+                            int manufacturerId;
+                            try {
+                                manufacturerId = ConversionUtil.byteArrayToInt(new byte[]{bytes[1], bytes[0]});
+                            } catch (WrongByteArrayLengthException e) {
+                                ToastUtil.toastLong(BleAdvertiseActivity.this, R.string.init_advertiser_failed);
+                                return;
+                            }
+                            byte[] data = new byte[bytes.length - 2];
+                            System.arraycopy(bytes, 2, data, 0, data.length);
+                            bleAdvertiser.addAdvertiseDataAdvertiseRecord(new AdvertiseData(manufacturerId, data));
+                            bleAdvertiser.setConnectable(false);
+                            bleAdvertiser.setAdvertiseDataIncludeDeviceName(false);
+                            bleAdvertiser.setAdvertiseDataIncludeTxPowerLevel(false);
+                            bleAdvertiser.setBleAdvertiseMode(BleAdvertiseMode.LOW_LATENCY);
+                            bleAdvertiser.setOnBleAdvertiseStateChangedListener(defaultOnBleAdvertiseStateChangedListener);
+                            bleAdvertiser.setTimeOut(0);
+                            bleAdvertiser.setScanResponseIncludeDeviceName(true);
+                            bleAdvertiser.setScanResponseIncludeTxPowerLevel(true);
+                            bleAdvertiser.setTxPowerLevel(BleAdvertiseTxPowerLevel.HIGH);
+                            boolean init = bleAdvertiser.init();
+                            if (!init) {
+                                ToastUtil.toastLong(BleAdvertiseActivity.this, R.string.init_advertiser_failed);
+                            }
+                        }
+                    }
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .show();
+    }
+
+    private void stopAdvertiser() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (bleAdvertiser != null) {
+                bleAdvertiser.stopAdvertising();
+            } else {
+                ToastUtil.toastLong(this, R.string.set_advertise_content_first);
+            }
+        }
+    }
+
+    private void startAdvertise() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (bleAdvertiser != null) {
+                bleAdvertiser.startAdvertising();
+            } else {
+                ToastUtil.toastLong(this, R.string.set_advertise_content_first);
+            }
         }
     }
 }

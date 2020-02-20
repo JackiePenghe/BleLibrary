@@ -98,4 +98,13 @@
     <string name="le_2m" translatable="false">LE_2M</string>
     <string name="le_coded" translatable="false">LE_CODED</string>
     <string name="le_coded_supported">BLE 5.0 coded phy supported</string>
+    <string name="set_advertise_content">Set advertise content</string>
+    <string name="start_advertise">Start advertise</string>
+    <string name="stop_advertise">Stop advertise</string>
+    <string name="ad_type" translatable="false">AD Type</string>
+    <string name="ad_data" translatable="false">AD Data</string>
+    <string name="add">Add</string>
+    <string name="init_advertiser_failed">Advertiser init failed</string>
+    <string name="set_advertise_content_first">Please set advertise content first</string>
+    <string name="min_length">Data length must be more than 3</string>
 </resources>

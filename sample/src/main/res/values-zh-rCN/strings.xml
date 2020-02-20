@@ -90,4 +90,11 @@
     <string name="auto">自动</string>
     <string name="select_phy_mask">选择物理层</string>
     <string name="le_coded_supported">本机支持BLE 5.0 CODED 属性</string>
+    <string name="set_advertise_content">设置广播内容</string>
+    <string name="start_advertise">开始广播</string>
+    <string name="stop_advertise">停止广播</string>
+    <string name="add">添加一个</string>
+    <string name="init_advertiser_failed">蓝牙广播初始化失败</string>
+    <string name="set_advertise_content_first">请先设备广播内容</string>
+    <string name="min_length">数据的长度至少为3</string>
 </resources>

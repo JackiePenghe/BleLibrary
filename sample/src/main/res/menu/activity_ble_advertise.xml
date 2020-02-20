@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/set_advertise_content"
+        android:title="@string/set_advertise_content" />
+    <item
+        android:id="@+id/start_advertise"
+        android:title="@string/start_advertise" />
+    <item
+        android:id="@+id/stop_advertise"
+        android:title="@string/stop_advertise" />
+</menu>
