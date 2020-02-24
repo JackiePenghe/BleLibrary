@@ -96,5 +96,7 @@
     <string name="add">添加一个</string>
     <string name="init_advertiser_failed">蓝牙广播初始化失败</string>
     <string name="set_advertise_content_first">请先设备广播内容</string>
-    <string name="min_length">数据的长度至少为3</string>
+    <string name="set_scan_response_content">设置响应包</string>
+    <string name="advertise_data_null">广播包数据为空</string>
+    <string name="min_length">请至少输入一个字节</string>
 </resources>

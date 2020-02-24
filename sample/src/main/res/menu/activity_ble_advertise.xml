@@ -3,6 +3,10 @@
     <item
         android:id="@+id/set_advertise_content"
         android:title="@string/set_advertise_content" />
+
+    <item
+        android:id="@+id/set_scan_response_content"
+        android:title="@string/set_scan_response_content" />
     <item
         android:id="@+id/start_advertise"
         android:title="@string/start_advertise" />

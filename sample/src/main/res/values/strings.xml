@@ -106,5 +106,7 @@
     <string name="add">Add</string>
     <string name="init_advertiser_failed">Advertiser init failed</string>
     <string name="set_advertise_content_first">Please set advertise content first</string>
-    <string name="min_length">Data length must be more than 3</string>
+    <string name="set_scan_response_content">Set scan Response</string>
+    <string name="advertise_data_null">Advertise data is null</string>
+    <string name="min_length">At least 1 byte</string>
 </resources>
