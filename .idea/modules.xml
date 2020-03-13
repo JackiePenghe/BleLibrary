@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/BleSample.iml" filepath="$PROJECT_DIR$/BleSample.iml" />
-      <module fileurl="file://$PROJECT_DIR$/baserecyclerviewadapterhelperxlibrary/baserecyclerviewadapterhelperxlibrary.iml" filepath="$PROJECT_DIR$/baserecyclerviewadapterhelperxlibrary/baserecyclerviewadapterhelperxlibrary.iml" />
-      <module fileurl="file://$PROJECT_DIR$/blelibrary/blelibrary.iml" filepath="$PROJECT_DIR$/blelibrary/blelibrary.iml" />
-      <module fileurl="file://$PROJECT_DIR$/sample/sample.iml" filepath="$PROJECT_DIR$/sample/sample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BleSample.iml" filepath="$PROJECT_DIR$/BleSample.iml" group="BleSample" />
+      <module fileurl="file://$PROJECT_DIR$/blelibrary/blelibrary.iml" filepath="$PROJECT_DIR$/blelibrary/blelibrary.iml" group="BleSample/blelibrary" />
+      <module fileurl="file://$PROJECT_DIR$/sample/sample.iml" filepath="$PROJECT_DIR$/sample/sample.iml" group="BleSample/sample" />
     </modules>
   </component>
 </project>

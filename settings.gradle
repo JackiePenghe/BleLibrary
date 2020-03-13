@@ -1,1 +1,1 @@
-include ':sample', ':blelibrary', ':baserecyclerviewadapterhelperxlibrary'
+include ':sample', ':blelibrary'
