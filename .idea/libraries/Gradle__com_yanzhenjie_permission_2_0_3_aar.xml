@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="Gradle: com.yanzhenjie:permission:2.0.3@aar">
     <ANNOTATIONS>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/668df200a315116dff78eda2d987c976/permission-2.0.3/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1a5694f7552ec1bfa76f181479d05769/jetified-permission-2.0.3/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/668df200a315116dff78eda2d987c976/permission-2.0.3/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/668df200a315116dff78eda2d987c976/permission-2.0.3/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1a5694f7552ec1bfa76f181479d05769/jetified-permission-2.0.3/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1a5694f7552ec1bfa76f181479d05769/jetified-permission-2.0.3/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.yanzhenjie/permission/2.0.3/311a06dcdef9269d8c16a905a176e4ed8010def2/permission-2.0.3-javadoc.jar!/" />

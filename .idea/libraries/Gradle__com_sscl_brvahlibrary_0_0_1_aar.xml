@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="Gradle: com.sscl:brvahlibrary:0.0.1@aar">
     <ANNOTATIONS>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/aab9a0962a9e96ba8d8ef5fcca160158/brvahlibrary-0.0.1/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ffba9a21a7570eb5159c9fabca1f0245/jetified-brvahlibrary-0.0.1/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/aab9a0962a9e96ba8d8ef5fcca160158/brvahlibrary-0.0.1/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/aab9a0962a9e96ba8d8ef5fcca160158/brvahlibrary-0.0.1/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ffba9a21a7570eb5159c9fabca1f0245/jetified-brvahlibrary-0.0.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ffba9a21a7570eb5159c9fabca1f0245/jetified-brvahlibrary-0.0.1/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.sscl/brvahlibrary/0.0.1/f22a27ef1c6c107c2e6885c93ec41bd775ecf3fc/brvahlibrary-0.0.1-javadoc.jar!/" />
