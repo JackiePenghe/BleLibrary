@@ -1,17 +1,18 @@
 <component name="libraryTable">
   <library name="Gradle: com.yanzhenjie:permission:2.0.3@aar">
     <ANNOTATIONS>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1a5694f7552ec1bfa76f181479d05769/jetified-permission-2.0.3/annotations.zip!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../others/gradle/caches/transforms-2/files-2.1/3e9fc361f32f08a5507ce231520544ea/permission-2.0.3/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1a5694f7552ec1bfa76f181479d05769/jetified-permission-2.0.3/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1a5694f7552ec1bfa76f181479d05769/jetified-permission-2.0.3/res" />
+      <root url="file://$PROJECT_DIR$/../../../../others/gradle/caches/transforms-2/files-2.1/3e9fc361f32f08a5507ce231520544ea/permission-2.0.3/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/../../../../others/gradle/caches/transforms-2/files-2.1/3e9fc361f32f08a5507ce231520544ea/permission-2.0.3/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../../../../others/gradle/caches/transforms-2/files-2.1/3e9fc361f32f08a5507ce231520544ea/permission-2.0.3/res" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.yanzhenjie/permission/2.0.3/311a06dcdef9269d8c16a905a176e4ed8010def2/permission-2.0.3-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../others/gradle/caches/modules-2/files-2.1/com.yanzhenjie/permission/2.0.3/311a06dcdef9269d8c16a905a176e4ed8010def2/permission-2.0.3-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.yanzhenjie/permission/2.0.3/623e798676fef4ea2da0c691a9a5f5b80e74fcdd/permission-2.0.3-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../others/gradle/caches/modules-2/files-2.1/com.yanzhenjie/permission/2.0.3/623e798676fef4ea2da0c691a9a5f5b80e74fcdd/permission-2.0.3-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

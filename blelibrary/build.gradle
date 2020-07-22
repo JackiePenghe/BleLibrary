@@ -3,15 +3,15 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
 
 
     defaultConfig {
         minSdkVersion 18
-        targetSdkVersion 29
-        versionCode 15
-        versionName "0.0.15"
+        targetSdkVersion 30
+        versionCode 16
+        versionName "0.0.16"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -27,7 +27,8 @@ android {
 }
 
 dependencies {
-    api 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.sscl:baselibrary:0.0.43'
 }
 
 

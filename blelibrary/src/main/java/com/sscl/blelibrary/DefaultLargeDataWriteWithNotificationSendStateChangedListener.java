@@ -3,6 +3,7 @@ package com.sscl.blelibrary;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.sscl.baselibrary.utils.ConversionUtil;
 import com.sscl.blelibrary.interfaces.OnLargeDataWriteWithNotificationSendStateChangedListener;
 
 /**
@@ -26,7 +27,7 @@ final class DefaultLargeDataWriteWithNotificationSendStateChangedListener implem
     @Override
     public boolean onReceiveNotification(byte[] currentPackageData, int currentPackageIndex, int packageCount, @Nullable byte[] values) {
         if (values != null) {
-            DebugUtil.warnOut(TAG, "onReceiveNotification values = " + ConversionUtil.bytesToHexStr(values));
+            DebugUtil.warnOut(TAG, "onReceiveNotification values = " + ConversionUtil.byteArrayToHexStr(values));
         } else {
             DebugUtil.warnOut(TAG, "onReceiveNotification values = null");
         }
@@ -45,17 +46,17 @@ final class DefaultLargeDataWriteWithNotificationSendStateChangedListener implem
 
     @Override
     public void onDataSendFailed(int currentPackageIndex, int pageCount, @NonNull byte[] data) {
-        DebugUtil.warnOut(TAG, "onDataSendFailed currentPackageIndex = " + currentPackageIndex + ",pageCount = " + pageCount + "\ndata = " + ConversionUtil.bytesToHexStr(data));
+        DebugUtil.warnOut(TAG, "onDataSendFailed currentPackageIndex = " + currentPackageIndex + ",pageCount = " + pageCount + "\ndata = " + ConversionUtil.byteArrayToHexStr(data));
     }
 
     @Override
     public void onDataSendFailedAndRetry(int currentPackageIndex, int pageCount, @NonNull byte[] data, int tryCount) {
-        DebugUtil.warnOut(TAG, "onDataSendFailedAndRetry currentPackageIndex = " + currentPackageIndex + ",pageCount = " + pageCount + ",tryCount = " + tryCount + "\ndata = " + ConversionUtil.bytesToHexStr(data));
+        DebugUtil.warnOut(TAG, "onDataSendFailedAndRetry currentPackageIndex = " + currentPackageIndex + ",pageCount = " + pageCount + ",tryCount = " + tryCount + "\ndata = " + ConversionUtil.byteArrayToHexStr(data));
     }
 
     @Override
     public void onDataSendProgressChanged(int currentPackageIndex, int pageCount, @NonNull byte[] data) {
-        DebugUtil.warnOut(TAG, "onDataSendProgressChanged currentPackageIndex = " + currentPackageIndex + ",pageCount = " + pageCount + "\ndata = " + ConversionUtil.bytesToHexStr(data));
+        DebugUtil.warnOut(TAG, "onDataSendProgressChanged currentPackageIndex = " + currentPackageIndex + ",pageCount = " + pageCount + "\ndata = " + ConversionUtil.byteArrayToHexStr(data));
     }
 
     @Override
@@ -65,16 +66,16 @@ final class DefaultLargeDataWriteWithNotificationSendStateChangedListener implem
 
     @Override
     public void onSendFailedWithWrongNotifyDataAndRetry(int tryCount, int currentPackageIndex, int packageCount, @Nullable byte[] data) {
-        DebugUtil.warnOut(TAG, "onSendFailedWithWrongNotifyDataAndRetry：tryCount = " + tryCount + ",currentPackageIndex = " + currentPackageIndex + ",packageCount = " + packageCount + "\ndata = " + (data != null ? ConversionUtil.bytesToHexStr(data) : null));
+        DebugUtil.warnOut(TAG, "onSendFailedWithWrongNotifyDataAndRetry：tryCount = " + tryCount + ",currentPackageIndex = " + currentPackageIndex + ",packageCount = " + packageCount + "\ndata = " + (data != null ? ConversionUtil.byteArrayToHexStr(data) : null));
     }
 
     @Override
     public void onDataSendTimeOut(int currentPackageIndex, int packageCount, @NonNull byte[] data) {
-        DebugUtil.warnOut(TAG, "onSendFailedWithWrongNotifyDataAndRetry：currentPackageIndex = " + currentPackageIndex + ",packageCount = " + packageCount + "\ndata = " + ConversionUtil.bytesToHexStr(data));
+        DebugUtil.warnOut(TAG, "onSendFailedWithWrongNotifyDataAndRetry：currentPackageIndex = " + currentPackageIndex + ",packageCount = " + packageCount + "\ndata = " + ConversionUtil.byteArrayToHexStr(data));
     }
 
     @Override
     public void onDataSendTimeOutAndRetry(@NonNull byte[] data, int tryCount, int currentPackageIndex, int packageCount) {
-        DebugUtil.warnOut(TAG, "onDataSendTimeOutAndRetry：tryCount = " + tryCount + ",currentPackageIndex = " + currentPackageIndex + ",packageCount = " + packageCount + "\ndata = " + ConversionUtil.bytesToHexStr(data));
+        DebugUtil.warnOut(TAG, "onDataSendTimeOutAndRetry：tryCount = " + tryCount + ",currentPackageIndex = " + currentPackageIndex + ",packageCount = " + packageCount + "\ndata = " + ConversionUtil.byteArrayToHexStr(data));
     }
 }

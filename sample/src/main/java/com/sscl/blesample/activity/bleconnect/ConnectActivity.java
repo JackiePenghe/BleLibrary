@@ -786,6 +786,12 @@ public class ConnectActivity extends BaseAppCompatActivity {
                             case 6:
                                 writeLargeDataWithNotification(serviceUUID, characteristicUUID, false);
                                 break;
+                            case 7:
+                                writeStringData(serviceUUID, characteristicUUID, false);
+                                break;
+                            case 8:
+                                writeStringDataWithNotification(serviceUUID, characteristicUUID, false);
+                                break;
                             default:
                                 break;
                         }
@@ -793,6 +799,74 @@ public class ConnectActivity extends BaseAppCompatActivity {
                 })
                 .setCancelable(false)
                 .setNegativeButton(R.string.cancel, null)
+                .show();
+    }
+
+    private void writeStringDataWithNotification(String serviceUuid, String characteristicUuid, boolean autoFormat) {
+        if (!bleConnector.canWrite(serviceUuid, characteristicUuid)) {
+            ToastUtil.toastLong(ConnectActivity.this, R.string.write_not_support);
+            return;
+        }
+        if (!bleConnector.canNotify(serviceUuid, characteristicUuid)) {
+            ToastUtil.toastLong(ConnectActivity.this, R.string.notify_not_support);
+            return;
+        }
+        showWriteStringDataWithNotificationDialog(serviceUuid, characteristicUuid, autoFormat);
+    }
+
+    private void showWriteStringDataWithNotificationDialog(final String serviceUuid, final String characteristicUuid, final boolean autoFormat) {
+        final EditText editText = (EditText) View.inflate(this, R.layout.dialog_show_write_big_data, null);
+        EditTextWatcherForHexData editTextWatcherForHexData = new EditTextWatcherForHexData(editText);
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.input_data)
+                .setView(editText)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String text = editText.getText().toString();
+                        if ("".equals(text)) {
+                            ToastUtil.toastLong(ConnectActivity.this, R.string.set_nothing);
+                            writeStringData(serviceUuid, characteristicUuid, autoFormat);
+                            return;
+                        }
+                        byte[] byteArray = ConversionUtil.getByteArray(text, "GBK", 0);
+                        bleConnector.writeLargeDataWithNotification(serviceUuid, characteristicUuid, byteArray, defaultLargeDataWriteWithNotificationSendStateChangedListener, autoFormat);
+                    }
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .setCancelable(false)
+                .show();
+    }
+
+    private void writeStringData(final String serviceUuid, final String characteristicUuid, final boolean autoFormat) {
+        if (!bleConnector.canWrite(serviceUuid, characteristicUuid)) {
+            ToastUtil.toastLong(ConnectActivity.this, R.string.write_not_support);
+            return;
+        }
+        showWriteStringDataDialog(serviceUuid, characteristicUuid, autoFormat);
+    }
+
+    private void showWriteStringDataDialog(final String serviceUuid, final String characteristicUuid, final boolean autoFormat) {
+        final EditText editText = (EditText) View.inflate(this, R.layout.dialog_show_write_big_data, null);
+        EditTextWatcherForHexData editTextWatcherForHexData = new EditTextWatcherForHexData(editText);
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.input_data)
+                .setView(editText)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String text = editText.getText().toString();
+                        if ("".equals(text)) {
+                            ToastUtil.toastLong(ConnectActivity.this, R.string.set_nothing);
+                            writeStringData(serviceUuid, characteristicUuid, autoFormat);
+                            return;
+                        }
+                        byte[] byteArray = ConversionUtil.getByteArray(text, "GBK", 0);
+                        bleConnector.writeLargeData(serviceUuid, characteristicUuid, byteArray, defaultOnLargeDataSendStateChangedListener, autoFormat);
+                    }
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .setCancelable(false)
                 .show();
     }
 
