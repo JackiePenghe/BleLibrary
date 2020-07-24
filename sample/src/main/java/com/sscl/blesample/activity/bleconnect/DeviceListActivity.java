@@ -393,7 +393,6 @@ public class DeviceListActivity extends BaseAppCompatActivity {
             ToastUtil.toastLong(DeviceListActivity.this, R.string.ble_not_supported);
             return;
         }
-        bleScanner.init();
         //设置扫描周期，扫描会在自动在一段时间后自动停止
         bleScanner.setScanPeriod(10000);
         //设置是否一直持续扫描，true表示一直扫描，false表示在扫描结束后不再进行扫描
@@ -415,6 +414,7 @@ public class DeviceListActivity extends BaseAppCompatActivity {
         }
         //设置相关回调
         bleScanner.setOnBleScanStateChangedListener(onBleScanStateChangedListener);
+        bleScanner.addFilterUuid("0000AA00-0000-1000-8000-00805f9b34fb");
     }
 
 

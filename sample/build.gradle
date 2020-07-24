@@ -6,8 +6,8 @@ android {
         applicationId "com.sscl.blesamplex"
         minSdkVersion 18
         targetSdkVersion 30
-        versionCode 16
-        versionName "2020-07-22-15-18"
+        versionCode 17
+        versionName "2020-07-24-15-31"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

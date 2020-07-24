@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.ParcelUuid;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -98,6 +99,13 @@ public final class BleScanner {
      * If the list is empty, it will not take effect.
      */
     private ArrayList<String> filterNames = new ArrayList<>();
+
+    /**
+     * Used to store the device service uuid to be filtered.
+     * The service uuid of the device exists in the list.
+     * If the list is empty, it will not take effect.
+     */
+    private ArrayList<String> filterUuids = new ArrayList<>();
 
     /**
      * Used to store the device name to be filtered.
@@ -375,6 +383,28 @@ public final class BleScanner {
 
     /**
      * Add a filter name.
+     * if device has service uuid in advertise data with the same uuid,
+     * that device will be trigger callback and add in scanResult
+     *
+     * @param uuid a string used to filter the device uuid
+     */
+    public void addFilterUuid(String uuid) {
+        filterUuids.add(uuid);
+    }
+
+    /**
+     * remove a filter name.
+     * if device has service uuid in advertise data with the same uuid,
+     * that device will be trigger callback and add in scanResult
+     *
+     * @param uuid a string used to filter the device uuid
+     */
+    public void removeFilterUuid(String uuid) {
+        filterUuids.remove(uuid);
+    }
+
+    /**
+     * Add a filter name.
      * If the device name is the same as the filter name,
      * that device will be trigger callback and add in scanResult
      *
@@ -635,6 +665,9 @@ public final class BleScanner {
                 if (!filterFullAddress(device.getAddress())) {
                     return;
                 }
+                if (!filterServiceUuid(device.getUuids())) {
+                    return;
+                }
                 int primaryPhy = 1;
                 int secondaryPhy = 1;
                 int advertisingSid = 255;
@@ -723,6 +756,25 @@ public final class BleScanner {
             for (int i = 0; i < filterFullNames.size(); i++) {
                 String filterName = filterNames.get(i);
                 if (name.equals(filterName)) {
+                    pass = true;
+                    break;
+                }
+            }
+            return pass;
+        }
+        return true;
+    }
+
+    private boolean filterServiceUuid(ParcelUuid[] uuids) {
+
+        if (filterUuids.size() != 0) {
+            if (uuids == null) {
+                return false;
+            }
+            boolean pass = false;
+            for (ParcelUuid parcelUuid : uuids) {
+                String uuidInDevice = parcelUuid.getUuid().toString();
+                if (filterUuids.contains(uuidInDevice)) {
                     pass = true;
                     break;
                 }
@@ -864,6 +916,9 @@ public final class BleScanner {
         if (!filterFullAddress(address)) {
             return;
         }
+        if (!filterServiceUuid(device.getUuids())) {
+            return;
+        }
 
         int rssi = result.getRssi();
 
@@ -891,8 +946,8 @@ public final class BleScanner {
             txPower = 127;
         }
 
-        DebugUtil.warnOut(TAG,"primaryPhy = " + primaryPhy);
-        DebugUtil.warnOut(TAG,"secondaryPhy = " + secondaryPhy);
+        DebugUtil.warnOut(TAG, "primaryPhy = " + primaryPhy);
+        DebugUtil.warnOut(TAG, "secondaryPhy = " + secondaryPhy);
 
         final BleDevice bleDevice = new BleDevice(device, rssi, bleScanRecord);
 
@@ -942,6 +997,14 @@ public final class BleScanner {
             String filterFullAddress = filterFullAddresses.get(i);
             ScanFilter scanFilter = new ScanFilter.Builder()
                     .setDeviceAddress(filterFullAddress)
+                    .build();
+            scanFilters.add(scanFilter);
+        }
+
+        for (int i = 0; i < filterUuids.size(); i++) {
+            String uuid = filterUuids.get(i);
+            ScanFilter scanFilter = new ScanFilter.Builder()
+                    .setServiceUuid(ParcelUuid.fromString(uuid))
                     .build();
             scanFilters.add(scanFilter);
         }
