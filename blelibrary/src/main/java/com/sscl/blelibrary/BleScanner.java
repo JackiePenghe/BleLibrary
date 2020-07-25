@@ -27,6 +27,8 @@ import com.sscl.blelibrary.enums.BleNumOfMatches;
 import com.sscl.blelibrary.enums.BleScanMode;
 import com.sscl.blelibrary.enums.ScanPhy;
 import com.sscl.blelibrary.interfaces.OnBleScanStateChangedListener;
+import com.sscl.blelibrary.systems.BleArrayList;
+import com.sscl.blelibrary.systems.BleParcelUuid;
 import com.sscl.blelibrary.systems.BleScanRecord;
 
 import java.util.ArrayList;
@@ -665,7 +667,7 @@ public final class BleScanner {
                 if (!filterFullAddress(device.getAddress())) {
                     return;
                 }
-                if (!filterServiceUuid(device.getUuids())) {
+                if (!filterServiceUuid(bleScanRecord.getServiceUuids())) {
                     return;
                 }
                 int primaryPhy = 1;
@@ -765,14 +767,14 @@ public final class BleScanner {
         return true;
     }
 
-    private boolean filterServiceUuid(ParcelUuid[] uuids) {
+    private boolean filterServiceUuid(BleArrayList<BleParcelUuid> uuids) {
 
         if (filterUuids.size() != 0) {
             if (uuids == null) {
                 return false;
             }
             boolean pass = false;
-            for (ParcelUuid parcelUuid : uuids) {
+            for (BleParcelUuid parcelUuid : uuids) {
                 String uuidInDevice = parcelUuid.getUuid().toString();
                 if (filterUuids.contains(uuidInDevice)) {
                     pass = true;
@@ -906,17 +908,8 @@ public final class BleScanner {
         if (!filterNames(deviceName)) {
             return;
         }
-        if (!filterFullName(deviceName)) {
-            return;
-        }
 
         if (!filterAddress(address)) {
-            return;
-        }
-        if (!filterFullAddress(address)) {
-            return;
-        }
-        if (!filterServiceUuid(device.getUuids())) {
             return;
         }
 
