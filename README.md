@@ -184,25 +184,18 @@ BleManager.releaseAll();
 
 ```java
 
-
-    /**
+     /**
      * 初始化连接工具
      */
     private void initBleConnector() {
-        //创建（或获取）BLE连接器实例
+        //创建BLE连接器实例
         bleConnector = BleManager.getBleConnectorInstance();
         //如果手机不支持蓝牙的话，这里得到的是null,所以需要进行判空
         if (bleConnector == null) {
-            ToastUtil.toastL(ConnectActivity.this, R.string.ble_not_supported);
+            ToastUtil.toastLong(ConnectActivity.this, R.string.ble_not_supported);
             return;
         }
-        //设置连接超时的时间，单位：毫秒
-        bleConnector.setConnectTimeOut(60000);
-        //设置发送分包数据时，每一包数据之间的延时（当数据包大于BLE要求的20字节时，需要使用分包发送）
-        bleConnector.setSendLargeDataPackageDelayTime(500);
-        //设置发送分包数据时，每一包数据发送超时的时间
-        bleConnector.setSendLargeDataTimeOut(10000);        
-        //设置相关的监听回调
+        bleConnector.setConnectTimeOut(10000);
         setConnectListener();
     }
 
@@ -212,6 +205,10 @@ BleManager.releaseAll();
     private void setConnectListener() {
         //设置 连接 相关的回调
         bleConnector.setOnBleConnectStateChangedListener(onBleConnectStateChangedListener);
+        //设置发送分包数据时，每一包数据之间的延时
+        bleConnector.setSendLargeDataPackageDelayTime(500);
+        //设置发送分包数据时，每一包数据发送超时的时间
+        bleConnector.setSendLargeDataTimeOut(10000);
     }
 ```
 #### 注意：请不要在“onConnectedListener”回调中判断为设备连接成功。有些(异常)情况下，在连接上设备之后会立刻断开。所以一定要在“onServicesDiscoveredListener”中判断为设备已经连接成功。
@@ -272,14 +269,11 @@ boolean succeed = bleConnector.readData(serviceUUID,characteristicUUID);
  boolean succeed = bleConnector.enableNotification(serviceUUID, characteristicUUID, false);
 ```
 
-只有开启了通知，才会触发通知的回调
-```java
-bleConnector.setOnReceiveNotificationListener(onReceiveNotificationListener);
-```
+注意：只有开启了通知，才会触发通知的回调
 
 销毁
 
-在Activity返回的时候，调用close方法。推荐在此处屏蔽super.onBackpressed()方法。
+在Activity返回的时候，调用close方法。推荐在此处屏蔽super.onBackpressed()方法。此处仅作推荐与参考。请根据实际情况使用
 ```java
     @Override
     public void onBackPressed() {
@@ -309,7 +303,7 @@ bleConnector.setOnReceiveNotificationListener(onReceiveNotificationListener);
 @Override
 public void onDestroy() {
   super.onDestroy();
-  BleManager.realseBleConnector();
+  BleManager.releaseBleConnectorInstance();
 }
 ```
 在程序完全退出的时候，一定要执行这一句
@@ -479,12 +473,34 @@ bleDeviceController.writData(serviceUUID,characteristicUUID,data);
         }
     }
 ```
+
+# 其他情况：
+获取扫描实例，连接实例，广播实例时可以根据实际情况使用如下方法
+
+```java
+BleManager.newBleMultiConnector();
+BleManager.newBleAdvertiser();
+BleManager.newBleConnector();
+BleManager.newBleScanner();
+```
+通过以上方式得到的对应实例并非单例，每执行一次都会得到一个新的实例。所以需要对这些实例进行单独的针对性的释放。
+```java
+  BleManager.releaseBleMultiConnector(bleMultiConnector);
+  BleManager.releaseBleAdvertiser(bleAdvertiser);
+  BleManager.releaseBleConnector(bleConnector);
+  BleManager.releaseBleScanner(bleScanner);
+```
+当然，也可以直接全部释放
+```java
+ BleManager.releaseAll();
+```
+
 # 特别注意
 ## 连接与扫描
 安卓手机因为系统各个厂家定制的原因，可能会有一些莫名其妙的问题。
 
 如：
-UUID发现后跟设备本身不一致。
+手机连接设备后，发现的设备UUID跟设备本身存在的UUID不一致。
 
 这种问题通常可以通过重启蓝牙解决，但是也有那种顽固无比的手机。如：三星 Galaxy 3。这个手机必须要回复出厂设置才能正确发现UUID，原因是：系统记录了同一个设备地址的UUID。一旦连接的是同一个地址，UUID第一次发现之后，后续不论怎么更改设备的UUID，系统的缓存都是不会更新的。对于这种手机，只想说：别用BLE了。没救了
 ## 广播
