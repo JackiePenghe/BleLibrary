@@ -86,44 +86,49 @@ if(!BleManager.isSupportBle()){
 ```
 ### BLE扫描：
 ```java
-    /**
+     /**
      * 初始化扫描器
      */
     private void initBleScanner() {
-    
-        //检查当前设备是否支持LE_CODED属性（通常用于检测是否支持BLE 5.0）
+        //当安卓系统在Android O及以上时，可以判断系统是否支持BLE5.0（在此之前，手机上的BLE版本一般为4.0）
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (BleManager.isLeCodedPhySupported()) {
-                ToastUtil.toastL(this, R.string.le_coded_supported);
+                ToastUtil.toastLong(this, R.string.le_coded_supported);
             }
         }
-        //创建(或获取)扫描器实例
+        //创建扫描器实例
         bleScanner = BleManager.getBleScannerInstance();
         //如果手机不支持蓝牙的话，这里得到的是null,所以需要进行判空
         if (bleScanner == null) {
-            ToastUtil.toastL(DeviceListActivity.this, R.string.ble_not_supported);
+            ToastUtil.toastLong(DeviceListActivity.this, R.string.ble_not_supported);
             return;
         }
-        //初始化扫描器
-        bleScanner.init();
-        //设置扫描周期，扫描会在自动在一段时间后自动停止，单位：毫秒
+        //设置扫描周期，扫描会在自动在一段时间后自动停止
         bleScanner.setScanPeriod(10000);
-        /*
-         *设置是否一直持续扫描
-         *true表示扫描周期到了之后，自动开启下一次扫描。
-         *false表示在扫描结束后不再进行扫描
-         */
+        //设置是否一直持续扫描，true表示一直扫描，false表示在扫描结束后不再进行扫描
         bleScanner.setAutoStartNextScan(true);
-        //如果当前系统版本在android 5.0以上，可以设置扫描模式，这里设置的是默认值
+        //设置BLE扫描模式，此处为默认值
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             bleScanner.setBleScanMode(BleScanMode.LOW_LATENCY);
         }
-        //如果当前系统版本在Android6.0以上，可以设置匹配模式，这里设置的是默认值
+        //设置BLE匹配模式，此处为默认值
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             bleScanner.setBleMatchMode(BleMatchMode.AGGRESSIVE);
         }
-        //设置扫描状态相关回调
+        //设置BLE的回调类型和匹配数量
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            bleScanner.setBleCallbackType(BleCallbackType.CALLBACK_TYPE_ALL_MATCHES);
+            bleScanner.setBleNumOfMatches(BleNumOfMatches.MATCH_NUM_MAX_ADVERTISEMENT);
+        }
+         //设置BLE的模式和扫描信道（扫描信道一般只有在扫描BLE5.0的设备不可见时才会使用到）
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            bleScanner.setLegacy(false);
+            bleScanner.setScanPhy(ScanPhy.PHY_LE_CODED);
+        }
+        //设置相关回调
         bleScanner.setOnBleScanStateChangedListener(onBleScanStateChangedListener);
+        //初始化BLE扫描器
+        bleScanner.init();
     }
 ```
 
@@ -135,7 +140,16 @@ if(!BleManager.isSupportBle()){
      * 设置扫描器的过滤条件
      */
     private void setScanFilters() {
-       bleScanner.addFilterxxx();
+       //全地址匹配
+       bleScanner.addFilterFullAddress("AA:BB:CC:DD:EE:FF");
+       //全名称匹配
+       bleScanner.addFilterFullName("Test Name");
+       //地址前部一致时匹配
+       bleScanner.addFilterStartsAddress("AA:BB");
+       //名称前部一致时匹配
+       bleScanner.addFilterStartsName("Te");
+       //设备的蓝牙广播中包含某个服务的UUID时匹配
+       bleScanner.addFilterUuid("00001800-0000-1000-8000-00805f9b34fb");
     }
     
     /**
@@ -157,7 +171,8 @@ if(!BleManager.isSupportBle()){
         super.onDestroy();
         //关闭扫描器
         bleScanner.close();
-        BleManager.releaseBleScanner();
+        //释放资源
+        BleManager.releaseBleScannerInstance();
     }
 ```
 在程序完全退出的时候，一定要执行这一句，释放所有占用的内存
@@ -169,25 +184,18 @@ BleManager.releaseAll();
 
 ```java
 
-
-    /**
+     /**
      * 初始化连接工具
      */
     private void initBleConnector() {
-        //创建（或获取）BLE连接器实例
+        //创建BLE连接器实例
         bleConnector = BleManager.getBleConnectorInstance();
         //如果手机不支持蓝牙的话，这里得到的是null,所以需要进行判空
         if (bleConnector == null) {
-            ToastUtil.toastL(ConnectActivity.this, R.string.ble_not_supported);
+            ToastUtil.toastLong(ConnectActivity.this, R.string.ble_not_supported);
             return;
         }
-        //设置连接超时的时间，单位：毫秒
-        bleConnector.setConnectTimeOut(60000);
-        //设置发送分包数据时，每一包数据之间的延时
-        bleConnector.setSendLargeDataPackageDelayTime(500);
-        //设置发送分包数据时，每一包数据发送超时的时间
-        bleConnector.setSendLargeDataTimeOut(10000);        
-        //设置相关的监听回调
+        bleConnector.setConnectTimeOut(10000);
         setConnectListener();
     }
 
@@ -197,6 +205,10 @@ BleManager.releaseAll();
     private void setConnectListener() {
         //设置 连接 相关的回调
         bleConnector.setOnBleConnectStateChangedListener(onBleConnectStateChangedListener);
+        //设置发送分包数据时，每一包数据之间的延时
+        bleConnector.setSendLargeDataPackageDelayTime(500);
+        //设置发送分包数据时，每一包数据发送超时的时间
+        bleConnector.setSendLargeDataTimeOut(10000);
     }
 ```
 #### 注意：请不要在“onConnectedListener”回调中判断为设备连接成功。有些(异常)情况下，在连接上设备之后会立刻断开。所以一定要在“onServicesDiscoveredListener”中判断为设备已经连接成功。
@@ -257,14 +269,11 @@ boolean succeed = bleConnector.readData(serviceUUID,characteristicUUID);
  boolean succeed = bleConnector.enableNotification(serviceUUID, characteristicUUID, false);
 ```
 
-只有开启了通知，才会触发通知的回调
-```java
-bleConnector.setOnReceiveNotificationListener(onReceiveNotificationListener);
-```
+注意：只有开启了通知，才会触发通知的回调
 
 销毁
 
-在Activity返回的时候，调用close方法。推荐在此处屏蔽super.onBackpressed()方法。
+在Activity返回的时候，调用close方法。推荐在此处屏蔽super.onBackpressed()方法。此处仅作推荐与参考。请根据实际情况使用
 ```java
     @Override
     public void onBackPressed() {
@@ -294,7 +303,7 @@ bleConnector.setOnReceiveNotificationListener(onReceiveNotificationListener);
 @Override
 public void onDestroy() {
   super.onDestroy();
-  BleManager.realseBleConnector();
+  BleManager.releaseBleConnectorInstance();
 }
 ```
 在程序完全退出的时候，一定要执行这一句
@@ -464,12 +473,34 @@ bleDeviceController.writData(serviceUUID,characteristicUUID,data);
         }
     }
 ```
+
+# 其他情况：
+获取扫描实例，连接实例，广播实例时可以根据实际情况使用如下方法
+
+```java
+BleManager.newBleMultiConnector();
+BleManager.newBleAdvertiser();
+BleManager.newBleConnector();
+BleManager.newBleScanner();
+```
+通过以上方式得到的对应实例并非单例，每执行一次都会得到一个新的实例。所以需要对这些实例进行单独的针对性的释放。
+```java
+  BleManager.releaseBleMultiConnector(bleMultiConnector);
+  BleManager.releaseBleAdvertiser(bleAdvertiser);
+  BleManager.releaseBleConnector(bleConnector);
+  BleManager.releaseBleScanner(bleScanner);
+```
+当然，也可以直接全部释放
+```java
+ BleManager.releaseAll();
+```
+
 # 特别注意
 ## 连接与扫描
 安卓手机因为系统各个厂家定制的原因，可能会有一些莫名其妙的问题。
 
 如：
-UUID发现后跟设备本身不一致。
+手机连接设备后，发现的设备UUID跟设备本身存在的UUID不一致。
 
 这种问题通常可以通过重启蓝牙解决，但是也有那种顽固无比的手机。如：三星 Galaxy 3。这个手机必须要回复出厂设置才能正确发现UUID，原因是：系统记录了同一个设备地址的UUID。一旦连接的是同一个地址，UUID第一次发现之后，后续不论怎么更改设备的UUID，系统的缓存都是不会更新的。对于这种手机，只想说：别用BLE了。没救了
 ## 广播
