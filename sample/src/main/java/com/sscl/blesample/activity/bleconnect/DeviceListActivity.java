@@ -90,7 +90,6 @@ public class DeviceListActivity extends BaseAppCompatActivity {
      * BLE扫描器
      */
     private BleScanner bleScanner;
-    private static final int TWO = 2;
     private BaseQuickAdapter.OnItemClickListener onItemClickListener = new BaseQuickAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
