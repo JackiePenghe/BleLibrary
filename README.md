@@ -86,44 +86,49 @@ if(!BleManager.isSupportBle()){
 ```
 ### BLE扫描：
 ```java
-    /**
+     /**
      * 初始化扫描器
      */
     private void initBleScanner() {
-    
-        //检查当前设备是否支持LE_CODED属性（通常用于检测是否支持BLE 5.0）
+        //当安卓系统在Android O及以上时，可以判断系统是否支持BLE5.0（在此之前，手机上的BLE版本一般为4.0）
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (BleManager.isLeCodedPhySupported()) {
-                ToastUtil.toastL(this, R.string.le_coded_supported);
+                ToastUtil.toastLong(this, R.string.le_coded_supported);
             }
         }
-        //创建(或获取)扫描器实例
+        //创建扫描器实例
         bleScanner = BleManager.getBleScannerInstance();
         //如果手机不支持蓝牙的话，这里得到的是null,所以需要进行判空
         if (bleScanner == null) {
-            ToastUtil.toastL(DeviceListActivity.this, R.string.ble_not_supported);
+            ToastUtil.toastLong(DeviceListActivity.this, R.string.ble_not_supported);
             return;
         }
-        //初始化扫描器
-        bleScanner.init();
-        //设置扫描周期，扫描会在自动在一段时间后自动停止，单位：毫秒
+        //设置扫描周期，扫描会在自动在一段时间后自动停止
         bleScanner.setScanPeriod(10000);
-        /*
-         *设置是否一直持续扫描
-         *true表示扫描周期到了之后，自动开启下一次扫描。
-         *false表示在扫描结束后不再进行扫描
-         */
+        //设置是否一直持续扫描，true表示一直扫描，false表示在扫描结束后不再进行扫描
         bleScanner.setAutoStartNextScan(true);
-        //如果当前系统版本在android 5.0以上，可以设置扫描模式，这里设置的是默认值
+        //设置BLE扫描模式，此处为默认值
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             bleScanner.setBleScanMode(BleScanMode.LOW_LATENCY);
         }
-        //如果当前系统版本在Android6.0以上，可以设置匹配模式，这里设置的是默认值
+        //设置BLE匹配模式，此处为默认值
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             bleScanner.setBleMatchMode(BleMatchMode.AGGRESSIVE);
         }
-        //设置扫描状态相关回调
+        //设置BLE的回调类型和匹配数量
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            bleScanner.setBleCallbackType(BleCallbackType.CALLBACK_TYPE_ALL_MATCHES);
+            bleScanner.setBleNumOfMatches(BleNumOfMatches.MATCH_NUM_MAX_ADVERTISEMENT);
+        }
+         //设置BLE的模式和扫描信道（扫描信道一般只有在扫描BLE5.0的设备不可见时才会使用到）
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            bleScanner.setLegacy(false);
+            bleScanner.setScanPhy(ScanPhy.PHY_LE_CODED);
+        }
+        //设置相关回调
         bleScanner.setOnBleScanStateChangedListener(onBleScanStateChangedListener);
+        //初始化BLE扫描器
+        bleScanner.init();
     }
 ```
 
@@ -135,7 +140,16 @@ if(!BleManager.isSupportBle()){
      * 设置扫描器的过滤条件
      */
     private void setScanFilters() {
-       bleScanner.addFilterxxx();
+       //全地址匹配
+       bleScanner.addFilterFullAddress("AA:BB:CC:DD:EE:FF");
+       //全名称匹配
+       bleScanner.addFilterFullName("Test Name");
+       //地址前部一致时匹配
+       bleScanner.addFilterStartsAddress("AA:BB");
+       //名称前部一致时匹配
+       bleScanner.addFilterStartsName("Te");
+       //设备的蓝牙广播中包含某个服务的UUID时匹配
+       bleScanner.addFilterUuid("00001800-0000-1000-8000-00805f9b34fb");
     }
     
     /**
@@ -157,7 +171,8 @@ if(!BleManager.isSupportBle()){
         super.onDestroy();
         //关闭扫描器
         bleScanner.close();
-        BleManager.releaseBleScanner();
+        //释放资源
+        BleManager.releaseBleScannerInstance();
     }
 ```
 在程序完全退出的时候，一定要执行这一句，释放所有占用的内存
@@ -183,7 +198,7 @@ BleManager.releaseAll();
         }
         //设置连接超时的时间，单位：毫秒
         bleConnector.setConnectTimeOut(60000);
-        //设置发送分包数据时，每一包数据之间的延时
+        //设置发送分包数据时，每一包数据之间的延时（当数据包大于BLE要求的20字节时，需要使用分包发送）
         bleConnector.setSendLargeDataPackageDelayTime(500);
         //设置发送分包数据时，每一包数据发送超时的时间
         bleConnector.setSendLargeDataTimeOut(10000);        
