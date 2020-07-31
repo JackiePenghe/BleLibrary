@@ -1,5 +1,0 @@
-<resources>
-    <string name="brvah_loading">Loading&#8230;</string>
-    <string name="brvah_load_failed">load more failed</string>
-    <string name="brvah_load_end">No more data</string>
-</resources>
