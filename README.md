@@ -25,7 +25,7 @@ support版本，最高支持到API28,已经完全停止维护，并不再更新
 ```xml
 implementation 'com.sscl.blelibrary:support:0.0.9'
 ```
-androidx版本，可支持到最新版API，目前最高API29（截至2019-10-15）
+androidx版本，可支持到最新版API，目前最高API29（截至2020-07-31）
 ```xml
 implementation 'com.sscl:blelibrary:0.0.18'
 ```
