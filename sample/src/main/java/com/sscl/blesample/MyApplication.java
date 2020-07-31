@@ -38,7 +38,7 @@ public class MyApplication extends Application {
         //初始化文件工具类
         FileUtil.init(this.getApplicationContext());
         BleManager.init(MyApplication.this);
-        com.sscl.blelibrary.DebugUtil.setDebugFlag(true);
+        com.sscl.blelibrary.DebugUtil.setDebugFlag(false);
         DebugUtil.setDebugFlag(true);
     }
 

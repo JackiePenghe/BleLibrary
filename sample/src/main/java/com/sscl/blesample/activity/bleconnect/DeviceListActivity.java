@@ -37,6 +37,9 @@ import com.sscl.blelibrary.enums.BleScanMode;
 import com.sscl.blelibrary.enums.ScanPhy;
 import com.sscl.blelibrary.interfaces.OnBleScanStateChangedListener;
 import com.sscl.blelibrary.interfaces.OnBluetoothStateChangedListener;
+import com.sscl.blelibrary.systems.BleHashMap;
+import com.sscl.blelibrary.systems.BleParcelUuid;
+import com.sscl.blelibrary.systems.BleScanRecord;
 import com.sscl.blesample.R;
 import com.sscl.blesample.adapter.DeviceListAdapter;
 import com.sscl.blesample.utils.Constants;
@@ -45,6 +48,8 @@ import com.sscl.blesample.watcher.EditTextWatcherForMacAddress;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 扫描设备列表的界面
@@ -148,24 +153,13 @@ public class DeviceListActivity extends BaseAppCompatActivity {
     private OnBleScanStateChangedListener onBleScanStateChangedListener = new OnBleScanStateChangedListener() {
         @Override
         public void onScanFindOneDevice(BleDevice bleDevice) {
-            String deviceName = bleDevice.getDeviceName();
-            String deviceAddress = bleDevice.getDeviceAddress();
-            if (filterName != null) {
-                if (deviceName == null || deviceName.isEmpty()) {
-                    return;
-                }
-                if (!deviceName.startsWith(filterName)) {
-                    return;
-                }
-            }
-
-            if (filterAddress != null) {
-                if (!deviceAddress.equals(filterAddress)) {
-                    return;
-                }
-            }
-            if (adapterList == null) {
-                return;
+            BleScanRecord bleScanRecord = bleDevice.getBleScanRecord();
+            BleHashMap<BleParcelUuid, byte[]> serviceData = bleScanRecord.getServiceData();
+            DebugUtil.warnOut(TAG, "serviceData size " + serviceData.size());
+            Set<Map.Entry<BleParcelUuid, byte[]>> entries = serviceData.entrySet();
+            for (Map.Entry<BleParcelUuid, byte[]> value :
+                    entries) {
+                DebugUtil.warnOut(TAG, "onScanFindOneDevice: " + bleDevice.getDeviceAddress() + " " + value.getKey());
             }
             //只要发现一个设备就会回调此函数
             if (!adapterList.contains(bleDevice)) {
@@ -493,10 +487,16 @@ public class DeviceListActivity extends BaseAppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String text = editText.getText().toString();
+                        if (filterName != null && !filterName.isEmpty()) {
+                            bleScanner.removeFilterFullName(filterName);
+                        }
                         if (text.isEmpty()) {
                             filterName = null;
                         } else {
                             filterName = text;
+                        }
+                        if (filterName != null && !filterName.isEmpty()) {
+                            bleScanner.addFilterStartsName(filterName);
                         }
                     }
                 })
@@ -517,10 +517,16 @@ public class DeviceListActivity extends BaseAppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String text = editText.getText().toString();
+                        if (filterAddress != null && !filterAddress.isEmpty()) {
+                            bleScanner.removeFilterStartsAddress(filterAddress);
+                        }
                         if (text.isEmpty()) {
                             filterAddress = null;
                         } else {
                             filterAddress = text;
+                        }
+                        if (filterAddress != null && !filterAddress.isEmpty()) {
+                            bleScanner.addFilterStartsAddress(filterAddress);
                         }
                     }
                 })
