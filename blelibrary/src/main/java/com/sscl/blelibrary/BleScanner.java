@@ -133,6 +133,12 @@ public final class BleScanner {
     private ArrayList<String> filterFullAddresses = new ArrayList<>();
 
     /**
+     * Used to store user-defined filter conditions.
+     * If the list is empty, the list will not take effect
+     */
+    private ArrayList<ScanFilter> customScanFilters = new ArrayList<>();
+
+    /**
      * Used to record whether the next scan is automatically performed
      */
     private boolean autoStartNextScan = false;
@@ -360,6 +366,24 @@ public final class BleScanner {
     }
 
     /*-----------------------------------public method-----------------------------------*/
+
+    /**
+     * add a user-defined filter.
+     *
+     * @param scanFilter user-defined filter
+     */
+    public void addCustomFilter(@NonNull ScanFilter scanFilter) {
+        customScanFilters.add(scanFilter);
+    }
+
+    /**
+     * remove a user-defined filter.
+     *
+     * @param scanFilter user-defined filter
+     */
+    public void removeCustomFilter(@NonNull ScanFilter scanFilter) {
+        customScanFilters.add(scanFilter);
+    }
 
     /**
      * Add a filter name.
@@ -703,7 +727,6 @@ public final class BleScanner {
      * @param address device address
      * @return true means pass
      */
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean filterFullAddress(String address) {
         if (filterFullAddresses.size() != 0) {
             boolean pass = false;
@@ -748,7 +771,6 @@ public final class BleScanner {
      * @param name device name
      * @return true means pass
      */
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean filterFullName(String name) {
         if (filterFullNames.size() != 0) {
             boolean pass = false;
@@ -979,7 +1001,7 @@ public final class BleScanner {
     private ArrayList<ScanFilter> refreshScanFilter() {
         ArrayList<ScanFilter> scanFilters = new ArrayList<>();
         for (int i = 0; i < filterFullNames.size(); i++) {
-            String filterName = filterNames.get(i);
+            String filterName = filterFullNames.get(i);
             ScanFilter scanFilter = new ScanFilter.Builder()
                     .setDeviceName(filterName)
                     .build();
@@ -1001,6 +1023,8 @@ public final class BleScanner {
                     .build();
             scanFilters.add(scanFilter);
         }
+
+        scanFilters.addAll(customScanFilters);
         return scanFilters;
     }
 
