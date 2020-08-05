@@ -386,6 +386,13 @@ public final class BleScanner {
     }
 
     /**
+     * clear all user-defined filters
+     */
+    public void clearCustomFilters() {
+        customScanFilters.clear();
+    }
+
+    /**
      * Add a filter name.
      * if device name starts with the same filter name,
      * that device will be trigger callback and add in scanResult
@@ -405,6 +412,13 @@ public final class BleScanner {
      */
     public void removeFilterStartsName(@NonNull String startsName) {
         filterNames.remove(startsName);
+    }
+
+    /**
+     * remove all starts name filters
+     */
+    public void clearFilterStartsNames() {
+        filterNames.clear();
     }
 
     /**
@@ -430,6 +444,13 @@ public final class BleScanner {
     }
 
     /**
+     * remove All uuids filters
+     */
+    public void clearFilterUuid() {
+        filterUuids.clear();
+    }
+
+    /**
      * Add a filter name.
      * If the device name is the same as the filter name,
      * that device will be trigger callback and add in scanResult
@@ -449,6 +470,13 @@ public final class BleScanner {
      */
     public void removeFilterFullName(@NonNull String fullName) {
         filterFullNames.remove(fullName);
+    }
+
+    /**
+     * clear all full name filters
+     */
+    public void clearFilterFullName() {
+        filterFullNames.clear();
     }
 
     /**
@@ -474,6 +502,13 @@ public final class BleScanner {
     }
 
     /**
+     * clear all starts address filters
+     */
+    public void clearFilterStartsAddress() {
+        filterAddresses.clear();
+    }
+
+    /**
      * Add a filter address.
      * If the device name is the same as the filter address,
      * that device will be trigger callback and add in scanResult
@@ -493,6 +528,25 @@ public final class BleScanner {
      */
     public void removeFilterFullAddress(@NonNull String fullAddress) {
         filterFullAddresses.remove(fullAddress.toUpperCase());
+    }
+
+    /**
+     * clear all full address filters
+     */
+    public void clearFilterFullAddress() {
+        filterFullAddresses.clear();
+    }
+
+    /**
+     * clear all filters
+     */
+    public void clearAllFilters() {
+        clearCustomFilters();
+        clearFilterFullAddress();
+        clearFilterStartsAddress();
+        clearFilterFullName();
+        clearFilterStartsNames();
+        clearFilterUuid();
     }
 
     /**
