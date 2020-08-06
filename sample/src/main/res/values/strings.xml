@@ -109,4 +109,5 @@
     <string name="set_scan_response_content">Set scan Response</string>
     <string name="advertise_data_null">Advertise data is null</string>
     <string name="min_length">At least 1 byte</string>
+    <string name="service_data">ervice data</string>
 </resources>

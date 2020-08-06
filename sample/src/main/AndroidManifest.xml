@@ -16,7 +16,7 @@
         android:fullBackupContent="@xml/backup_descriptor">
         <activity android:name=".activity.bleconnect.BroadcastIntervalTestActivity" />
 
-        <activity android:name=".guid.SplashActivity">
+        <activity android:name=".guide.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,7 +43,7 @@
         <activity android:name=".activity.bleconnect.ConnectActivity" />
         <activity android:name=".activity.blemulticonnect.MultiConnectActivity" />
         <activity
-            android:name=".guid.WelcomeActivity"
+            android:name=".guide.WelcomeActivity"
             android:theme="@style/AppTheme.NoActionBar.FullScreen" />
         <activity android:name=".activity.bleadvertisement.BleAdvertiseActivity" />
         <activity android:name=".activity.blemulticonnect.MultiConnectDeviceListActivity" />

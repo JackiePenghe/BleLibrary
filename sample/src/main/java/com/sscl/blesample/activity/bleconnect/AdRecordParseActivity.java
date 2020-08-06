@@ -15,12 +15,18 @@ import com.sscl.baselibrary.utils.ConversionUtil;
 import com.sscl.baselibrary.utils.DefaultItemDecoration;
 import com.sscl.blelibrary.AdvertiseRecord;
 import com.sscl.blelibrary.BleDevice;
+import com.sscl.blelibrary.systems.BleHashMap;
+import com.sscl.blelibrary.systems.BleParcelUuid;
+import com.sscl.blelibrary.systems.BleScanRecord;
 import com.sscl.blesample.R;
 import com.sscl.blesample.adapter.AdRecordRecyclerAdapter;
+import com.sscl.blesample.adapter.ServiceDataAdapter;
 import com.sscl.blesample.utils.Constants;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author jackie
@@ -38,15 +44,25 @@ public class AdRecordParseActivity extends BaseAppCompatActivity {
     /**
      * 将广播包按照AdType分开显示的列表
      */
-    private RecyclerView recyclerView;
+    private RecyclerView adDataRv;
+
+    private RecyclerView serviceDataRv;
     /**
-     * 适配器数据源
+     * 广播包数据适配器数据源
      */
     private ArrayList<AdvertiseRecord> adRecords = new ArrayList<>();
     /**
-     * 适配器
+     * 广播包服务适配器数据源
+     */
+    private ArrayList<Map.Entry<BleParcelUuid, byte[]>> serviceDataList = new ArrayList<>();
+    /**
+     * 广播包数据列表适配器
      */
     private AdRecordRecyclerAdapter adRecordRecyclerAdapter = new AdRecordRecyclerAdapter(adRecords);
+    /**
+     * 广播包服务列表适配器
+     */
+    private ServiceDataAdapter serviceDataAdapter = new ServiceDataAdapter(serviceDataList);
     /**
      * 默认的分割线
      */
@@ -92,7 +108,8 @@ public class AdRecordParseActivity extends BaseAppCompatActivity {
     @Override
     protected void initViews() {
         scanRecordEditText = findViewById(R.id.scan_record_et);
-        recyclerView = findViewById(R.id.scan_record_rv);
+        adDataRv = findViewById(R.id.scan_record_rv);
+        serviceDataRv = findViewById(R.id.service_data_rv);
     }
 
     /**
@@ -174,15 +191,42 @@ public class AdRecordParseActivity extends BaseAppCompatActivity {
     }
 
     private void initRecyclerView() {
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.addItemDecoration(defaultItemDecoration);
-        recyclerView.setAdapter(adRecordRecyclerAdapter);
+        initAdData();
+        initServiceData();
+    }
+
+    private void initServiceData() {
+        serviceDataRv.setLayoutManager(new LinearLayoutManager(this));
+        serviceDataRv.addItemDecoration(defaultItemDecoration);
+        serviceDataAdapter.bindToRecyclerView(serviceDataRv);
+    }
+
+    private void initAdData() {
+        adDataRv.setLayoutManager(new LinearLayoutManager(this));
+        adDataRv.addItemDecoration(defaultItemDecoration);
+        adRecordRecyclerAdapter.bindToRecyclerView(adDataRv);
     }
 
     private void refreshRecyclerViewData() {
         if (bleDevice == null) {
             return;
         }
+        refreshAdDataList();
+        refreshServiceDataList();
+    }
+
+    private void refreshServiceDataList() {
+        BleScanRecord bleScanRecord = bleDevice.getBleScanRecord();
+        BleHashMap<BleParcelUuid, byte[]> serviceData = bleScanRecord.getServiceData();
+        Set<Map.Entry<BleParcelUuid, byte[]>> entries = serviceData.entrySet();
+        serviceDataList.clear();
+        if (entries != null) {
+            serviceDataList.addAll(entries);
+        }
+        serviceDataAdapter.notifyDataSetChanged();
+    }
+
+    private void refreshAdDataList() {
         ArrayList<AdvertiseRecord> adRecords = bleDevice.getAdvertiseRecords();
         this.adRecords.clear();
         if (adRecords != null) {

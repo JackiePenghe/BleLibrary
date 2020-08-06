@@ -389,7 +389,7 @@ public class DeviceListActivity extends BaseAppCompatActivity {
         //设置扫描周期，扫描会在自动在一段时间后自动停止
         bleScanner.setScanPeriod(10000);
         //设置是否一直持续扫描，true表示一直扫描，false表示在扫描结束后不再进行扫描
-        bleScanner.setAutoStartNextScan(true);
+        bleScanner.setAutoStartNextScan(false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             bleScanner.setBleScanMode(BleScanMode.LOW_LATENCY);
         }
