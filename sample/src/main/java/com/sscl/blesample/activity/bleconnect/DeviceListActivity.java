@@ -407,7 +407,6 @@ public class DeviceListActivity extends BaseAppCompatActivity {
         }
         //设置相关回调
         bleScanner.setOnBleScanStateChangedListener(onBleScanStateChangedListener);
-        bleScanner.addFilterUuid("0000aa00-0000-1000-8000-00805f9b34fb");
         bleScanner.init();
     }
 
