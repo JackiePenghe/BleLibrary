@@ -11,8 +11,9 @@ import android.bluetooth.BluetoothProfile;
 
 import androidx.annotation.Nullable;
 
-import com.sscl.baselibrary.utils.ConversionUtil;
 import com.sscl.blelibrary.interfaces.OnConnectedByOtherDevicesListener;
+
+import java.util.Arrays;
 
 /**
  * Default callback connected by other devices
@@ -146,7 +147,7 @@ final class DefaultBluetoothGattServerCallback extends BluetoothGattServerCallba
                             ",requestId = " + requestId + ",characteristicUUID = " +
                             characteristic.getUuid().toString() + ",preparedWrite = " + preparedWrite +
                             ",responseNeeded = " + responseNeeded + ",offset = " + offset + ",value = " +
-                            ConversionUtil.byteArrayToHexStr(value));
+                            Arrays.toString(value));
                 }
             }
         });
@@ -210,7 +211,7 @@ final class DefaultBluetoothGattServerCallback extends BluetoothGattServerCallba
                             ",requestId = " + requestId + ",descriptorUUID = " +
                             descriptor.getUuid().toString() + ",preparedWrite = " + preparedWrite +
                             ",responseNeeded = " + responseNeeded + ",offset = " + offset + ",value = " +
-                            ConversionUtil.byteArrayToHexStr(value));
+                            Arrays.toString(value));
                 }
             }
         });

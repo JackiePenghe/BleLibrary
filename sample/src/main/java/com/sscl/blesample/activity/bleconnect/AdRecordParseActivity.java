@@ -15,7 +15,7 @@ import com.sscl.baselibrary.utils.ConversionUtil;
 import com.sscl.baselibrary.utils.DefaultItemDecoration;
 import com.sscl.blelibrary.AdvertiseRecord;
 import com.sscl.blelibrary.BleDevice;
-import com.sscl.blelibrary.systems.BleHashMap;
+import com.sscl.blelibrary.systems.BleArrayList;
 import com.sscl.blelibrary.systems.BleParcelUuid;
 import com.sscl.blelibrary.systems.BleScanRecord;
 import com.sscl.blesample.R;
@@ -25,8 +25,6 @@ import com.sscl.blesample.utils.Constants;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author jackie
@@ -54,7 +52,7 @@ public class AdRecordParseActivity extends BaseAppCompatActivity {
     /**
      * 广播包服务适配器数据源
      */
-    private ArrayList<Map.Entry<BleParcelUuid, byte[]>> serviceDataList = new ArrayList<>();
+    private ArrayList<BleParcelUuid> serviceDataList = new ArrayList<>();
     /**
      * 广播包数据列表适配器
      */
@@ -217,11 +215,10 @@ public class AdRecordParseActivity extends BaseAppCompatActivity {
 
     private void refreshServiceDataList() {
         BleScanRecord bleScanRecord = bleDevice.getBleScanRecord();
-        BleHashMap<BleParcelUuid, byte[]> serviceData = bleScanRecord.getServiceData();
-        Set<Map.Entry<BleParcelUuid, byte[]>> entries = serviceData.entrySet();
+        BleArrayList<BleParcelUuid> serviceUuids = bleScanRecord.getServiceUuids();
         serviceDataList.clear();
-        if (entries != null) {
-            serviceDataList.addAll(entries);
+        if (serviceUuids != null) {
+            serviceDataList.addAll(serviceUuids);
         }
         serviceDataAdapter.notifyDataSetChanged();
     }

@@ -19,7 +19,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-import com.sscl.baselibrary.utils.ConversionUtil;
 import com.sscl.blelibrary.enums.PhyMask;
 import com.sscl.blelibrary.enums.Transport;
 import com.sscl.blelibrary.interfaces.OnBleCharacteristicWriteListener;
@@ -29,6 +28,7 @@ import com.sscl.blelibrary.interfaces.OnBleReceiveNotificationListener;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -310,7 +310,7 @@ public final class BluetoothLeService extends Service {
         }
         DebugUtil.warnOut(TAG, "characteristic setValue success");
 
-        DebugUtil.warnOut(TAG, "values = " + ConversionUtil.byteArrayToHexStr(data));
+        DebugUtil.warnOut(TAG, "values = " + Arrays.toString(data));
         return bluetoothGatt.writeCharacteristic(characteristic);
     }
 

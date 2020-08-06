@@ -2,8 +2,9 @@ package com.sscl.blelibrary;
 
 import androidx.annotation.NonNull;
 
-import com.sscl.baselibrary.utils.ConversionUtil;
 import com.sscl.blelibrary.interfaces.OnLargeDataSendStateChangedListener;
+
+import java.util.Arrays;
 
 /**
  * default callback during large data transmission
@@ -48,7 +49,7 @@ final class DefaultLargeDataSendStateChangedListener implements OnLargeDataSendS
      */
     @Override
     public void packageSendProgressChanged(int currentPackageIndex, int pageCount, @NonNull byte[] data) {
-        DebugUtil.warnOut(TAG, "packageSendProgressChanged : currentPackageIndex = " + currentPackageIndex + ",pageCount = " + pageCount + ",data = " + ConversionUtil.byteArrayToHexStr(data));
+        DebugUtil.warnOut(TAG, "packageSendProgressChanged : currentPackageIndex = " + currentPackageIndex + ",pageCount = " + pageCount + ",data = " + Arrays.toString(data));
     }
 
     /**
@@ -60,7 +61,7 @@ final class DefaultLargeDataSendStateChangedListener implements OnLargeDataSendS
      */
     @Override
     public void packageSendFailed(int currentPackageIndex, int pageCount, @NonNull byte[] data) {
-        DebugUtil.warnOut(TAG, "packageSendFailed : currentPackageIndex = " + currentPackageIndex + ",pageCount = " + pageCount + ",data = " + ConversionUtil.byteArrayToHexStr(data));
+        DebugUtil.warnOut(TAG, "packageSendFailed : currentPackageIndex = " + currentPackageIndex + ",pageCount = " + pageCount + ",data = " + Arrays.toString(data));
     }
 
     /**
@@ -73,7 +74,7 @@ final class DefaultLargeDataSendStateChangedListener implements OnLargeDataSendS
      */
     @Override
     public void packageSendFailedAndRetry(int currentPackageIndex, int pageCount, int tryCount, @NonNull byte[] data) {
-        DebugUtil.warnOut(TAG, "packageSendFailedAndRetry : currentPackageIndex = " + currentPackageIndex + ",pageCount = " + pageCount + ",tryCount = " + tryCount + ",data = " + ConversionUtil.byteArrayToHexStr(data));
+        DebugUtil.warnOut(TAG, "packageSendFailedAndRetry : currentPackageIndex = " + currentPackageIndex + ",pageCount = " + pageCount + ",tryCount = " + tryCount + ",data = " + Arrays.toString(data));
     }
 
     /**
@@ -98,6 +99,6 @@ final class DefaultLargeDataSendStateChangedListener implements OnLargeDataSendS
      */
     @Override
     public void onSendTimeOutAndRetry(int tryCount, int currentPackageIndex, int pageCount, @NonNull byte[] data) {
-        DebugUtil.warnOut(TAG, "onSendTimeOutAndRetry : currentPackageIndex = " + currentPackageIndex + ",pageCount = " + pageCount + ",tryCount = " + tryCount + ",data = " + ConversionUtil.byteArrayToHexStr(data));
+        DebugUtil.warnOut(TAG, "onSendTimeOutAndRetry : currentPackageIndex = " + currentPackageIndex + ",pageCount = " + pageCount + ",tryCount = " + tryCount + ",data = " + Arrays.toString(data));
     }
 }
