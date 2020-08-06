@@ -37,7 +37,7 @@ import com.sscl.blelibrary.enums.BleScanMode;
 import com.sscl.blelibrary.enums.ScanPhy;
 import com.sscl.blelibrary.interfaces.OnBleScanStateChangedListener;
 import com.sscl.blelibrary.interfaces.OnBluetoothStateChangedListener;
-import com.sscl.blelibrary.systems.BleHashMap;
+import com.sscl.blelibrary.systems.BleArrayList;
 import com.sscl.blelibrary.systems.BleParcelUuid;
 import com.sscl.blelibrary.systems.BleScanRecord;
 import com.sscl.blesample.R;
@@ -48,8 +48,6 @@ import com.sscl.blesample.watcher.EditTextWatcherForMacAddress;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * 扫描设备列表的界面
@@ -153,12 +151,14 @@ public class DeviceListActivity extends BaseAppCompatActivity {
         @Override
         public void onScanFindOneDevice(BleDevice bleDevice) {
             BleScanRecord bleScanRecord = bleDevice.getBleScanRecord();
-            BleHashMap<BleParcelUuid, byte[]> serviceData = bleScanRecord.getServiceData();
-            DebugUtil.warnOut(TAG, "serviceData size " + serviceData.size());
-            Set<Map.Entry<BleParcelUuid, byte[]>> entries = serviceData.entrySet();
-            for (Map.Entry<BleParcelUuid, byte[]> value :
-                    entries) {
-                DebugUtil.warnOut(TAG, "onScanFindOneDevice: " + bleDevice.getDeviceAddress() + " " + value.getKey());
+            BleArrayList<BleParcelUuid> serviceUuids = bleScanRecord.getServiceUuids();
+            if (serviceUuids == null) {
+                DebugUtil.warnOut(TAG, "serviceUuids == null");
+            } else {
+                for (int i = 0; i < serviceUuids.size(); i++) {
+                    BleParcelUuid bleParcelUuid = serviceUuids.get(i);
+                    DebugUtil.warnOut(TAG, "serviceUuids " + i + " = " + bleParcelUuid.toString());
+                }
             }
             //只要发现一个设备就会回调此函数
             if (!adapterList.contains(bleDevice)) {
@@ -407,6 +407,7 @@ public class DeviceListActivity extends BaseAppCompatActivity {
         }
         //设置相关回调
         bleScanner.setOnBleScanStateChangedListener(onBleScanStateChangedListener);
+        bleScanner.addFilterUuid("0000aa00-0000-1000-8000-00805f9b34fb");
         bleScanner.init();
     }
 

@@ -83,6 +83,7 @@ public final class BleScanRecord implements Serializable {
      * Returns a list of service UUIDs within the advertisement that are used to identify the
      * bluetooth GATT services.
      */
+    @Nullable
     public BleArrayList<BleParcelUuid> getServiceUuids() {
         return mServiceUuids;
     }

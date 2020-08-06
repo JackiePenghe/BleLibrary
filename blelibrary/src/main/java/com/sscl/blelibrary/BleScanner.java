@@ -372,6 +372,7 @@ public final class BleScanner {
      *
      * @param scanFilter user-defined filter
      */
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     public void addCustomFilter(@NonNull ScanFilter scanFilter) {
         customScanFilters.add(scanFilter);
     }
@@ -381,6 +382,7 @@ public final class BleScanner {
      *
      * @param scanFilter user-defined filter
      */
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     public void removeCustomFilter(@NonNull ScanFilter scanFilter) {
         customScanFilters.add(scanFilter);
     }
@@ -388,6 +390,7 @@ public final class BleScanner {
     /**
      * clear all user-defined filters
      */
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     public void clearCustomFilters() {
         customScanFilters.clear();
     }
@@ -429,6 +432,7 @@ public final class BleScanner {
      * @param uuid a string used to filter the device uuid
      */
     public void addFilterUuid(String uuid) {
+        uuid = uuid.toLowerCase();
         filterUuids.add(uuid);
     }
 
@@ -440,6 +444,7 @@ public final class BleScanner {
      * @param uuid a string used to filter the device uuid
      */
     public void removeFilterUuid(String uuid) {
+        uuid = uuid.toLowerCase();
         filterUuids.remove(uuid);
     }
 
@@ -541,7 +546,9 @@ public final class BleScanner {
      * clear all filters
      */
     public void clearAllFilters() {
-        clearCustomFilters();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            clearCustomFilters();
+        }
         clearFilterFullAddress();
         clearFilterStartsAddress();
         clearFilterFullName();
@@ -852,6 +859,7 @@ public final class BleScanner {
             boolean pass = false;
             for (BleParcelUuid parcelUuid : uuids) {
                 String uuidInDevice = parcelUuid.getUuid().toString();
+                DebugUtil.warnOut(TAG, "uuidInDevice = " + uuidInDevice);
                 if (filterUuids.contains(uuidInDevice)) {
                     pass = true;
                     break;
