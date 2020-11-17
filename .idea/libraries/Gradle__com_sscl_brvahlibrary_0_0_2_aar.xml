@@ -2,17 +2,21 @@
   <library name="Gradle: com.sscl:brvahlibrary:0.0.2@aar">
     <ANNOTATIONS>
       <root url="jar://$PROJECT_DIR$/../../../../others/gradle/caches/transforms-2/files-2.1/04485365a0e351661be1760d8d3b1fae/brvahlibrary-0.0.2/annotations.zip!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../others/gradle-android-studio/caches/transforms-2/files-2.1/ba1f4739ada9a6e22d856be194faf6fb/brvahlibrary-0.0.2/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
       <root url="file://$PROJECT_DIR$/../../../../others/gradle/caches/transforms-2/files-2.1/04485365a0e351661be1760d8d3b1fae/brvahlibrary-0.0.2/AndroidManifest.xml" />
       <root url="jar://$PROJECT_DIR$/../../../../others/gradle/caches/transforms-2/files-2.1/04485365a0e351661be1760d8d3b1fae/brvahlibrary-0.0.2/jars/classes.jar!/" />
       <root url="file://$PROJECT_DIR$/../../../../others/gradle/caches/transforms-2/files-2.1/04485365a0e351661be1760d8d3b1fae/brvahlibrary-0.0.2/res" />
+      <root url="file://$PROJECT_DIR$/../../../../others/gradle-android-studio/caches/transforms-2/files-2.1/ba1f4739ada9a6e22d856be194faf6fb/brvahlibrary-0.0.2/AndroidManifest.xml" />
+      <root url="file://$PROJECT_DIR$/../../../../others/gradle-android-studio/caches/transforms-2/files-2.1/ba1f4739ada9a6e22d856be194faf6fb/brvahlibrary-0.0.2/res" />
+      <root url="jar://$PROJECT_DIR$/../../../../others/gradle-android-studio/caches/transforms-2/files-2.1/ba1f4739ada9a6e22d856be194faf6fb/brvahlibrary-0.0.2/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$PROJECT_DIR$/../../../../others/gradle/caches/modules-2/files-2.1/com.sscl/brvahlibrary/0.0.2/b045b1fafe849b472ff7cd98bac0c65a6749460f/brvahlibrary-0.0.2-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../others/gradle-android-studio/caches/modules-2/files-2.1/com.sscl/brvahlibrary/0.0.2/b045b1fafe849b472ff7cd98bac0c65a6749460f/brvahlibrary-0.0.2-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/../../../../others/gradle/caches/modules-2/files-2.1/com.sscl/brvahlibrary/0.0.2/6adc7cabf57e302468a8f69dd650e8f1617a747e/brvahlibrary-0.0.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../others/gradle-android-studio/caches/modules-2/files-2.1/com.sscl/brvahlibrary/0.0.2/6adc7cabf57e302468a8f69dd650e8f1617a747e/brvahlibrary-0.0.2-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

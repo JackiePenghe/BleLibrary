@@ -29,6 +29,16 @@ public class BleHashMap<K, V> implements Serializable {
         return null;
     }
 
+    /**
+     * 是否包含指定的Key
+     *
+     * @param key key
+     * @return true表示包含
+     */
+    public boolean containsKey(K key) {
+        return keys.contains(key);
+    }
+
     public int size() {
         return keys.size();
     }
