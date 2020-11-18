@@ -64,24 +64,20 @@ public class MultiConnectActivity extends BaseAppCompatActivity {
     private Device5Callback device5BleCallback;
 
 
-    private View.OnClickListener onClickListener = new View.OnClickListener() {
+    private final View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.connect_button:
-                    doConnect();
-                    break;
-                case R.id.open_socket:
-                    openSocket();
-                    break;
-                case R.id.close_socket:
-                    closeSocket();
-                    break;
-                case R.id.disconnect:
-                    disconnect();
-                    break;
-                default:
-                    break;
+            int id = v.getId();
+            if (id == R.id.connect_button) {
+                doConnect();
+            } else if (id == R.id.open_socket) {
+                openSocket();
+            } else if (id == R.id.close_socket) {
+                closeSocket();
+            } else if (id == R.id.disconnect) {
+                disconnect();
+            } else {
+                //do nothing
             }
         }
     };

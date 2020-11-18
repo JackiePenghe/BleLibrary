@@ -1,13 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: androidx.multidex:multidex:2.0.1@aar">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../../../../others/gradle/caches/transforms-2/files-2.1/9ac7eb6303a2f8b395bf8f12ee819762/multidex-2.0.1/AndroidManifest.xml" />
-      <root url="jar://$PROJECT_DIR$/../../../../others/gradle/caches/transforms-2/files-2.1/9ac7eb6303a2f8b395bf8f12ee819762/multidex-2.0.1/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../../../../others/gradle/caches/transforms-2/files-2.1/9ac7eb6303a2f8b395bf8f12ee819762/multidex-2.0.1/res" />
-      <root url="file://$PROJECT_DIR$/../../../../others/gradle-android-studio/caches/transforms-2/files-2.1/9ac7eb6303a2f8b395bf8f12ee819762/multidex-2.0.1/res" />
       <root url="jar://$PROJECT_DIR$/../../../../others/gradle-android-studio/caches/transforms-2/files-2.1/39c038061c341988a405499768e155fc/multidex-2.0.1/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../../../../others/gradle-android-studio/caches/transforms-2/files-2.1/39c038061c341988a405499768e155fc/multidex-2.0.1/AndroidManifest.xml" />
       <root url="file://$PROJECT_DIR$/../../../../others/gradle-android-studio/caches/transforms-2/files-2.1/39c038061c341988a405499768e155fc/multidex-2.0.1/res" />
+      <root url="file://$PROJECT_DIR$/../../../../others/gradle-android-studio/caches/transforms-2/files-2.1/39c038061c341988a405499768e155fc/multidex-2.0.1/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

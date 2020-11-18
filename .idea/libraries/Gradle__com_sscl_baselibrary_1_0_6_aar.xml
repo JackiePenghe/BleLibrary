@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: com.sscl:baselibrary:1.0.6@aar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../../../others/gradle-android-studio/caches/transforms-2/files-2.1/f9e5af521ef88a2f08eb168f9329c6e9/baselibrary-1.0.6/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../../../../others/gradle-android-studio/caches/transforms-2/files-2.1/f9e5af521ef88a2f08eb168f9329c6e9/baselibrary-1.0.6/res" />
+      <root url="file://$PROJECT_DIR$/../../../../others/gradle-android-studio/caches/transforms-2/files-2.1/f9e5af521ef88a2f08eb168f9329c6e9/baselibrary-1.0.6/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/../../../../others/gradle-android-studio/caches/modules-2/files-2.1/com.sscl/baselibrary/1.0.6/31408aeacdd74b2c342d3df12c290857e246014c/baselibrary-1.0.6-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../../../others/gradle-android-studio/caches/modules-2/files-2.1/com.sscl/baselibrary/1.0.6/fafc462afa9bdb40e04ad1134bb00a9ecbc33af1/baselibrary-1.0.6-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

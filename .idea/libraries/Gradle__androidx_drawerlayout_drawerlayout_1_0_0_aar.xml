@@ -4,11 +4,9 @@
       <root url="jar://$PROJECT_DIR$/../../../../others/gradle-android-studio/caches/transforms-2/files-2.1/3ab9ce88177f49e5383f4a5bc5bf11c9/drawerlayout-1.0.0/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../../../../others/gradle/caches/transforms-2/files-2.1/73a67f2a2e532e497dafc3f937b16ec3/drawerlayout-1.0.0/res" />
-      <root url="file://$PROJECT_DIR$/../../../../others/gradle-android-studio/caches/transforms-2/files-2.1/73a67f2a2e532e497dafc3f937b16ec3/drawerlayout-1.0.0/res" />
-      <root url="file://$PROJECT_DIR$/../../../../others/gradle-android-studio/caches/transforms-2/files-2.1/3ab9ce88177f49e5383f4a5bc5bf11c9/drawerlayout-1.0.0/AndroidManifest.xml" />
-      <root url="file://$PROJECT_DIR$/../../../../others/gradle-android-studio/caches/transforms-2/files-2.1/3ab9ce88177f49e5383f4a5bc5bf11c9/drawerlayout-1.0.0/res" />
       <root url="jar://$PROJECT_DIR$/../../../../others/gradle-android-studio/caches/transforms-2/files-2.1/3ab9ce88177f49e5383f4a5bc5bf11c9/drawerlayout-1.0.0/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../../../../others/gradle-android-studio/caches/transforms-2/files-2.1/3ab9ce88177f49e5383f4a5bc5bf11c9/drawerlayout-1.0.0/res" />
+      <root url="file://$PROJECT_DIR$/../../../../others/gradle-android-studio/caches/transforms-2/files-2.1/3ab9ce88177f49e5383f4a5bc5bf11c9/drawerlayout-1.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

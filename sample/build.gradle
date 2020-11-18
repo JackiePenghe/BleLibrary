@@ -1,13 +1,14 @@
 apply plugin: 'com.android.application'
 
+
 android {
     compileSdkVersion 30
     defaultConfig {
         applicationId "com.sscl.blesamplex"
         minSdkVersion 18
         targetSdkVersion 30
-        versionCode 18
-        versionName "2020-08-06-11-49"
+        versionCode 19
+        versionName "2020-11-18-09-52"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -24,7 +25,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.sscl:baselibrary:1.0.1'
+    implementation 'com.sscl:baselibrary:1.0.6'
     implementation 'com.sscl:brvahlibrary:0.0.2'
     implementation 'com.yanzhenjie:permission:2.0.3'
     implementation project(':blelibrary')

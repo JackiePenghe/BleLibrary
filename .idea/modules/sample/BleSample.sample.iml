@@ -74,7 +74,7 @@
     <orderEntry type="library" name="Gradle: androidx.arch.core:core-runtime:2.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.interpolator:interpolator:1.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.annotation:annotation-experimental:1.0.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.sscl:baselibrary:1.0.1@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.sscl:baselibrary:1.0.6@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.sscl:brvahlibrary:0.0.2@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.multidex:multidex:2.0.1@aar" level="project" />
     <orderEntry type="module" module-name="BleSample.blelibrary" />
