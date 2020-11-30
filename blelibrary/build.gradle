@@ -9,8 +9,8 @@ android {
     defaultConfig {
         minSdkVersion 18
         targetSdkVersion 30
-        versionCode 23
-        versionName "1.0.4"
+        versionCode 24
+        versionName "1.0.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -29,7 +29,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
 }
 
-version = "1.0.4"
+version = "1.0.5"
 
 def siteUrl = 'https://github.com/JackiePenghe/BleSample'
 def gitUrl = 'https://github.com/JackiePenghe/BleSample.git'

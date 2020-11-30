@@ -15,7 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
-import com.sscl.baselibrary.exception.WrongByteArrayLengthException;
 import com.sscl.baselibrary.textwatcher.HexTextAutoAddEmptyCharInputWatcher;
 import com.sscl.baselibrary.utils.ConversionUtil;
 import com.sscl.baselibrary.utils.DebugUtil;
@@ -25,9 +24,9 @@ import com.sscl.blelibrary.BleAdvertiser;
 import com.sscl.blelibrary.BleManager;
 import com.sscl.blelibrary.enums.BleAdvertiseMode;
 import com.sscl.blelibrary.enums.BleAdvertiseTxPowerLevel;
+import com.sscl.blelibrary.interfaces.DefaultOnBleAdvertiseStateChangedListener;
+import com.sscl.blelibrary.interfaces.DefaultOnConnectedByOtherDevicesListener;
 import com.sscl.blesample.R;
-import com.sscl.blesample.callback.DefaultOnBleAdvertiseStateChangedListener;
-import com.sscl.blesample.callback.DefaultOnConnectedByOtherDevicesListener;
 
 /**
  * @author jacke
@@ -378,12 +377,7 @@ public class BleAdvertiseActivity extends BaseAppCompatActivity {
     @Nullable
     private AdvertiseData getAdvertiseData(byte[] bytes) {
         int manufacturerId;
-        try {
-            manufacturerId = ConversionUtil.byteArrayToInt(new byte[]{bytes[1], bytes[0]});
-        } catch (WrongByteArrayLengthException e) {
-            ToastUtil.toastLong(BleAdvertiseActivity.this, R.string.init_advertiser_failed);
-            return null;
-        }
+        manufacturerId = ConversionUtil.byteArrayToInt(new byte[]{bytes[1], bytes[0]});
         byte[] data = new byte[bytes.length - 2];
         System.arraycopy(bytes, 2, data, 0, data.length);
         return new AdvertiseData(manufacturerId, data);
