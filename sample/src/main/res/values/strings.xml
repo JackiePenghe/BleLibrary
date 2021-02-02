@@ -110,4 +110,7 @@
     <string name="advertise_data_null">Advertise data is null</string>
     <string name="min_length">At least 1 byte</string>
     <string name="service_data" translatable="false">Service data</string>
+    <string name="deny">deny</string>
+    <string name="sd_card_rationale">Need Sd-Card permission</string>
+    <string name="location_rationale">Need location permission</string>
 </resources>

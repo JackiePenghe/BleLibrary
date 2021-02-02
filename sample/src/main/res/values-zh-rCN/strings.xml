@@ -99,4 +99,7 @@
     <string name="set_scan_response_content">设置响应包</string>
     <string name="advertise_data_null">广播包数据为空</string>
     <string name="min_length">请至少输入一个字节</string>
+    <string name="deny">拒绝</string>
+    <string name="sd_card_rationale">需要存储读写权限</string>
+    <string name="location_rationale">需要定位权限</string>
 </resources>

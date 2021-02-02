@@ -27,7 +27,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.sscl:baselibrary:1.0.6'
     implementation 'com.sscl:brvahlibrary:0.0.2'
-    implementation 'com.yanzhenjie:permission:2.0.3'
+    implementation 'pub.devrel:easypermissions:3.0.0'
     implementation project(':blelibrary')
     //分包的插件
     implementation 'androidx.multidex:multidex:2.0.1'

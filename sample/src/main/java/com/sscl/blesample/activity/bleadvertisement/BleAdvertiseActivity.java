@@ -56,7 +56,7 @@ public class BleAdvertiseActivity extends BaseAppCompatActivity {
      */
     private byte[] scanResponseBytes;
 
-    private DefaultOnBleAdvertiseStateChangedListener defaultOnBleAdvertiseStateChangedListener = new DefaultOnBleAdvertiseStateChangedListener() {
+    private final DefaultOnBleAdvertiseStateChangedListener defaultOnBleAdvertiseStateChangedListener = new DefaultOnBleAdvertiseStateChangedListener() {
         /**
          * Callback triggered in response to {@link BluetoothLeAdvertiser#startAdvertising} indicating
          * that the advertising has been started successfully.
@@ -244,7 +244,7 @@ public class BleAdvertiseActivity extends BaseAppCompatActivity {
      */
     private void showSetAdvertiseContentDialog() {
         final EditText editText = (EditText) View.inflate(this, R.layout.dialog_set_advertise_content, null);
-        editText.addTextChangedListener(new HexTextAutoAddEmptyCharInputWatcher(editText, 25));
+        editText.addTextChangedListener(new HexTextAutoAddEmptyCharInputWatcher(editText, 29));
         new AlertDialog.Builder(this).
                 setTitle(R.string.set_advertise_content)
 //                .setView(adStructureView)
@@ -279,7 +279,7 @@ public class BleAdvertiseActivity extends BaseAppCompatActivity {
 
     private void showSetScanResponseContentDialog() {
         final EditText editText = (EditText) View.inflate(this, R.layout.dialog_set_advertise_content, null);
-        editText.addTextChangedListener(new HexTextAutoAddEmptyCharInputWatcher(editText, 25));
+        editText.addTextChangedListener(new HexTextAutoAddEmptyCharInputWatcher(editText, 29));
         new AlertDialog.Builder(this).
                 setTitle(R.string.set_scan_response_content)
                 .setView(editText)
