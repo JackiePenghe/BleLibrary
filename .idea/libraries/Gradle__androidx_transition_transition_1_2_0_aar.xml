@@ -3,6 +3,7 @@
     <ANNOTATIONS>
       <root url="jar://$PROJECT_DIR$/../../../../others/gradle-android-studio/caches/transforms-2/files-2.1/0d200fb2161a589f523dbadae4223272/transition-1.2.0/annotations.zip!/" />
       <root url="jar://$USER_HOME$/gradle/caches/transforms-2/files-2.1/0d200fb2161a589f523dbadae4223272/transition-1.2.0/annotations.zip!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../other/gradle/caches/transforms-2/files-2.1/0d200fb2161a589f523dbadae4223272/transition-1.2.0/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/../../../../others/gradle-android-studio/caches/transforms-2/files-2.1/0d200fb2161a589f523dbadae4223272/transition-1.2.0/jars/classes.jar!/" />
@@ -11,11 +12,14 @@
       <root url="jar://$USER_HOME$/gradle/caches/transforms-2/files-2.1/0d200fb2161a589f523dbadae4223272/transition-1.2.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/gradle/caches/transforms-2/files-2.1/0d200fb2161a589f523dbadae4223272/transition-1.2.0/AndroidManifest.xml" />
       <root url="file://$USER_HOME$/gradle/caches/transforms-2/files-2.1/0d200fb2161a589f523dbadae4223272/transition-1.2.0/res" />
+      <root url="jar://$PROJECT_DIR$/../../../../other/gradle/caches/transforms-2/files-2.1/0d200fb2161a589f523dbadae4223272/transition-1.2.0/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../../../../other/gradle/caches/transforms-2/files-2.1/0d200fb2161a589f523dbadae4223272/transition-1.2.0/res" />
+      <root url="file://$PROJECT_DIR$/../../../../other/gradle/caches/transforms-2/files-2.1/0d200fb2161a589f523dbadae4223272/transition-1.2.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/../../../../others/gradle-android-studio/caches/modules-2/files-2.1/androidx.transition/transition/1.2.0/65d2a5dab39f120d3f584fdead252ce81ec7dbee/transition-1.2.0-sources.jar!/" />
-      <root url="jar://$USER_HOME$/gradle/caches/modules-2/files-2.1/androidx.transition/transition/1.2.0/65d2a5dab39f120d3f584fdead252ce81ec7dbee/transition-1.2.0-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../other/gradle/caches/modules-2/files-2.1/androidx.transition/transition/1.2.0/65d2a5dab39f120d3f584fdead252ce81ec7dbee/transition-1.2.0-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
