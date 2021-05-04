@@ -37,7 +37,7 @@ allprojects {
 
 ```xml
 dependencies {
-        implementation 'com.github.JackiePenghe:BaseLibrary:release-version'
+        implementation 'com.github.JackiePenghe:BaseLibrary:version'
 }
 ```
 一下所有示例均以androidx版本为准：
