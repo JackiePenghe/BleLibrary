@@ -37,8 +37,8 @@ public class MyApplication extends Application {
         ToastUtil.setToastReuse(true);
         //初始化文件工具类
         FileUtil.init(this.getApplicationContext());
+        BleManager.setDebugFlag(false);
         BleManager.init(MyApplication.this);
-        com.sscl.blelibrary.DebugUtil.setDebugFlag(false);
     }
 
     @Override

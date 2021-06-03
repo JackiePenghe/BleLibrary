@@ -4,7 +4,7 @@ import android.bluetooth.le.AdvertiseSettings;
 import android.bluetooth.le.AdvertisingSet;
 import android.bluetooth.le.BluetoothLeAdvertiser;
 
-import com.sscl.blelibrary.DebugUtil;
+import com.sscl.blelibrary.BleManager;
 
 
 /**
@@ -23,7 +23,7 @@ public class DefaultOnBleAdvertiseStateChangedListener implements OnBleAdvertise
      */
     @Override
     public void onBroadCastStartSuccess(AdvertiseSettings settingsInEffect) {
-        DebugUtil.warnOut(TAG, "onBroadCastStartSuccess");
+        BleManager.warnOut(TAG, "onBroadCastStartSuccess");
     }
 
     /**
@@ -34,7 +34,7 @@ public class DefaultOnBleAdvertiseStateChangedListener implements OnBleAdvertise
      */
     @Override
     public void onBroadCastStartFailure(int errorCode) {
-        DebugUtil.warnOut(TAG, "onBroadCastStartFailure");
+        BleManager.warnOut(TAG, "onBroadCastStartFailure");
     }
 
     /**
@@ -42,7 +42,7 @@ public class DefaultOnBleAdvertiseStateChangedListener implements OnBleAdvertise
      */
     @Override
     public void onBroadCastStopped() {
-        DebugUtil.warnOut(TAG, "onBroadCastStopped");
+        BleManager.warnOut(TAG, "onBroadCastStopped");
     }
 
     /**
@@ -57,7 +57,7 @@ public class DefaultOnBleAdvertiseStateChangedListener implements OnBleAdvertise
      */
     @Override
     public void onAdvertisingSetStarted(AdvertisingSet advertisingSet, int txPower, int status) {
-        DebugUtil.warnOut(TAG, "onAdvertisingSetStarted");
+        BleManager.warnOut(TAG, "onAdvertisingSetStarted");
     }
 
     /**
@@ -68,7 +68,7 @@ public class DefaultOnBleAdvertiseStateChangedListener implements OnBleAdvertise
      */
     @Override
     public void onAdvertisingSetStopped(AdvertisingSet advertisingSet) {
-        DebugUtil.warnOut(TAG, "onAdvertisingSetStopped");
+        BleManager.warnOut(TAG, "onAdvertisingSetStopped");
     }
 
     /**
@@ -81,7 +81,7 @@ public class DefaultOnBleAdvertiseStateChangedListener implements OnBleAdvertise
      */
     @Override
     public void onAdvertisingEnabled(AdvertisingSet advertisingSet, boolean enable, int status) {
-        DebugUtil.warnOut(TAG, "onAdvertisingEnabled");
+        BleManager.warnOut(TAG, "onAdvertisingEnabled");
     }
 
     /**
@@ -93,7 +93,7 @@ public class DefaultOnBleAdvertiseStateChangedListener implements OnBleAdvertise
      */
     @Override
     public void onScanResponseDataSet(AdvertisingSet advertisingSet, int status) {
-        DebugUtil.warnOut(TAG, "onScanResponseDataSet");
+        BleManager.warnOut(TAG, "onScanResponseDataSet");
     }
 
     /**
@@ -106,7 +106,7 @@ public class DefaultOnBleAdvertiseStateChangedListener implements OnBleAdvertise
      */
     @Override
     public void onAdvertisingParametersUpdated(AdvertisingSet advertisingSet, int txPower, int status) {
-        DebugUtil.warnOut(TAG, "onAdvertisingParametersUpdated");
+        BleManager.warnOut(TAG, "onAdvertisingParametersUpdated");
     }
 
     /**
@@ -118,7 +118,7 @@ public class DefaultOnBleAdvertiseStateChangedListener implements OnBleAdvertise
      */
     @Override
     public void onPeriodicAdvertisingParametersUpdated(AdvertisingSet advertisingSet, int status) {
-        DebugUtil.warnOut(TAG, "onPeriodicAdvertisingParametersUpdated");
+        BleManager.warnOut(TAG, "onPeriodicAdvertisingParametersUpdated");
     }
 
     /**
@@ -130,7 +130,7 @@ public class DefaultOnBleAdvertiseStateChangedListener implements OnBleAdvertise
      */
     @Override
     public void onPeriodicAdvertisingDataSet(AdvertisingSet advertisingSet, int status) {
-        DebugUtil.warnOut(TAG, "onPeriodicAdvertisingDataSet");
+        BleManager.warnOut(TAG, "onPeriodicAdvertisingDataSet");
     }
 
     /**
@@ -143,7 +143,7 @@ public class DefaultOnBleAdvertiseStateChangedListener implements OnBleAdvertise
      */
     @Override
     public void onPeriodicAdvertisingEnabled(AdvertisingSet advertisingSet, boolean enable, int status) {
-        DebugUtil.warnOut(TAG, "onPeriodicAdvertisingEnabled");
+        BleManager.warnOut(TAG, "onPeriodicAdvertisingEnabled");
     }
 
     /**
@@ -155,6 +155,6 @@ public class DefaultOnBleAdvertiseStateChangedListener implements OnBleAdvertise
      */
     @Override
     public void onAdvertisingDataSet(AdvertisingSet advertisingSet, int status) {
-        DebugUtil.warnOut(TAG, "onAdvertisingDataSet");
+        BleManager.warnOut(TAG, "onAdvertisingDataSet");
     }
 }

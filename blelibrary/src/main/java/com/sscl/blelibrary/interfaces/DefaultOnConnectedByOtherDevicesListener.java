@@ -8,7 +8,7 @@ import android.bluetooth.BluetoothGattServer;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
 
-import com.sscl.blelibrary.DebugUtil;
+import com.sscl.blelibrary.BleManager;
 
 
 /**
@@ -29,7 +29,7 @@ public class DefaultOnConnectedByOtherDevicesListener implements OnConnectedByOt
      */
     @Override
     public void onConnectionStateChange(BluetoothDevice device, int status, int newState) {
-        DebugUtil.warnOut(TAG, "onConnectionStateChange");
+        BleManager.warnOut(TAG, "onConnectionStateChange");
     }
 
     /**
@@ -41,7 +41,7 @@ public class DefaultOnConnectedByOtherDevicesListener implements OnConnectedByOt
      */
     @Override
     public void onServiceAdded(int status, BluetoothGattService service) {
-        DebugUtil.warnOut(TAG, "onServiceAdded");
+        BleManager.warnOut(TAG, "onServiceAdded");
     }
 
     /**
@@ -57,7 +57,7 @@ public class DefaultOnConnectedByOtherDevicesListener implements OnConnectedByOt
      */
     @Override
     public void onCharacteristicReadRequest(BluetoothDevice device, int requestId, int offset, BluetoothGattCharacteristic characteristic) {
-        DebugUtil.warnOut(TAG, "onCharacteristicReadRequest");
+        BleManager.warnOut(TAG, "onCharacteristicReadRequest");
     }
 
     /**
@@ -77,7 +77,7 @@ public class DefaultOnConnectedByOtherDevicesListener implements OnConnectedByOt
      */
     @Override
     public void onCharacteristicWriteRequest(BluetoothDevice device, int requestId, BluetoothGattCharacteristic characteristic, boolean preparedWrite, boolean responseNeeded, int offset, byte[] value) {
-        DebugUtil.warnOut(TAG, "onCharacteristicWriteRequest");
+        BleManager.warnOut(TAG, "onCharacteristicWriteRequest");
     }
 
     /**
@@ -93,7 +93,7 @@ public class DefaultOnConnectedByOtherDevicesListener implements OnConnectedByOt
      */
     @Override
     public void onDescriptorReadRequest(BluetoothDevice device, int requestId, int offset, BluetoothGattDescriptor descriptor) {
-        DebugUtil.warnOut(TAG, "onDescriptorReadRequest");
+        BleManager.warnOut(TAG, "onDescriptorReadRequest");
     }
 
     /**
@@ -113,7 +113,7 @@ public class DefaultOnConnectedByOtherDevicesListener implements OnConnectedByOt
      */
     @Override
     public void onDescriptorWriteRequest(BluetoothDevice device, int requestId, BluetoothGattDescriptor descriptor, boolean preparedWrite, boolean responseNeeded, int offset, byte[] value) {
-        DebugUtil.warnOut(TAG, "onDescriptorWriteRequest");
+        BleManager.warnOut(TAG, "onDescriptorWriteRequest");
     }
 
     /**
@@ -128,7 +128,7 @@ public class DefaultOnConnectedByOtherDevicesListener implements OnConnectedByOt
      */
     @Override
     public void onExecuteWrite(BluetoothDevice device, int requestId, boolean execute) {
-        DebugUtil.warnOut(TAG, "onExecuteWrite");
+        BleManager.warnOut(TAG, "onExecuteWrite");
     }
 
     /**
@@ -144,7 +144,7 @@ public class DefaultOnConnectedByOtherDevicesListener implements OnConnectedByOt
      */
     @Override
     public void onNotificationSent(BluetoothDevice device, int status) {
-        DebugUtil.warnOut(TAG, "onNotificationSent");
+        BleManager.warnOut(TAG, "onNotificationSent");
     }
 
     /**
@@ -158,7 +158,7 @@ public class DefaultOnConnectedByOtherDevicesListener implements OnConnectedByOt
      */
     @Override
     public void onMtuChanged(BluetoothDevice device, int mtu) {
-        DebugUtil.warnOut(TAG, "onMtuChanged");
+        BleManager.warnOut(TAG, "onMtuChanged");
     }
 
     /**
@@ -175,7 +175,7 @@ public class DefaultOnConnectedByOtherDevicesListener implements OnConnectedByOt
      */
     @Override
     public void onPhyUpdate(BluetoothDevice device, int txPhy, int rxPhy, int status) {
-        DebugUtil.warnOut(TAG, "onPhyUpdate");
+        BleManager.warnOut(TAG, "onPhyUpdate");
     }
 
     /**
@@ -191,6 +191,6 @@ public class DefaultOnConnectedByOtherDevicesListener implements OnConnectedByOt
      */
     @Override
     public void onPhyRead(BluetoothDevice device, int txPhy, int rxPhy, int status) {
-        DebugUtil.warnOut(TAG, "onPhyRead");
+        BleManager.warnOut(TAG, "onPhyRead");
     }
 }

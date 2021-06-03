@@ -195,6 +195,24 @@ public final class BleManager {
     }
 
     /**
+     * 设置调试开启状态
+     *
+     * @param debugFlag 调试开启状态
+     */
+    public static void setDebugFlag(boolean debugFlag) {
+        DebugUtil.setDebugFlag(debugFlag);
+    }
+
+    /**
+     * set logcat default tag
+     *
+     * @param tag default tag
+     */
+    public static void setDefaultTAG(String tag) {
+        DebugUtil.setDefaultTAG(tag);
+    }
+
+    /**
      * Determine if the phone supports BLE
      *
      * @return true means support
@@ -564,5 +582,9 @@ public final class BleManager {
 
     static void setBluetoothLeService(BluetoothLeService bluetoothLeService) {
         BleManager.bluetoothLeService = bluetoothLeService;
+    }
+
+    public static void warnOut(String tag, String message) {
+        DebugUtil.warnOut(tag, message);
     }
 }

@@ -7,14 +7,14 @@ import android.util.Log;
  *
  * @author jackie
  */
-public class DebugUtil {
+class DebugUtil {
 
     /*-----------------------------------private static variables-----------------------------------*/
 
     /**
      * default TAG
      */
-    private static String defaultTag = "AlmLibrary->";
+    private static String defaultTag = "BleLibrary->";
     /**
      * Whether to print debug information
      */

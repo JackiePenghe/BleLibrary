@@ -10,6 +10,9 @@
       <root url="file://$PROJECT_DIR$/../../../../other/gradle/caches/transforms-2/files-2.1/462138513135c1c27ad5b18dc19cde04/jetified-appcompat-resources-1.2.0/res" />
       <root url="jar://$PROJECT_DIR$/../../../../other/gradle/caches/transforms-2/files-2.1/462138513135c1c27ad5b18dc19cde04/jetified-appcompat-resources-1.2.0/jars/classes.jar!/" />
       <root url="file://$PROJECT_DIR$/../../../../other/gradle/caches/transforms-2/files-2.1/462138513135c1c27ad5b18dc19cde04/jetified-appcompat-resources-1.2.0/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/../../../../other/gradle/caches/transforms-2/files-2.1/462138513135c1c27ad5b18dc19cde04/appcompat-resources-1.2.0/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../../../../other/gradle/caches/transforms-2/files-2.1/462138513135c1c27ad5b18dc19cde04/appcompat-resources-1.2.0/AndroidManifest.xml" />
+      <root url="file://$PROJECT_DIR$/../../../../other/gradle/caches/transforms-2/files-2.1/462138513135c1c27ad5b18dc19cde04/appcompat-resources-1.2.0/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

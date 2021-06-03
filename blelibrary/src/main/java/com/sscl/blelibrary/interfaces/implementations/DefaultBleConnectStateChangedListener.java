@@ -4,7 +4,7 @@ import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 
-import com.sscl.blelibrary.DebugUtil;
+import com.sscl.blelibrary.BleManager;
 import com.sscl.blelibrary.interfaces.OnBleConnectStateChangedListener;
 
 
@@ -21,7 +21,7 @@ public class DefaultBleConnectStateChangedListener implements OnBleConnectStateC
      */
     @Override
     public void connected() {
-        DebugUtil.warnOut(TAG, "connected");
+        BleManager.warnOut(TAG, "connected");
     }
 
     /**
@@ -29,7 +29,7 @@ public class DefaultBleConnectStateChangedListener implements OnBleConnectStateC
      */
     @Override
     public void disconnected() {
-        DebugUtil.warnOut(TAG, "disconnected");
+        BleManager.warnOut(TAG, "disconnected");
     }
 
     /**
@@ -39,7 +39,7 @@ public class DefaultBleConnectStateChangedListener implements OnBleConnectStateC
      */
     @Override
     public void gattStatusError(int errorStatus) {
-        DebugUtil.warnOut(TAG, "gattStatusError");
+        BleManager.warnOut(TAG, "gattStatusError");
     }
 
     /**
@@ -47,7 +47,7 @@ public class DefaultBleConnectStateChangedListener implements OnBleConnectStateC
      */
     @Override
     public void connecting() {
-        DebugUtil.warnOut(TAG, "connecting");
+        BleManager.warnOut(TAG, "connecting");
     }
 
     /**
@@ -56,7 +56,7 @@ public class DefaultBleConnectStateChangedListener implements OnBleConnectStateC
      */
     @Override
     public void autoDiscoverServicesFailed() {
-        DebugUtil.warnOut(TAG, "autoDiscoverServicesFailed");
+        BleManager.warnOut(TAG, "autoDiscoverServicesFailed");
     }
 
     /**
@@ -64,7 +64,7 @@ public class DefaultBleConnectStateChangedListener implements OnBleConnectStateC
      */
     @Override
     public void disconnecting() {
-        DebugUtil.warnOut(TAG, "disconnecting");
+        BleManager.warnOut(TAG, "disconnecting");
     }
 
     /**
@@ -74,7 +74,7 @@ public class DefaultBleConnectStateChangedListener implements OnBleConnectStateC
      */
     @Override
     public void unknownStatus(int statusCode) {
-        DebugUtil.warnOut(TAG, "unknownStatus");
+        BleManager.warnOut(TAG, "unknownStatus");
     }
 
     /**
@@ -85,7 +85,7 @@ public class DefaultBleConnectStateChangedListener implements OnBleConnectStateC
      */
     @Override
     public void gattPerformTaskFailed(int errorStatus, String methodName) {
-        DebugUtil.warnOut(TAG, "gattPerformTaskFailed methodName = " + methodName);
+        BleManager.warnOut(TAG, "gattPerformTaskFailed methodName = " + methodName);
     }
 
     /**
@@ -93,7 +93,7 @@ public class DefaultBleConnectStateChangedListener implements OnBleConnectStateC
      */
     @Override
     public void servicesDiscovered() {
-        DebugUtil.warnOut(TAG, "servicesDiscovered");
+        BleManager.warnOut(TAG, "servicesDiscovered");
     }
 
     /**
@@ -104,7 +104,7 @@ public class DefaultBleConnectStateChangedListener implements OnBleConnectStateC
      */
     @Override
     public void readCharacteristicData(BluetoothGattCharacteristic characteristic, byte[] data) {
-        DebugUtil.warnOut(TAG, "readCharacteristicData");
+        BleManager.warnOut(TAG, "readCharacteristicData");
     }
 
     /**
@@ -115,7 +115,7 @@ public class DefaultBleConnectStateChangedListener implements OnBleConnectStateC
      */
     @Override
     public void writeCharacteristicData(BluetoothGattCharacteristic characteristic, byte[] data) {
-        DebugUtil.warnOut(TAG, "writeCharacteristicData");
+        BleManager.warnOut(TAG, "writeCharacteristicData");
     }
 
     /**
@@ -126,7 +126,7 @@ public class DefaultBleConnectStateChangedListener implements OnBleConnectStateC
      */
     @Override
     public void receivedNotification(BluetoothGattCharacteristic characteristic, byte[] data) {
-        DebugUtil.warnOut(TAG, "receivedNotification");
+        BleManager.warnOut(TAG, "receivedNotification");
     }
 
     /**
@@ -137,7 +137,7 @@ public class DefaultBleConnectStateChangedListener implements OnBleConnectStateC
      */
     @Override
     public void readDescriptor(BluetoothGattDescriptor bluetoothGattDescriptor, byte[] data) {
-        DebugUtil.warnOut(TAG, "readDescriptor");
+        BleManager.warnOut(TAG, "readDescriptor");
     }
 
     /**
@@ -148,7 +148,7 @@ public class DefaultBleConnectStateChangedListener implements OnBleConnectStateC
      */
     @Override
     public void writeDescriptor(BluetoothGattDescriptor bluetoothGattDescriptor, byte[] data) {
-        DebugUtil.warnOut(TAG, "writeDescriptor");
+        BleManager.warnOut(TAG, "writeDescriptor");
     }
 
     /**
@@ -156,7 +156,7 @@ public class DefaultBleConnectStateChangedListener implements OnBleConnectStateC
      */
     @Override
     public void reliableWriteCompleted() {
-        DebugUtil.warnOut(TAG, "reliableWriteCompleted");
+        BleManager.warnOut(TAG, "reliableWriteCompleted");
     }
 
     /**
@@ -166,7 +166,7 @@ public class DefaultBleConnectStateChangedListener implements OnBleConnectStateC
      */
     @Override
     public void readRemoteRssi(int rssi) {
-        DebugUtil.warnOut(TAG, "readRemoteRssi");
+        BleManager.warnOut(TAG, "readRemoteRssi");
     }
 
     /**
@@ -176,7 +176,7 @@ public class DefaultBleConnectStateChangedListener implements OnBleConnectStateC
      */
     @Override
     public void mtuChanged(int mtu) {
-        DebugUtil.warnOut(TAG, "mtuChanged");
+        BleManager.warnOut(TAG, "mtuChanged");
     }
 
     /**
@@ -187,7 +187,7 @@ public class DefaultBleConnectStateChangedListener implements OnBleConnectStateC
      */
     @Override
     public void phyUpdate(int txPhy, int rxPhy) {
-        DebugUtil.warnOut(TAG, "phyUpdate");
+        BleManager.warnOut(TAG, "phyUpdate");
     }
 
     /**
@@ -198,7 +198,7 @@ public class DefaultBleConnectStateChangedListener implements OnBleConnectStateC
      */
     @Override
     public void readPhy(int txPhy, int rxPhy) {
-        DebugUtil.warnOut(TAG, "readPhy");
+        BleManager.warnOut(TAG, "readPhy");
     }
 
     /**
@@ -206,7 +206,7 @@ public class DefaultBleConnectStateChangedListener implements OnBleConnectStateC
      */
     @Override
     public void onCloseComplete() {
-        DebugUtil.warnOut(TAG, "onCloseComplete");
+        BleManager.warnOut(TAG, "onCloseComplete");
     }
 
     /**
@@ -214,6 +214,6 @@ public class DefaultBleConnectStateChangedListener implements OnBleConnectStateC
      */
     @Override
     public void onConnectTimeOut() {
-        DebugUtil.warnOut(TAG, "onConnectTimeOut");
+        BleManager.warnOut(TAG, "onConnectTimeOut");
     }
 }
