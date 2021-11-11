@@ -130,6 +130,7 @@ public class DeviceListActivity extends BaseAppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         bleScanner.stopScan();
+                        button.setText(R.string.start_scan);
                         switch (which) {
                             case 0:
                                 toBroadcastIntervalTestActivity(bleDevice.getDeviceAddress());
