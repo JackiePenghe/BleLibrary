@@ -178,6 +178,7 @@ public class DeviceListActivity extends BaseAppCompatActivity {
 
         @Override
         public void onScanComplete() {
+            DebugUtil.warnOut(TAG,"搜索完成");
             button.setText(R.string.start_scan);
         }
 
@@ -219,7 +220,7 @@ public class DeviceListActivity extends BaseAppCompatActivity {
 
         @Override
         public void onBluetoothDisable() {
-            button.setText(R.string.start_scan);
+            bleScanner.stopScan();
         }
     };
 
@@ -368,6 +369,8 @@ public class DeviceListActivity extends BaseAppCompatActivity {
         BleManager.releaseBleScannerInstance();
         //解除输入法内存泄漏
         Tool.releaseInputMethodManagerMemory(this);
+        BleManager.removeOnBluetoothStateChangedListener(onBluetoothStateChangedListener);
+        onBleScanStateChangedListener = null;
     }
 
     /**
