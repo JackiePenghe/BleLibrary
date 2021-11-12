@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/BleSample.iml" filepath="$PROJECT_DIR$/BleSample.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/blelibrary/BleSample.blelibrary.iml" filepath="$PROJECT_DIR$/.idea/modules/blelibrary/BleSample.blelibrary.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sample/BleSample.sample.iml" filepath="$PROJECT_DIR$/.idea/modules/sample/BleSample.sample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/BleLibrary.iml" filepath="$PROJECT_DIR$/.idea/modules/BleLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/blelibrary/BleLibrary.blelibrary.iml" filepath="$PROJECT_DIR$/.idea/modules/blelibrary/BleLibrary.blelibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sample/BleLibrary.sample.iml" filepath="$PROJECT_DIR$/.idea/modules/sample/BleLibrary.sample.iml" />
     </modules>
   </component>
 </project>

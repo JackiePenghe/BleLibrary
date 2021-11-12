@@ -1,23 +1,27 @@
 <component name="libraryTable">
   <library name="Gradle: androidx.savedstate:savedstate:1.0.0@aar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../../../others/gradle-android-studio/caches/transforms-2/files-2.1/99aaa11e25a173752bb2f6150c31ec71/savedstate-1.0.0/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../../../../others/gradle-android-studio/caches/transforms-2/files-2.1/99aaa11e25a173752bb2f6150c31ec71/savedstate-1.0.0/res" />
-      <root url="file://$PROJECT_DIR$/../../../../others/gradle-android-studio/caches/transforms-2/files-2.1/99aaa11e25a173752bb2f6150c31ec71/savedstate-1.0.0/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/../../others/gradle-android-studio/caches/transforms-2/files-2.1/99aaa11e25a173752bb2f6150c31ec71/savedstate-1.0.0/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../../others/gradle-android-studio/caches/transforms-2/files-2.1/99aaa11e25a173752bb2f6150c31ec71/savedstate-1.0.0/res" />
+      <root url="file://$PROJECT_DIR$/../../others/gradle-android-studio/caches/transforms-2/files-2.1/99aaa11e25a173752bb2f6150c31ec71/savedstate-1.0.0/AndroidManifest.xml" />
       <root url="jar://$USER_HOME$/gradle/caches/transforms-2/files-2.1/99aaa11e25a173752bb2f6150c31ec71/jetified-savedstate-1.0.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/gradle/caches/transforms-2/files-2.1/99aaa11e25a173752bb2f6150c31ec71/jetified-savedstate-1.0.0/AndroidManifest.xml" />
       <root url="file://$USER_HOME$/gradle/caches/transforms-2/files-2.1/99aaa11e25a173752bb2f6150c31ec71/jetified-savedstate-1.0.0/res" />
-      <root url="file://$PROJECT_DIR$/../../../../other/gradle/caches/transforms-2/files-2.1/99aaa11e25a173752bb2f6150c31ec71/jetified-savedstate-1.0.0/AndroidManifest.xml" />
-      <root url="jar://$PROJECT_DIR$/../../../../other/gradle/caches/transforms-2/files-2.1/99aaa11e25a173752bb2f6150c31ec71/jetified-savedstate-1.0.0/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../../../../other/gradle/caches/transforms-2/files-2.1/99aaa11e25a173752bb2f6150c31ec71/jetified-savedstate-1.0.0/res" />
-      <root url="jar://$PROJECT_DIR$/../../../../other/gradle/caches/transforms-2/files-2.1/99aaa11e25a173752bb2f6150c31ec71/savedstate-1.0.0/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../../../../other/gradle/caches/transforms-2/files-2.1/99aaa11e25a173752bb2f6150c31ec71/savedstate-1.0.0/res" />
-      <root url="file://$PROJECT_DIR$/../../../../other/gradle/caches/transforms-2/files-2.1/99aaa11e25a173752bb2f6150c31ec71/savedstate-1.0.0/AndroidManifest.xml" />
+      <root url="file://$PROJECT_DIR$/../../other/gradle/caches/transforms-2/files-2.1/99aaa11e25a173752bb2f6150c31ec71/jetified-savedstate-1.0.0/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/../../other/gradle/caches/transforms-2/files-2.1/99aaa11e25a173752bb2f6150c31ec71/jetified-savedstate-1.0.0/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../../other/gradle/caches/transforms-2/files-2.1/99aaa11e25a173752bb2f6150c31ec71/jetified-savedstate-1.0.0/res" />
+      <root url="jar://$PROJECT_DIR$/../../other/gradle/caches/transforms-2/files-2.1/99aaa11e25a173752bb2f6150c31ec71/savedstate-1.0.0/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../../other/gradle/caches/transforms-2/files-2.1/99aaa11e25a173752bb2f6150c31ec71/savedstate-1.0.0/res" />
+      <root url="file://$PROJECT_DIR$/../../other/gradle/caches/transforms-2/files-2.1/99aaa11e25a173752bb2f6150c31ec71/savedstate-1.0.0/AndroidManifest.xml" />
+      <root url="jar://G:/gradleNew/caches/transforms-2/files-2.1/99aaa11e25a173752bb2f6150c31ec71/savedstate-1.0.0/jars/classes.jar!/" />
+      <root url="file://G:/gradleNew/caches/transforms-2/files-2.1/99aaa11e25a173752bb2f6150c31ec71/savedstate-1.0.0/res" />
+      <root url="file://G:/gradleNew/caches/transforms-2/files-2.1/99aaa11e25a173752bb2f6150c31ec71/savedstate-1.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/../../../../others/gradle-android-studio/caches/modules-2/files-2.1/androidx.savedstate/savedstate/1.0.0/e6daf87ed227a6f80bb8accb466755a5ee01a652/savedstate-1.0.0-sources.jar!/" />
-      <root url="jar://$PROJECT_DIR$/../../../../other/gradle/caches/modules-2/files-2.1/androidx.savedstate/savedstate/1.0.0/e6daf87ed227a6f80bb8accb466755a5ee01a652/savedstate-1.0.0-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../others/gradle-android-studio/caches/modules-2/files-2.1/androidx.savedstate/savedstate/1.0.0/e6daf87ed227a6f80bb8accb466755a5ee01a652/savedstate-1.0.0-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../other/gradle/caches/modules-2/files-2.1/androidx.savedstate/savedstate/1.0.0/e6daf87ed227a6f80bb8accb466755a5ee01a652/savedstate-1.0.0-sources.jar!/" />
+      <root url="jar://G:/gradleNew/caches/modules-2/files-2.1/androidx.savedstate/savedstate/1.0.0/e6daf87ed227a6f80bb8accb466755a5ee01a652/savedstate-1.0.0-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
