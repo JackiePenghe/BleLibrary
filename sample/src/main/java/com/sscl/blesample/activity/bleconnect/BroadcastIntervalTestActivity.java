@@ -272,7 +272,7 @@ public class BroadcastIntervalTestActivity extends BaseAppCompatActivity {
 
     private int getRssiAverage() {
         if (rssis == null){
-            return 0;
+            return 0 ;
         }
         double sun = 0;
         for (int i = 0; i < rssis.size(); i++) {
