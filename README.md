@@ -5,13 +5,14 @@ BleSample
 
 这个库我自己已经使用了很长一段时间了，我自己也经常维护。现在感觉已经比较稳定，所以就大胆拿出来分享一下，希望能帮助到正在准备进行BLE开发或进入BLE开发不久的安卓程序员们。
 
-这个库最开始我只是为了自己做调试的时候使用，后来写着写着就把它写成了一个库，于是就慢慢的维护了起来。因为最开始的原因，所以到现在为止，这个库在发布到github上时，就叫做BleSample。是不是总感觉这不是依赖库呢？
+这个库最开始我只是为了自己做调试的时候使用，后来写着写着就把它写成了一个库，于是就慢慢的维护了起来
 
-[API文档](http://penghe.xyz/api/blelibrary/index.html)
+由于个人原因，此库已迁移到 码云  [传送门](https://gitee.com/sscl/BleLibrary)
 
-API文档已经有很长一段时间没有更新过了，可能跟实际有很大差别，最好是下载源码进行查看
+RecyclerView Adapter use BRVAH [quick jump](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)
 
-RecyclerView Adapter use BRVAH 
+RecyclerView 适配器使用 BRVAH [传送门](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)
+
 
 
 由于更新维护会经常修改代码，下方的配置以及依赖有可能未及时更新，有需要可下载代码查看
